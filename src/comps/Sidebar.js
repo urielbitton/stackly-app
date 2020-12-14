@@ -5,7 +5,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="profcont">
-        <img src="https://i.imgur.com/fl9TijM.png" alt=""/>
+        <img src="https://i.imgur.com/JWVZJyP.jpg" alt=""/>
         <div>
           <h4>Uriel Bitton</h4>
           <h6>App Developer</h6>
@@ -14,7 +14,7 @@ function Sidebar() {
       </div> 
 
       <div className="menu">
-        <div className="menuitem">
+        <div className="menuitem activelink">
           <Link to="/"><h6><i class="far fa-home-alt"></i>Overview</h6></Link>
         </div>
         <div className="menuitem">
@@ -30,7 +30,14 @@ function Sidebar() {
         <Link to="/"><h6><i class="far fa-cog"></i>Settings</h6></Link>
         </div>
       </div>
-
+      <div className="quickprojects">
+        <div>
+          <span>Recent Projects</span>
+        </div>
+        <div>
+          <span>Pinned Projects</span>
+        </div>
+      </div>
       <div className="spacer"></div>
       <div>
         <button><i className="far fa-plus"></i>New Project</button>
