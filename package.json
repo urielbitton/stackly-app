@@ -8,6 +8,9 @@
   ],
   "main": "src/index.js",
   "dependencies": {
+    "@fullcalendar/core": "5.4.0",
+    "@fullcalendar/daygrid": "5.4.0",
+    "@fullcalendar/list": "5.4.0",
     "react": "17.0.0",
     "react-dom": "17.0.0",
     "react-router-dom": "5.2.0",

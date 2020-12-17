@@ -15,19 +15,19 @@ function Sidebar() {
 
       <div className="menu">
         <div className="menuitem activelink">
-          <Link to="/"><h6><i class="far fa-home-alt"></i>Overview</h6></Link>
+          <Link to="/"><h6><i class="fal fa-home-alt"></i>Overview</h6></Link>
         </div>
         <div className="menuitem">
-        <Link to="/"><h6><i class="far fa-project-diagram"></i>Projects</h6></Link>
+        <Link to="/"><h6><i class="fal fa-project-diagram"></i>Projects</h6></Link>
         </div>
         <div className="menuitem">
-        <Link to="/"><h6><i class="far fa-users"></i>Clients</h6></Link>
+        <Link to="/"><h6><i class="fal fa-users"></i>Clients</h6></Link>
         </div>
         <div className="menuitem">
-        <Link to="/"><h6><i class="far fa-tasks"></i>My Tasks</h6></Link>
+        <Link to="/"><h6><i class="fal fa-tasks"></i>My Tasks</h6></Link>
         </div>
         <div className="menuitem">
-        <Link to="/"><h6><i class="far fa-cog"></i>Settings</h6></Link>
+        <Link to="/"><h6><i class="fal fa-cog"></i>Settings</h6></Link>
         </div>
       </div>
       <div className="quickprojects">
