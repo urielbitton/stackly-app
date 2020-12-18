@@ -10,7 +10,9 @@ html, body {
   --color: #35b6fa;   
   --grad: linear-gradient(90deg, rgba(48,77,246,1) 0%, rgba(48,210,252,1) 100%);
   --bg: #0e1420;
-} 
+  --light: #35b6fa11;
+  --light2: #35b6fa25;
+}  
 
 .spacer {
   height: 50px;
@@ -283,7 +285,10 @@ nav {
 
 .apppage {
   width: 100%;
+  height: 100%;
   padding: 35px 30px;
+  overflow-y: scroll;
+  padding-bottom: 100px;
 }
 .apptitles {
   width: 100%;
@@ -356,6 +361,14 @@ nav {
 .quicknotifs small i {
   margin-right: 10px;
 }
+.homemain {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-rows: repeat(4,1fr);
+  grid-gap: 15px;
+  width: 100%;
+  grid-column: span 3;
+}
 .homeside {
   height: 100%;
   display: flex;
@@ -405,8 +418,18 @@ nav {
 #calendar .fc-toolbar-chunk {
   top: 10px;
 }
+#calendar .fc-toolbar-chunk button {
+  background: var(--light);
+}
+#calendar .fc-today-button {
+  font-size: 13px;
+  color: var(--color);
+}
+#calendar .fc-toolbar-chunk span {
+  color: var(--color)
+}
 #calendar .fc-button-group button:hover {
-  background: #ddd
+  background: var(--light2);
 }
 #calendar table, #calendar td, #calendar th {
   border: none;
@@ -431,9 +454,6 @@ nav {
 }
 #calendar th {
   padding-bottom: 10px;
-}
-#calendar th a {
-  color: var(--orange);
 }
 #calendar ::-webkit-scrollbar {
   display: none;
@@ -474,7 +494,7 @@ nav {
 .statusbox .view {
   width: 30px;
   height: 30px;
-  background: #35b6fa11;
+  background: var(--light);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -484,14 +504,59 @@ nav {
   transition: all 0.2s;
 }
 .statusbox .view:hover {
-  background: #35b6fa25;
+  background: var(--light2);
 }
- 
-
-
-
-
-
+.updatesbox {
+  height: 320px;
+  padding: 20px;
+}
+.dashbox h5 {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 30px;
+} 
+.dashgraph {
+  grid-column: span 3;
+  grid-row: span 2;
+} 
+.tasksbox {
+  grid-column: span 3;
+}
+.taskrow, .taskhead {
+  width: 100%;
+  height: 50px;
+  background: var(--light);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.taskhead {
+  background: none;
+  height: 10px;
+}
+.taskhead h6 {
+  font-size: 13px;
+  color: #333;
+  flex-basis: 20%;
+}
+.taskrow h6 {
+  color: #777;
+  font-size: 12px;
+  flex-basis: 20%;
+}
+.taskrow h6:first-child, .taskhead h6:first-child {
+  flex-basis: 25%;
+}
+.taskrow h6 i {
+  font-size: 17px;
+  padding: 5px;
+  cursor: pointer;
+}
+.taskrow h6 i:hover {
+  color: var(--color)
+}
 
 
 
