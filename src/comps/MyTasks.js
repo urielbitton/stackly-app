@@ -2,7 +2,7 @@ import React from 'react'
 
 function MyTasks() {
   return (
-    <div className="mytaskspage">
+    <div className="mytaskspage apppage">
 
     </div>
   )

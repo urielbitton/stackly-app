@@ -13,9 +13,9 @@ function Navbar() {
       </div>
 
       <div className="toolbar">
-        <div className="newbox" onClick={() => setShowNew(!shownew)}>
+        <div className="newbox">
           <i className="far fa-plus"></i>
-          <div className="newmenu" style={{display: shownew?"block":"none"}}>
+          <div className="newmenu"> 
             <Link to="/addproject"><h6><i class="fal fa-project-diagram"></i>Add Project</h6></Link>
             <Link to="/addclient"><h6><i class="fal fa-users"></i>Add Client</h6></Link>
           </div>

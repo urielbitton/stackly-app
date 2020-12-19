@@ -2,7 +2,7 @@ import React from 'react'
 
 function Clients() {
   return (
-    <div className="clientspage">
+    <div className="clientspage apppage">
 
     </div>
   )
