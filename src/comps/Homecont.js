@@ -18,7 +18,7 @@ function Homecont(props) {
 
   return ( 
     <div className="homecont">
-      <Navbar />
+      <Navbar darkmode={props.darkmode}/>
         <TransitionGroup component={null}>
         <CSSTransition key={location.key} timeout={300} classNames="fade">
           <Switch>

@@ -13,6 +13,7 @@ html, body {
   --light: #35b6fa11;
   --light2: #35b6fa25;
   --mainshadow: rgba(48,210,252,0.4);
+  --dark: #0d1a25;
 }  
 
 .spacer {
@@ -79,12 +80,10 @@ input {
   border: none;
   padding: 10px;
   transition: all 0.3s;
-  background: #f1f1f1;
-  text-align: center;
+  border-radius: 5px;
 }
 input:focus, select:focus, textarea:focus {
   box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-  background: #f9f9f9;
 }
 a {
   text-decoration: none;
@@ -133,11 +132,9 @@ hr {
 }
 .foldappcontainer .menu > a h6 i {
   margin: auto;
+  font-size: 17px;
 }
-.foldappcontainer .quickprojects span {
-  display: none;
-}
-.foldappcontainer .blobcont {
+.foldappcontainer .quickprojects span, .foldappcontainer .blobcont, .foldappcontainer .creditsdiv {
   display: none;
 }
 .fade-appear, .fade-enter {
@@ -170,8 +167,8 @@ hr {
   width: 100%;
   height: 100%;
   background-position: center;
-  background-size: contain;
-  background-image: url('https://i.imgur.com/t4pBFTX.jpg');
+  background-size: cover;
+  background-image: url('https://i.imgur.com/IcBu152.jpg');
   opacity: 0.07;
   filter: grayscale(40%)
 }
@@ -191,7 +188,7 @@ hr {
   margin-top: 40px;
   text-align: center;
   width: 100%;
-  height: 150px;
+  min-height: 150px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: all 0.2s;
@@ -202,20 +199,20 @@ hr {
   border-radius: 100%;
   box-shadow: 0 8px 8px rgba(0,0,0,0.06);
 }
-.profcont > div {
+.mainprof {
   width: 100%;
   cursor: pointer;
   padding: 10px 20px;
   transition: all 0.2s;
 }
-.profcont > div:hover {
+.mainprof:hover {
   background: rgba(255,255,255,0.1);
 }
 .profcont h4 {
   font-size: 18px;
   color: #fff;
 }
-.profcont i {
+.mainprof i {
   font-size: 17px;
   position: absolute;
   top: 14px;
@@ -229,6 +226,27 @@ hr {
   color: #aaa;
   font-weight: 500;
   font-size: 11px;
+}
+.accountlinks {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+.accountlinks a i {
+  font-size: 13px;
+}
+.accountlinks a {
+  width: 100%;
+  padding: 7px 20px;
+}
+.accountlinks a:hover {
+  background: rgba(255,255,255,0.1);
+}
+.accountlinks a h6 {
+  width: 180px;
 }
 .menu {
   display: flex;
@@ -359,7 +377,7 @@ nav {
   grid-gap: 10px;
 }
 .logocont img {
-  width: 30px;
+  width: 24px;
 }
 .logocont h5 {
   font-size: 20px;
@@ -372,7 +390,7 @@ nav {
   align-items: center;
 }
 .toolbar > div {
-  padding: 18.5px 25px;
+  padding: 16px 25px;
   border-left: 1px solid #f5f5f5;
   cursor: pointer;
   transition: all 0.2s;
@@ -388,7 +406,7 @@ nav {
 }
 .notifcircle {
   position: absolute;
-  top: 10px;
+  top: 7px;
   right: 7px;
   width: 18px;
   height: 18px;
@@ -400,39 +418,62 @@ nav {
   font-size: 10px;
   color: #fff;
 }
-.newmenu {
+.slidemenu {
   position: absolute;
-  top: 50px;
-  left: 0;
+  top: 40px;
+  right: 0;
   width: 330px;
   background: #fff;
-  box-shadow: 0 4px 13px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 13px rgba(0,0,0,0.1);
   visibility: hidden;
   transition: all 0.2s;
   opacity: 0;
 }
-.newmenu a {
-  display: block;
+.slidemenu a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
   transition: all 0.2s;
   color: var(--color);
 }
-.newmenu a:hover {
+.slidemenu a:hover {
   background: var(--light)
 }
-.newmenu a i {
+.slidemenu a i {
   color: var(--color);
-  font-size: 15px;
+  font-size: 14px;
   top: 1px;
   margin-right: 15px;
 }
-.newmenu a h6 {
+.slidemenu a h6 {
   font-size: 12px;
 }
-.newbox:hover .newmenu {
+.boxmenu:hover .slidemenu {
   visibility: visible;
   opacity: 1;
-  top: 58px;
+  top: 54px;
+}
+.newbox .slidemenu {
+  left: 0;
+  right: auto;
+} 
+.optionsbox .form-switch {
+  transform: scale(0.8)
+}
+.slidemenu .searchdiv i {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+} 
+.slidemenu .searchdiv input {
+  width: 100%;
+  padding: 20px;
+  padding-left: 50px;
+}
+.slidemenu input:focus {
+  box-shadow: none;
 }
 .apppage {
   width: 100%;
@@ -795,6 +836,11 @@ nav {
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pagetitles .actions > div:hover {
+  filter: brightness(85%);
 }
 .pagetitles .actions button {
   padding: 10px;
@@ -903,30 +949,93 @@ nav {
   font-size: 11px;
   padding: 2px 5px;
   border-radius: 10px;
-  background: var(--light);
+  background: #f5f5f5;
   color: #777;
 }
 .projinforow small i {
   margin-right: 5px;
 }
 
+.progcircle {
+  width: 100px; 
+  position: relative;
+  margin: auto;
+} 
+.circle-bg {
+  fill: none;
+  stroke-width: 2;
+}
+.circle {
+  fill: none;
+  stroke-width: 2; 
+  stroke-linecap: round;
+  stroke: var(--color);
+  animation: progress 1s ease-out forwards;
+}
+@keyframes progress { 0% { stroke-dasharray: 0 100; }}
+.percentage, .subtext {
+  fill: var(--color);
+  font-family: inherit;
+  text-anchor: middle;
+  position: relative;
+  font-size: 7px; 
+  font-weight: 600;
+  transition: all 1s;
+}
+.subtext {
+  font-size: 3px;
+  fill: #aaa;
+}
 
+/* iOS Style Button */
+.form-switch{display:inline-block;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.form-switch i{position:relative;display:inline-block;margin-right:.5rem;width:46px;height:26px;background-color:#e6e6e6;border-radius:23px;vertical-align:text-bottom;transition:all .3s linear}
+.form-switch i::before{content:"";position:absolute;left:0;width:42px;height:22px;background-color:#fff;border-radius:11px;transform:translate3d(2px,2px,0) scale3d(1,1,1);transition:all .25s linear}
+.form-switch i::after{content:"";position:absolute;left:0;width:22px;height:22px;background-color:#fff;border-radius:11px;box-shadow:0 2px 2px rgba(0,0,0,.24);transform:translate3d(2px,2px,0);transition:all .2s ease-in-out}
+.form-switch:active i::after{width:28px;transform:translate3d(2px,2px,0)}
+.form-switch:active input:checked+i::after{transform:translate3d(16px,2px,0)}
+.form-switch input{display:none}
+.form-switch input:checked+i{background:var(--color)}
+.form-switch input:checked+i::before{transform:translate3d(18px,2px,0) scale3d(0,0,0)}
+.form-switch input:checked+i::after{transform:translate3d(22px,2px,0)} 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.darkapp nav {
+  background: var(--bg);
+}
+.darkapp .logocont h5 {
+  color: #bbb;
+}
+.darkapp .sidebar {
+  filter: brightness(85%);
+  transition: all 0.2s;
+}
+.darkapp .boxmenu {
+  border-color: #333;
+}
+.darkapp .boxmenu:hover {
+  background: #10283a;
+}
+.darkapp .slidemenu {
+  background: var(--bg)
+}
+.darkapp .apppage {
+  background: #020b13;
+}
+.darkapp .dashbox, .darkapp .banner {
+  background: var(--dark);
+}
+.darkapp .projbox {
+  background: var(--dark);
+}
+.darkapp .projbox h4 {
+  color: #aaa;
+}
+.darkapp .projbox h6 {
+  color: #999;
+}
+.darkapp .pagetitles h4 {
+  color: #aaa;
+}
 
 
 

@@ -11,12 +11,17 @@ function Sidebar(props) {
       <div className="sidetogglecont" onClick={() => props.foldsidebar()}>
         <hr/><hr/><hr/>
       </div>
-      <div className="profcont" style={{height: slideprof?"300px":""}}>
+      <div className="profcont" style={{minHeight: slideprof?"270px":"150px"}}>
         <img src="https://i.imgur.com/JWVZJyP.jpg" alt=""/>
-        <div onClick={() => setSlideProf(!slideprof)}>
+        <div onClick={() => setSlideProf(!slideprof)} className="mainprof">
           <h4>Uriel Bitton</h4>
           <h6>App Developer</h6>
           <i className="far fa-angle-right" style={{transform: slideprof?"rotate(90deg)":"rotate(0deg)"}}></i> 
+        </div>
+        <div className="accountlinks">
+          <Link to="/profile"><h6><i class="fal fa-user"></i><span>Profile</span></h6></Link>
+          <Link to="#"><h6><i class="fal fa-sign-out-alt"></i><span>Log Out</span></h6></Link>
+          <Link to="/helpcenter"><h6><i class="fal fa-question-circle"></i><span>Help Center</span></h6></Link>
         </div>
       </div> 
 
