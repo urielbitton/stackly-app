@@ -4,9 +4,10 @@ export function Inputs(props) {
   return ( 
     <label className="labelinput">
       <h6>{props.title}</h6>
-      <input placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onchange(e.target.value)}/>
+      <i className={props.iconclass}></i>
+      <input style={{paddingR: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onchange(e.target.value)}/>
     </label>
-  )  
+  )   
 }  
 
 export function Switchs(props) {
