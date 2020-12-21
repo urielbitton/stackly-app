@@ -18,8 +18,8 @@ function Navbar(props) {
         <div className="newbox boxmenu">
           <i className="far fa-plus"></i>
           <div className="slidemenu"> 
-            <Link to="/addproject"><h6><i class="fal fa-project-diagram"></i>Add Project</h6></Link>
-            <Link to="/addclient"><h6><i class="fal fa-users"></i>Add Client</h6></Link>
+            <Link to="/projects/addproject"><h6><i class="fal fa-project-diagram"></i>Create Project</h6></Link>
+            <Link to="/clients/addclient"><h6><i class="fal fa-users"></i>Create Client</h6></Link>
           </div>
         </div>
         <div className="searchbox boxmenu">

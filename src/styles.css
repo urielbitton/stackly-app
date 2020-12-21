@@ -78,12 +78,10 @@ button i, a i {
 }
 input {
   border: none;
-  padding: 10px;
+  padding: 13px 10px;
   transition: all 0.3s;
   border-radius: 5px;
-}
-input:focus, select:focus, textarea:focus {
-  box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
 }
 a {
   text-decoration: none;
@@ -100,7 +98,7 @@ textarea::placeholder {
 }
 input::placeholder {
   color: #bbb;
-  font-size: 13px;
+  font-size: 12px;
 }
 hr {
   border: none;
@@ -136,16 +134,6 @@ hr {
 }
 .foldappcontainer .quickprojects span, .foldappcontainer .blobcont, .foldappcontainer .creditsdiv {
   display: none;
-}
-.fade-appear, .fade-enter {
-  opacity: 0;
-}
-.fade-appear-active, .fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 0.35s;
-}
-.fade-exit {
-  opacity: 1;
 }
 .sidebar {
   background: var(--bg);
@@ -1036,6 +1024,119 @@ nav {
 .darkapp .pagetitles h4 {
   color: #aaa;
 }
+
+.addprojectcont {
+  position: fixed;
+  bottom: -180%;
+  top: 0;
+  width: 400px;
+  height: 80%;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-radius: 10px;
+  transition: all 0.3s;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  grid-gap: 20px;
+  padding: 30px 0;
+}
+.addcover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #0d1a258e;
+  z-index: 999;
+}
+.addprojectcont .fa-times {
+  font-size: 25px;
+  color: #555;
+  cursor: pointer;
+}
+.addprojectcont .closeadd {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.addprojectcont .titles {
+  display: flex;
+  grid-gap: 20px;
+  align-items: center;
+}
+.addprojectcont .titles img {
+  width: 20px;
+}
+.addprojectcont .titles h4 {
+  font-size: 20px;
+  color: #444;
+}
+.addprojectcont .content {
+  margin-top: 20px;
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-gap: 20px;
+  height: 90%;
+  overflow-y: scroll;
+  border-bottom: 1px solid #eee;
+}
+.addprojectcont .content::-webkit-scrollbar {
+  display: none;
+}
+.addprojectcont .content input {
+  width: 300px;
+}
+.addprojectcont .content label h6 {
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #777;
+}
+.addprojectcont button {
+  padding: 10px 35px;
+}
+.addprojectcont .content button {
+  width: 300px;
+  padding: 15px;
+}
+.addprojectcont .content button i {
+  margin-left: 10px;
+  font-size: 15px;
+}
+.addprojectcont .content select {
+  padding: 13px 20px;
+  border-radius: 5px;
+  width: 300px;
+  border: 1px solid #ddd;
+  color: #555;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

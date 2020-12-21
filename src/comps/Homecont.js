@@ -5,22 +5,16 @@ import Home from './Home'
 import Projects from './Projects'
 import Clients from './Clients'
 import MyTasks from './MyTasks'
-import AddProject from './AddProject'
-import AddClient from './AddClient'
 import Settings from './Settings'
 import OneProject from './OneProject'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 function Homecont(props) {
   
   const [projid, setProjId] = useState('')
-  let location = useLocation()
 
   return ( 
     <div className="homecont">
       <Navbar darkmode={props.darkmode}/>
-        <TransitionGroup component={null}>
-        <CSSTransition key={location.key} timeout={300} classNames="fade">
           <Switch>
             <Route exact path="/">
               <Home />
@@ -34,12 +28,6 @@ function Homecont(props) {
             <Route path="/mytasks"> 
               <MyTasks />
             </Route>
-            <Route path="/addproject"> 
-              <AddProject />
-            </Route>
-            <Route path="/addclient"> 
-              <AddClient />
-            </Route>
             <Route path="/settings"> 
               <Settings />
             </Route>
@@ -47,10 +35,8 @@ function Homecont(props) {
               <OneProject />
             </Route>
           </Switch>
-          </CSSTransition>
-        </TransitionGroup>
       
-    </div>
+    </div> 
   )
 } 
 
