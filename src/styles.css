@@ -83,6 +83,11 @@ input {
   border-radius: 5px;
   border: 1px solid #ddd;
 }
+input[type="color"] {
+  height: 45px;
+  padding: 5px;
+  cursor: pointer;
+}
 a { 
   text-decoration: none;
   color: #111;
@@ -334,7 +339,7 @@ hr {
   justify-content: center;
   align-items: center;
   margin: auto;
-  grid-gap: 10px;
+  grid-gap: 10px; 
 }
 .creditsdiv img {
   width: 20px;
@@ -1037,7 +1042,7 @@ nav {
   right: 0;
   margin: auto;
   border-radius: 10px;
-  transition: all 0.3s;
+  transition: all 0.4s;
   z-index: 1000;
   padding: 30px 0;
   overflow: hidden;
@@ -1161,18 +1166,116 @@ nav {
   border: 1px solid #ddd;
   color: #555;
 }
+.clientdetails {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.clientdetails small {
+  font-size: 12px;
+  color: #777;
+  margin: 3px auto;
+}
 
+.pageside {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 20px;
+}
+.oneprojectpage .pageside {
+  height: 90vh;
+  background: var(--bg);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+.oneprojectpage .pageside > h4 {
+  color: #fff;
+}
+.oneprojectpage .pageside > h6 {
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+.oneprojectpage .pagemaingrid {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+.oneprojectpage .progcircle {
+  margin: 30px auto;
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  border-radius: 100%;
+}
+.oneprojectpage .progcircle svg {
+  transform: scale(3)
+}
+.pagesidebg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-image: url('https://i.imgur.com/IP8WdVh.jpg');
+  opacity: 0.04;
+  filter: grayscale(100%);
+}
+.realtimediv {
+  margin-top: 20px;
+  width: 100%;
+  height: 70px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  grid-gap: 15px;
+}
+.realtimediv h5 {
+  color: #fff;
+  font-weight: 500;
+}
 
+.lds-ellipsis{display:inline-block;width:80px;height:10px}
+.lds-ellipsis div{position:absolute;top:auto;width:7px;height:7px;border-radius:50%;background:#fff;animation-timing-function:cubic-bezier(0,1,1,0)}
+.lds-ellipsis div:nth-child(1){left:8px;animation:lds-ellipsis1 .9s infinite}
+.lds-ellipsis div:nth-child(2){left:8px;animation:lds-ellipsis2 .9s infinite}
+.lds-ellipsis div:nth-child(3){left:32px;animation:lds-ellipsis2 .9s infinite}
+.lds-ellipsis div:nth-child(4){left:56px;animation:lds-ellipsis3 .9s infinite}
+@keyframes lds-ellipsis1{0%{transform:scale(0)}100%{transform:scale(1)}}
+@keyframes lds-ellipsis3{0%{transform:scale(1)}100%{transform:scale(0)}}
+@keyframes lds-ellipsis2{0%{transform:translate(0,0)}100%{transform:translate(24px,0)}}
 
-
-
-
-
-
-
-
-
-
+.sidecontent {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.sidecontent h4 {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+}
+.sidecontent h6 {
+  font-weight: 500;
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 5px;
+}
 
 
 

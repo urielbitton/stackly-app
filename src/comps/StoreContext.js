@@ -17,8 +17,13 @@ const StoreContextProvider = (props) => {
     }
   ])
   const [clients] = useState([
-     
-  ])
+     {
+       id: 1,
+       name: "Uriel Bitton",
+       profession: 'Web Developer',
+       projnum: 2,
+     }
+  ]) 
 
 
 

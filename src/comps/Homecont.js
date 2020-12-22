@@ -7,10 +7,12 @@ import Clients from './Clients'
 import MyTasks from './MyTasks'
 import Settings from './Settings'
 import OneProject from './OneProject'
+import OneClient from './OneClient'
 
 function Homecont(props) {
   
   const [projid, setProjId] = useState('')
+  const [clientid, setClientId] = useState('')
 
   return ( 
     <div className="homecont">
@@ -23,7 +25,7 @@ function Homecont(props) {
               <Projects sendprojid={(id) => setProjId(id)} />
             </Route>
             <Route path="/clients"> 
-              <Clients />
+              <Clients sendclientid={(id) => setClientId(id)} />
             </Route>
             <Route path="/mytasks"> 
               <MyTasks />
@@ -31,8 +33,11 @@ function Homecont(props) {
             <Route path="/settings"> 
               <Settings />
             </Route>
-            <Route path={"/projects"+projid}> 
+            <Route exact path={"/projects"+projid}> 
               <OneProject />
+            </Route>
+            <Route path={"/clients"+clientid}> 
+              <OneClient />
             </Route>
           </Switch>
       
