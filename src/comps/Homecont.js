@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { BrowserRouter as Router,Switch,Route,Link, useLocation} from "react-router-dom"
 import Navbar from './Navbar'
 import Home from './Home'
@@ -8,11 +8,22 @@ import MyTasks from './MyTasks'
 import Settings from './Settings'
 import OneProject from './OneProject'
 import OneClient from './OneClient'
+import {StoreContext} from './StoreContext'
 
 function Homecont(props) {
   
-  const [projid, setProjId] = useState('')
-  const [clientid, setClientId] = useState('')
+  const {projects, clients} = useContext(StoreContext)
+
+  const oneproject = projects && projects.map(proj => {
+    return <Route exact path={"/projects"+proj.id}> 
+      <OneProject proj={proj}/>
+    </Route>
+  }) 
+  const oneclient = clients && clients.map(cli => {
+    return <Route path={"/clients"+cli.id}> 
+      <OneClient cli={cli}/>
+    </Route>
+  })
 
   return ( 
     <div className="homecont">
@@ -22,10 +33,10 @@ function Homecont(props) {
               <Home />
             </Route>
             <Route path="/projects"> 
-              <Projects sendprojid={(id) => setProjId(id)} />
+              <Projects />
             </Route>
             <Route path="/clients"> 
-              <Clients sendclientid={(id) => setClientId(id)} />
+              <Clients />
             </Route>
             <Route path="/mytasks"> 
               <MyTasks />
@@ -33,12 +44,8 @@ function Homecont(props) {
             <Route path="/settings"> 
               <Settings />
             </Route>
-            <Route exact path={"/projects"+projid}> 
-              <OneProject />
-            </Route>
-            <Route path={"/clients"+clientid}> 
-              <OneClient />
-            </Route>
+            {oneproject}
+            {oneclient}
           </Switch>
       
     </div> 

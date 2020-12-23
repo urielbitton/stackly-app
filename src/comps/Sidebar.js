@@ -6,7 +6,7 @@ function Sidebar(props) {
   const [slideprof, setSlideProf] = useState(false)
 
   return (
-    <div className="sidebar">
+    <div className="sidebar hidescroll">
       <div className="sidebarbg"></div>
       <div className="sidetogglecont" onClick={() => props.foldsidebar()}>
         <hr/><hr/><hr/>

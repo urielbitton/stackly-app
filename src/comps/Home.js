@@ -1,8 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Calendars from './Calendars'
 import Charts from "./Chart"
+import {StoreContext} from './StoreContext'
 
 function Home() {
+
+  const {projects, clients} = useContext(StoreContext)
+
+  const activetasks = projects.reduce((a,b) => a+b.tasksnum,0)
+
   return (
     <div className="home apppage">
       <div className="apptitles">
@@ -51,21 +57,21 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-rocket-launch"></i>
-              <h4>Completed Projects<span>250</span></h4>
+              <h4>Active Projects<span>{projects.length}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-tasks"></i>
-              <h4>Completed Tasks<span>480</span></h4>
+              <h4>Active Tasks<span>{activetasks}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-user-friends"></i>
-              <h4>Active Clients<span>250</span></h4>
+              <h4>Active Clients<span>{clients.length}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div> 

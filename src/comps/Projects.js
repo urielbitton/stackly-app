@@ -12,7 +12,7 @@ function Projects(props) {
   const [section, setSection] = useState(1)
   
   const projectsrow = projects && projects.map(proj => {
-    return <ProjectCard proj={proj} key={proj.id} sendprojid={props.sendprojid}/>
+    return <ProjectCard proj={proj} key={proj.id} />
   })
 
   return (
@@ -38,7 +38,7 @@ function Projects(props) {
         <div className="addsection" style={{left: section===1?"0":"-200%"}}>
         <Link to="/projects" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
         <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Create Project</h4></div>
-        <div className="content">
+        <div className="content hidescroll">
           <Inputs title="Project Name" placeholder="Web Development"/>
           <button onClick={() => setSection(2)}>Add Client<i className="fal fa-plus"></i></button>
           <button onClick={() => setSection(3)}>Add Tasks<i className="fal fa-plus"></i></button>

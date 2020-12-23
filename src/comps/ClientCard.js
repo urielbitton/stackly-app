@@ -6,7 +6,7 @@ function ClientCard(props) {
   const {id, name, profession, project, projnum} = props.cli 
 
   return ( 
-    <Link to={"/client"+id} onClick={() => props.sendclientid(id)}>
+    <Link to={"/client"+id}>
     <div className="projbox"> 
       <i class="far fa-ellipsis-v" onClick={(e) => e.preventDefault()}></i>
       <div className="iconcont" style={{boxShadow: `0 5px 10px rgba(48,210,252,0.4)`, background: "var(--color)"}}>
