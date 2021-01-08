@@ -701,10 +701,10 @@ nav {
   grid-column: span 3;
   grid-row: span 2;
 } 
-.tasksbox {
+.hometasksbox {
   grid-column: span 3;
 } 
-.taskrow, .taskhead {
+.hometaskrow, .hometaskhead {
   width: 100%;
   height: 50px;
   background: var(--light);
@@ -714,29 +714,29 @@ nav {
   align-items: center;
   padding: 20px;
 }
-.taskhead {
+.hometaskhead {
   background: none;
   height: 10px;
 }
-.taskhead h6 {
+.hometaskhead h6 {
   font-size: 13px;
   color: #333;
   flex-basis: 20%;
 }
-.taskrow h6 {
+.hometaskrow h6 {
   color: #777;
   font-size: 12px;
   flex-basis: 20%;
 }
-.taskrow h6:first-child, .taskhead h6:first-child {
+.hometaskrow h6:first-child, .hometaskhead h6:first-child {
   flex-basis: 25%;
 }
-.taskrow h6 i {
+.hometaskrow h6 i {
   font-size: 17px;
   padding: 5px;
   cursor: pointer;
 }
-.taskrow h6 i:hover {
+.hometaskrow h6 i:hover {
   color: var(--color);
 }
 .updateitem {
@@ -839,14 +839,13 @@ nav {
 .projbox {
   top: 0;
   width: 245px;
-  height: 190px;
+  height: 200px;
   background: #fff;
   box-shadow: 0 1px 12px rgba(0,0,0,0.1);
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px 20px;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   flex-direction: column;
   grid-gap: 10px;
   line-height: 13px;
@@ -863,7 +862,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -35px;
+  margin-top: -25px;
   border-radius: 10px;
 }
 .projbox .iconcont i {
@@ -1356,6 +1355,269 @@ h4.noactivity {
   justify-content: center;
   align-items: center;
 }
+
+.oneprojectcont {
+  display: flex;
+  flex-direction: column;
+  column-span: -1;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  grid-gap: 10px;
+}
+.projecttoolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  padding: 20px;
+}
+.projecttoolbar h4 {
+  color: #444;
+}
+.projecttoolbar h4 i {
+  margin-right: 7px;
+}
+.projectcontent {
+  height: 100%;
+  width: 100%;
+  padding: 30px;
+  padding-left: 80px;
+}
+.taskrow {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-gap: 20px;
+  margin-bottom: 20px;
+  background: var(--light);
+  border-radius: 10px;
+}
+.taskrow h4 {
+  font-size: 15px;
+  color: #555;
+  width: 200px;
+}
+.taskbox {
+  min-width: 200px;
+  border-radius: 0 10px 10px 0;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  grid-gap: 50px;
+}
+.taskbox h6 {
+  font-size: 12px;
+  color: #555;
+  font-weight: 500;
+}
+.taskbox h6 span {
+  font-weight: 600;
+}
+.timelinecont {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  height: 95%;
+  width: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  grid-gap: 51px 0;
+  padding-top: 45px;
+}
+.timelinecont hr {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 100%;
+  width: 2px;
+  background: var(--color);
+  opacity: 0.2;
+}
+.timecircle {
+  background: var(--color);
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 4px solid #fff;
+}
+.taskboxopts {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  grid-gap: 20px;
+}
+.taskboxopts i {
+  color: #aaa;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.taskrow:hover .taskboxopts i {
+  opacity: 1;
+}
+
+.tasksidecont {
+  position: fixed; 
+  right: -550px;
+  top: 57px;
+  height: 100vh;
+  width: 500px;
+  background: #fff;
+  z-index: 900;
+  box-shadow: -5px 0px 20px -11px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+.tasksidecont .titlecont {
+  padding: 20px;
+}
+.tasksidecont .titlecont h2 {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: #555;
+}
+.tasksidecont > .fa-times {
+  position: absolute;
+  top: 28px;
+  right: 20px;
+  padding: 5px;
+  font-size: 30px;
+  color: #333;
+  cursor: pointer; 
+  z-index: 10;
+}
+.tasksidecont .titlecont h6 {
+  font-size: 13px;
+  color: #444;
+  margin-bottom: 8px;
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+.tasksidecont .titlecont h6 span {
+  color: #777;
+  font-weight: 500;
+}
+.tasksidecont hr {
+  width: 100%;
+  height: 1px;
+  background: #eee;
+}
+.tasksidecont textarea {
+  border: none;
+  resize: vertical;
+  width: 100%;
+  max-height: 70px;
+  height: 50px;
+  font-size: 12.5px;
+  color: #777;
+}
+.priorcont {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 10px 20px;
+  grid-gap: 10px;
+}
+.priorcont button {
+  padding: 7px 10px;
+  background: none;
+  box-shadow: none;
+  border: 1px solid #aaa;
+  color: #aaa;
+  font-size: 12px;
+}
+.priorcont > div {
+  display: flex;
+  justify-content:flex-start;
+  grid-gap: 20px;
+}
+.priorcont h5 {
+  color: #555;
+}
+.priorcont button.lowprior:hover {
+  border: 1px solid #35b6fa;
+  background: #35b6fa40;
+  color: var(--color);
+}
+.priorcont button.highprior:hover {
+  border: 1px solid #ff0051;
+  background: #ff005140;
+  color: #ff0051;
+}
+.updatescont {
+  padding: 20px;
+  height: 360px;
+  width: 100%;
+  overflow-y: scroll;
+}
+.postcont {
+  padding: 20px 10px;
+  width: 100%;
+}
+.postcont textarea {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 90px;
+  max-height: 90px;
+  resize: none;
+  margin-bottom: 5px;
+}
+.updatebox {
+  width: 100%;
+  border-radius: 10px;
+  background: var(--light);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.updatebox > div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-gap: 15px;
+}
+.updatebox > div h5 {
+  color: #555;
+}
+.updatebox > div h6 {
+  color: #aaa;
+  font-weight: 500;
+}
+.updatebox > div > small {
+  font-size: 11px;
+  color: #aaa;
+  cursor: pointer;
+}
+.updatebox > div > small:hover {
+  text-decoration: underline;
+}
+.updatebox textarea {
+  font-size: 13px;
+  color: #333;
+  margin: 10px 0;
+  margin-bottom: -5px;
+  background: none;
+  height: auto;
+  min-height: auto;
+  resize: none;
+  cursor: auto;
+  transition: all 0.2s;
+}
+
+
+
 
 
 

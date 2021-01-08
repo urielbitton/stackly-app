@@ -32,9 +32,9 @@ function Home() {
           <div className="dashgraph dashbox">
             <Charts type="bar-chart" /> 
           </div>
-          <div className="dashbox tasksbox">
+          <div className="dashbox hometasksbox">
             <h5>Latest Tasks</h5>
-            <div className="taskhead">
+            <div className="hometaskhead">
               <h6>Task</h6>
               <h6>Client</h6>
               <h6>Stage</h6>
@@ -42,7 +42,7 @@ function Home() {
               <h6>Status</h6>
               <h6>Details</h6>
             </div>
-            <div className="taskrow">
+            <div className="hometaskrow">
               <h6>Redesign Website</h6>
               <h6>Cindy Bitton</h6>
               <h6>Development</h6>

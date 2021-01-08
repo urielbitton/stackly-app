@@ -21,7 +21,7 @@ function ProjectCard(props) {
       </div>
       <div className="progresscont">
         <div className="progtitles">
-          <h6>Progess</h6>
+          <h6>Progress</h6>
           <h6>{progress}%</h6>
         </div>
         <div className="progtube">
