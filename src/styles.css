@@ -758,6 +758,7 @@ nav {
   z-index: 10;
   background: #fff;
   font-size: 16px;
+  border-radius: 100%
 }
 .updatebar {
   position: absolute;
@@ -804,6 +805,9 @@ nav {
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   grid-gap: 40px 20px;
   grid-column: 1/-2;
+}
+.projectspage .pagegrid, .clientspage .pagegrid {
+  display: block;
 }
 .pagetitles {
   display: flex;
@@ -1032,6 +1036,9 @@ nav {
 .darkapp .pagetitles h4 {
   color: #aaa;
 }
+.darkapp .updateitem h4 i {
+  background: var(--dark)
+}
 
 .addprojectcont {
   position: fixed;
@@ -1188,6 +1195,10 @@ nav {
   flex-direction: column;
   border-radius: 10px;
   padding: 20px;
+  height: 100vh;
+}
+.projectspage .pageside {
+  background: #fff;
 }
 .oneprojectpage .pageside {
   height: 90vh;

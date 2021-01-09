@@ -30,9 +30,6 @@ function Clients(props) {
           </div>
           {clientsrow} 
         </div>
-        <div className="pageside">
-          <h4>Recent Acitivity</h4>
-        </div>
       </div>
 
       <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>

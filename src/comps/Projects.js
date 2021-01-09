@@ -28,9 +28,6 @@ function Projects(props) {
           </div>
           {projectsrow} 
         </div>
-        <div className="pageside">
-          <h4>Recent Acitivity</h4>
-        </div>
       </div>
       <div className="addcover" style={{display: showadd?"block":"none"}}></div>
       
