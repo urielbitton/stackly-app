@@ -1852,6 +1852,154 @@ button.highprior:hover {
   font-weight: 500;
 }
 
+.loginpage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logincover {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 30px 80px;
+}
+.loginbgcover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(https://i.imgur.com/tCdCBuh.jpg);
+  background-position: center;
+  background-size: cover;
+  
+}
+.loginbgcover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 28, 252,0.4);
+}
+.logincover h3 {
+  font-size: 60px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.logincover h3 span {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.logincover h6 {
+  color: #aaa;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+.loginbtndiv {
+  position: relative;
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  grid-gap: 30px;
+}
+.loginbtndiv .glogin {
+  background: #DB4437;
+}
+.loginbtndiv .fblogin {
+  background: #415dae;
+}
+.loginbtndiv button:hover {
+  box-shadow: none;
+}
+.logincoverinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(150deg, rgba(16,0,133,1) 0%, rgba(0,98,241,1) 100%);
+  opacity: 0.7;
+  filter: grayscale(80%);
+}
+.logincont {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  grid-gap: 10px;
+  padding: 50px 80px;
+  overflow: hidden;
+}
+.mainlogicon {
+  font-size: 25px;
+  color: var(--color);
+}
+.logincont h3 {
+  color: #555;
+  font-size: 24px;
+}
+.logincont form label {
+  position: relative;
+  margin: 8px auto;
+}
+.logincont form label h6 {
+  margin-bottom: 5px;
+}
+.logincont form {
+  position: relative;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.logincont form label input {
+  width: 400px;
+} 
+.logincont button {
+  width: 400px;
+  margin-top: 10px;
+}
+.logincont a {
+  color: var(--color);
+}
+.logincont a:hover {
+  text-decoration: underline;
+}
+.logincont small {
+  margin-top: 20px;
+}
+.logincont small span {
+  color: var(--color);
+  cursor: pointer;
+}
+.logincont small span:hover {
+  text-decoration: underline;
+}
+.loginiso {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  right: 0;
+}
+.logincont .logocont {
+  position: absolute;
+  top: 25px;
+  right: 50px;
+}
 
 
 
@@ -1883,10 +2031,41 @@ button.highprior:hover {
 
 
 
+@media (max-width: 1000px) {
+  .appcontainer {
+    grid-template-columns: 60px auto;
+  }
+  .loginpage {
+    flex-direction: column;
+  }
+  .logincont {
+    overflow-y: scroll;
+  }
+  .logincont .logocont {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    left: auto;
+    margin: 0;
+  }
 
-
-
-
+}
+@media (max-width:600px) {
+  .logincont form label input, .logincont form, .logincont button {
+    width: 300px;
+  }
+  .logincont {
+    align-items: center;
+    text-align: center;
+  }
+  .logincover {
+    display: none;
+  }  
+  .logincont .logocont {
+    right: auto;
+    left: 40px;
+  }
+}
 
 
 

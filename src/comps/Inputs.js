@@ -5,7 +5,7 @@ export function Inputs(props) {
     <label className="labelinput">
       <h6>{props.title}</h6>
       <i className={props.iconclass}></i>
-      <input style={{paddingR: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onchange(e.target.value)}/>
+      <input style={{paddingR: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onChange(e)}/>
     </label>
   )   
 }  
@@ -15,7 +15,7 @@ export function Switchs(props) {
     <div className="switchdiv"> 
     <h6>{props.title}</h6>    
     <label class="form-switch">
-        <input type="checkbox" onChange={(e) => props.onchange(e.target.checked)} checked={props.checked}/>
+        <input type="checkbox" onChange={(e) => props.onChange(e.target.checked)} checked={props.checked}/>
         <i></i> 
     </label>  
     </div>

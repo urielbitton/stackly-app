@@ -1,13 +1,25 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Calendars from './Calendars'
 import Charts from "./Chart"
 import {StoreContext} from './StoreContext'
+import {db} from './Fire'
+import firebase from 'firebase'
 
 function Home() {
 
   const {projects, clients} = useContext(StoreContext)
 
+  const [userlist, setUserList] = useState([])
   const activetasks = projects.reduce((a,b) => a+b.tasksnum,0)
+  const user = firebase.auth().currentUser
+
+
+  useEffect(() => {
+    /*db.collection('users').doc(user.uid).get().then(doc => {
+      const userlist = doc.data()
+      setUserList(userlist)
+    })*/
+  },[]) 
 
   return (
     <div className="home apppage">
@@ -20,7 +32,7 @@ function Home() {
         <div className="homemain">
           <div className="banner homebanner">
             <div className="bannertext">
-              <h4>Good Morning, Uriel</h4>
+              <h4>Good Morning, {user.displayName.split(' ')[0]}</h4>
               <h6>Check your recent notifications and tasks</h6>
               <div className="quicknotifs">
                 <small><i className="fal fa-bell"></i>3 Notifications</small>
