@@ -14,6 +14,7 @@ html, body {
   --light2: #35b6fa25;
   --mainshadow: rgba(48,210,252,0.4);
   --dark: #0d1a25;
+  --red: #ff0051;
 }  
 
 .spacer {
@@ -79,9 +80,12 @@ button i, a i {
 input {
   border: none;
   padding: 13px 10px;
-  transition: all 0.3s;
   border-radius: 5px;
   border: 1px solid #ddd;
+} 
+input:focus, textarea:focus {
+  border: 1px solid var(--color);
+  box-shadow: 0px 0px 11px 0px rgba(53,182,250,0.14);
 }
 input[type="color"] {
   height: 45px;
@@ -94,6 +98,7 @@ a {
 }
 input, textarea, select {
   outline: none;
+  transition: all 0.3s;
 }
 textarea {
   font-family: inherit;
@@ -169,7 +174,7 @@ hr {
   overflow: hidden;
   border-radius: 20px 0 0 20px;
 }
-.profcont {
+.sidebar .profcont {
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -183,7 +188,7 @@ hr {
   border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: all 0.2s;
 }
-.profcont img {
+.sidebar .profcont img {
   height: 70px;
   width: 70px;
   border-radius: 100%;
@@ -198,7 +203,7 @@ hr {
 .mainprof:hover {
   background: rgba(255,255,255,0.1);
 }
-.profcont h4 {
+.sidebar .profcont h4 {
   font-size: 18px;
   color: #fff;
 }
@@ -212,7 +217,7 @@ hr {
   color: #fff;
   transition: all 0.2s;
 }
-.profcont h6 {
+.sidebar .profcont h6 {
   color: #aaa;
   font-weight: 500;
   font-size: 11px;
@@ -238,7 +243,7 @@ hr {
 .accountlinks a h6 {
   width: 180px;
 }
-.menu {
+.sidebar .menu {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -247,7 +252,7 @@ hr {
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.menu > a {
+.sidebar .menu > a {
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -256,16 +261,16 @@ hr {
   transition: all 0.2s;
   cursor: pointer;
 }
-.menu > a:hover {
+.sidebar .menu > a:hover {
   background: rgba(255,255,255,0.1);
-}
-.menu > a h6 {
+} 
+.sidebar .menu > a h6 {
   font-size: 15px;
   color: #ddd;
   width: 120px;
   font-weight: 500;
 }
-.menu > a h6 i {
+.sidebar .menu > a h6 i {
   margin-right: 12px;
   font-size: 14px;
 }
@@ -999,7 +1004,7 @@ nav {
 .form-switch input:checked+i::before{transform:translate3d(18px,2px,0) scale3d(0,0,0)}
 .form-switch input:checked+i::after{transform:translate3d(22px,2px,0)} 
 
-.darkapp nav {
+.darkapp nav, .darkapp .slidemenu {
   background: var(--bg);
 }
 .darkapp .logocont h5 {
@@ -1015,30 +1020,32 @@ nav {
 .darkapp .boxmenu:hover {
   background: #10283a;
 }
-.darkapp .slidemenu {
-  background: var(--bg)
-}
 .darkapp .apppage {
   background: #020b13;
 }
-.darkapp .dashbox, .darkapp .banner {
+.darkapp .dashbox, .darkapp .banner, .darkapp .projbox, .darkapp .settingspagecont,
+.darkapp .updateitem h4 i, .darkapp .settingsnav .menu a:hover, .darkapp .settingsnav .menu .activesettlink,
+.darkapp input {
   background: var(--dark);
 }
-.darkapp .projbox {
-  background: var(--dark);
-}
-.darkapp .projbox h4 {
+.darkapp .projbox h4, .darkapp .pagetitles h4, .darkapp .fc-col-header-cell a, 
+.darkapp .fc-toolbar-title, .darkapp .settingsnav h2 {
   color: #aaa;
 }
 .darkapp .projbox h6 {
   color: #999;
 }
-.darkapp .pagetitles h4 {
-  color: #aaa;
+.darkapp .fc-daygrid-day-number {
+  color: var(--color)
 }
-.darkapp .updateitem h4 i {
-  background: var(--dark)
+.darkapp input, .darkapp input::placeholder {
+  border-color: #555;
+  color: #555;
 }
+.darkapp label h6 {
+  color: #555;
+}
+
 
 .addprojectcont {
   position: fixed;
@@ -1470,7 +1477,7 @@ h4.noactivity {
 }
 .taskboxopts i {
   color: #aaa;
-  opacity: 0;
+  opacity: 0; 
   transition: all 0.2s;
 }
 .taskrow:hover .taskboxopts i {
@@ -1485,8 +1492,9 @@ h4.noactivity {
   width: 500px;
   background: #fff;
   z-index: 900;
-  box-shadow: -5px 0px 20px -11px rgba(0,0,0,0.1);
+  box-shadow: -10px 0px 20px -5px rgba(0,0,0,0.15);
   transition: all 0.3s;
+  border-radius: 10px 0 0 10px;
 }
 .tasksidecont .titlecont {
   padding: 20px;
@@ -1539,7 +1547,7 @@ h4.noactivity {
   padding: 10px 20px;
   grid-gap: 10px;
 }
-.priorcont button {
+button.priorbtn {
   padding: 7px 10px;
   background: none;
   box-shadow: none;
@@ -1555,15 +1563,15 @@ h4.noactivity {
 .priorcont h5 {
   color: #555;
 }
-.priorcont button.lowprior:hover {
+button.lowprior:hover {
   border: 1px solid #35b6fa;
   background: #35b6fa40;
   color: var(--color);
 }
-.priorcont button.highprior:hover {
-  border: 1px solid #ff0051;
+button.highprior:hover {
+  border: 1px solid var(--red);
   background: #ff005140;
-  color: #ff0051;
+  color: var(--red);
 }
 .updatescont {
   padding: 20px;
@@ -1626,6 +1634,240 @@ h4.noactivity {
   cursor: auto;
   transition: all 0.2s;
 }
+.addpriorcont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 20px;
+}
+.addprojectcont .content .addpriorcont button {
+  width: auto;
+  font-size: 12px;
+  padding: 7px 10px;
+}
+.addprojectcont .content .addpriorcont button i {
+  margin-left: 0;
+  font-size: 13px;
+}
+.addprojectcont .content textarea {
+  width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-size: 13px;
+  height: 100px;
+  min-height: 60px;
+  resize: vertical;
+}
+.addprojectcont .content textarea:focus {
+  border-color: var(--color);
+}
+
+.notifscont {
+  position: fixed;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  max-width: 400px;
+  text-align: center;
+  z-index: -1;
+  margin: auto;
+}
+.notifscont .notifs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0d1a25cc;
+  padding: 15px;
+  border-radius: 10px;
+  backdrop-filter: blur(3px);
+  top: 20px;
+  opacity: 0;
+  transition: opacity 0.2s, top 0.4s;
+}
+.notifscont .notifs > div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.notifscont .notifs i {
+  margin-right: 15px;
+  color: #fff;
+  cursor: pointer;
+}
+.notifscont .notifs p {
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.settingspage {
+  display: grid;
+  grid-template-columns: 250px auto;
+  grid-gap: 20px;
+}
+.settingspagecont {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+  padding: 30px 40px;
+}
+.settingsnav {
+  background: none;
+  padding: 0px 30px;
+}
+.settingsnav .menu {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.settingsnav .menu a {
+  color: #555;
+  font-weight: 600;
+  padding: 10px 20px;
+  padding-left: 10px;
+  font-size: 15px;
+  transition: all 0.2s;
+  border-radius: 5px;
+} 
+.settingsnav .menu a:hover, .settingsnav .menu .activesettlink {
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.settingsnav .menu .activesettlink {
+  color: var(--color);
+}
+.settingsnav .menu hr {
+  width: 100%;
+  height: 1px;
+  background: #e1e1e1;
+  margin: 10px 0;
+}
+.settingspagecont h2 {
+  font-size: 25px;
+  color:#333;
+}
+.settingsgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+  grid-gap: 40px;
+  margin-top: 50px;
+}
+.settingsgrid input {
+  width: 300px;
+}
+.settingsgrid label h6 {
+  margin-bottom: 5px;
+  color: #222;
+  font-size: 12px;
+}
+.settingsgrid hr {
+  width: 100%;
+  grid-column: 1/-1;
+  height: 1px;
+  background: #eee;
+}
+.settingsgrid .profcont {
+  padding: 20px 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.settingsgrid .profcont img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  margin-right: 20px;
+}
+.settingsgrid .profcont button {
+  margin: auto 10px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  color: #777;
+}
+.settingsgrid .profcont button:hover {
+  filter: brightness(100%);
+  border: 1px solid var(--color);
+  color: var(--color);
+  box-shadow: none;
+}
+.settingsgrid .profcont button:nth-of-type(2):hover {
+  color: var(--red);
+  border-color: var(--red)
+}
+.settingsgrid .profcont button.saveimgbtn {
+  background: var(--color);
+  color: #fff;
+}
+.settingspage .settingsbtn {
+  width: 130px;
+  grid-column: 1/-1;
+}
+.removeacccont {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.removeacccont h6 {
+  color: #111;
+  font-size: 13px;
+}
+.removeacccont small {
+  color: #aaa;
+  font-size: 13px;
+}
+.removeacccont button {
+  background: var(--red);
+}
+.switchgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(400px,1fr));
+  grid-gap: 30px 40px;
+}
+.switchgrid > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+  border-radius: 10px;
+  border: 1px solid #e1e1e1;
+  padding: 10px 15px;
+  transition: all 0.2s;
+}
+.switchgrid > div:hover {
+  background: var(--light);
+  border-color: var(--color);
+}
+.switchgrid > h5 {
+  font-size: 15px;
+  color: #aaa;
+  font-weight: 500;
+  grid-column: 1/-1;
+}
+.switchgrid > div h6 {
+  font-size: 12.5px;
+  color: #111;
+  font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

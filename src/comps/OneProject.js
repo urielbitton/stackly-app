@@ -1,17 +1,20 @@
 import React, {useContext, useState} from 'react'
 import Circle from './Circle'
+import { Inputs } from './Inputs'
 import {StoreContext} from './StoreContext'
 
-function OneProject({proj}) {
+function OneProject(props) { 
 
-  const {projects} = useContext(StoreContext)
-  const {id, title, client, progress, tasksnum, tasks, daysleft, color, shadow, activity} = proj
+  const {projects, setNotifs} = useContext(StoreContext)
+  const {id, title, client, progress, tasksnum, tasks, daysleft, color, shadow, activity} = props.proj
 
   const [slide, setSlide] = useState(false)
   const [name, setName] = useState('')
   const [date, setDate] = useState('')
+  const [status, setStatus] = useState('')
   const [updates, setUpdates] = useState([])
   const [update, setUpdate] = useState(0)
+  const [showadd, setShowAdd] = useState(false)
 
   const recentactivity = activity && activity.map(el => {
     return <div className="activitydiv">
@@ -60,6 +63,7 @@ function OneProject({proj}) {
     setName(el.name)
     setDate(el.date)
     setUpdates(el.updates)
+    setStatus(el.status)
   }
   function editUpdateText(el) {
     el.edit = !el.edit
@@ -74,6 +78,10 @@ function OneProject({proj}) {
     updates.splice(itemindex,1)
     setUpdate(prev =>prev+1)
   }
+  function addTask() {
+    props.shownotif(4000) 
+    setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
+  }
  
   return (
     <div className="oneprojectpage apppage">
@@ -81,7 +89,7 @@ function OneProject({proj}) {
         <div className="pagemaingrid oneprojectcont">
           <div className="projecttoolbar">
             <h4><i className="far fa-calendar-alt"></i> Jan 15 2020</h4>
-            <button>Add Task</button>
+            <button onClick={() => setShowAdd(!showadd)}>Add Task</button>
           </div>
           <div className="projectcontent">
             <div className="timelinecont">
@@ -130,7 +138,7 @@ function OneProject({proj}) {
           <h2>{name}</h2>
           <h6>Client: <span>{client}</span></h6>
           <h6>Date Due: <span>{date}</span></h6>
-          <h6>Status: <span>{title}</span></h6>
+          <h6>Status: <span>{status}</span></h6>
           <h6>Notes</h6>
           <textarea placeholder="add notes to this task..."/>
         </div>
@@ -138,8 +146,8 @@ function OneProject({proj}) {
         <div className="priorcont">
           <h5>Task Priority</h5>
           <div>
-            <button className="lowprior"><i className="fas fa-star"></i>Low Priority</button>
-            <button className="highprior"><i className="fas fa-star"></i>High Priority</button>
+            <button className="lowprior priorbtn"><i className="fas fa-star"></i>Low Priority</button>
+            <button className="highprior priorbtn"><i className="fas fa-star"></i>High Priority</button>
           </div>
         </div>
         <hr/>
@@ -151,7 +159,30 @@ function OneProject({proj}) {
           <textarea placeholder="Add an update..."/>
           <button>Add Update</button>
         </div>
-      </div>
+      </div>  
+
+      <div className="addcover" style={{display: showadd?"block":"none"}}></div>
+      <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>
+        <div className="addsection">
+          <a className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></a>
+          <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Task</h4></div>
+          <div className="content hidescroll">
+            <Inputs title="Task title" placeholder="E.g. Install Plugins"/>
+            <Inputs title="Status" placeholder="E.g. Completed"/>
+            <Inputs title="Date Due" type="date"/>
+            <div className="addpriorcont">
+              <button className="lowprior priorbtn"><i className="fas fa-star"></i>Low Priority</button>
+              <button className="highprior priorbtn"><i className="fas fa-star"></i>High Priority</button>
+            </div>
+            <label> 
+              <h6>Notes</h6>
+              <textarea placeholder="add notes to this task..."/>
+            </label>
+          </div>
+          <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className="far fa-plus"></i>Add</button>
+        </div>
+      </div> 
+
     </div>
   )
 }

@@ -70,11 +70,13 @@ const StoreContextProvider = (props) => {
       projectids: [],
     }
   ]) 
-
+  const [notifs, setNotifs] = useState([
+    {} 
+  ]) 
 
 
   return (
-    <StoreContext.Provider value={{projects, clients}}>
+    <StoreContext.Provider value={{projects, clients, notifs, setNotifs}}>
       {props.children}
     </StoreContext.Provider>
   )

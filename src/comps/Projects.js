@@ -27,7 +27,7 @@ function Projects(props) {
             </div>
           </div>
           {projectsrow} 
-        </div>
+        </div> 
       </div>
       <div className="addcover" style={{display: showadd?"block":"none"}}></div>
       

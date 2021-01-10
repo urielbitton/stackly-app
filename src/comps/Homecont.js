@@ -9,45 +9,50 @@ import Settings from './Settings'
 import OneProject from './OneProject'
 import OneClient from './OneClient'
 import {StoreContext} from './StoreContext'
+import Notifs from './Notifs'
 
 function Homecont(props) {
   
   const {projects, clients} = useContext(StoreContext)
 
+  const [update, setUpdate] = useState(0)
+  const [time, setTime] = useState(3000)
+
   const oneproject = projects && projects.map(proj => {
     return <Route exact path={"/projects"+proj.id}> 
-      <OneProject proj={proj}/>
+      <OneProject proj={proj} shownotif={(time) => setUpdate(prev => prev+1, setTime(time))}/>
     </Route>
   }) 
   const oneclient = clients && clients.map(cli => {
     return <Route path={"/clients"+cli.id}> 
       <OneClient cli={cli}/>
     </Route>
-  })
+  }) 
 
   return ( 
     <div className="homecont">
       <Navbar darkmode={props.darkmode}/>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/projects"> 
-              <Projects />
-            </Route>
-            <Route path="/clients"> 
-              <Clients />
-            </Route>
-            <Route path="/mytasks"> 
-              <MyTasks />
-            </Route>
-            <Route path="/settings"> 
-              <Settings />
-            </Route>
-            {oneproject}
-            {oneclient}
-          </Switch>
-      
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/projects"> 
+            <Projects />
+          </Route>
+          <Route path="/clients"> 
+            <Clients />
+          </Route>
+          <Route path="/mytasks"> 
+            <MyTasks />
+          </Route>
+          <Route path="/settings"> 
+            <Settings shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} />
+          </Route>
+          {oneproject}
+          {oneclient}
+        </Switch>
+
+        <Notifs update={update} time={time}/>
     </div> 
   )
 } 
