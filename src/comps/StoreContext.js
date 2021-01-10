@@ -12,7 +12,7 @@ const StoreContextProvider = (props) => {
       progress: 60,
       tasksnum: 8,
       daysleft: 7,
-      color: '#35b6fa',
+      color: '#056dff',
       shadow: 'rgba(48,210,252,0.4)', 
       tasks: [ 
         {name:"Landing Page",date: "Jan 06 2021",deadline: "Jan 06 2021", color:'default', status:'Completed', priority:'low'},
