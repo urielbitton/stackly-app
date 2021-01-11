@@ -37,7 +37,7 @@ function Homecont(props) {
             <Home />
           </Route>
           <Route path="/projects"> 
-            <Projects />
+            <Projects shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} />
           </Route>
           <Route path="/clients"> 
             <Clients />

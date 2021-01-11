@@ -26,7 +26,7 @@ function Navbar(props) {
           <i className="far fa-search"></i>
           <div className="slidemenu">
             <div className="searchdiv">
-              <i class="far fa-search"></i><Inputs />
+              <i class="far fa-search"></i><Inputs placeholder="Search..."/>
             </div>
           </div>
         </div> 
@@ -47,7 +47,7 @@ function Navbar(props) {
         <div className="optionsbox boxmenu">
           <i className="fas fa-th"></i>
           <div className="slidemenu"> 
-            <a href="#"><h6><i class="fas fa-moon"></i>Dark Mode</h6><Switchs onchange={(val) => {props.darkmode(val);setDarkmode(!darkmode)}} checked={darkmode}/></a>
+            <a href="#"><h6><i class="fas fa-moon"></i>Dark Mode</h6><Switchs onChange={(val) => {props.darkmode(val);setDarkmode(!darkmode)}} checked={darkmode}/></a>
             <Link to="/support"><h6><i class="fas fa-question-circle"></i>Support</h6></Link>
           </div>
         </div>

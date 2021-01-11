@@ -15,7 +15,7 @@ function Charts(props) {
             label: "Clients",
             borderColor: "#fafafa",
             fill: true,
-            backgroundColor: "#35b6fa"
+            backgroundColor: "#056dff"
           }, { 
             data: [1,5,7,8,4,3,4,5,6,9,3,4],
             label: "Tasks",

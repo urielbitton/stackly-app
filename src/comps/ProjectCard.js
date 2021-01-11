@@ -3,17 +3,17 @@ import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
 
 function ProjectCard(props) {
 
-  const {id, title, client, tasksnum, daysleft, progress, color, shadow} = props.proj
+  const {id, name, client, tasksnum, daysleft, progress, color, shadow, icon} = props.proj
 
   return (
     <Link exact to={"/projects"+id}>
     <div className="projbox">
       <i class="far fa-ellipsis-v" onClick={(e) => e.preventDefault()}></i>
       <div className="iconcont" style={{boxShadow: `0 5px 10px ${shadow}`, background: color}}>
-        <i class="far fa-paint-brush-alt"></i>
+        <i className={`far ${icon}`}></i>
       </div> 
       <div>
-        <h4>{title}</h4>
+        <h4>{name}</h4>
         <h6>{client}</h6>
       </div>
       <div className="clientcircle" style={{background: color}}>
