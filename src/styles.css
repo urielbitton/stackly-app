@@ -2098,8 +2098,6 @@ details[open] summary ~ * {
 
 
 
-
-
 @media (max-width: 1000px) {
   .appcontainer {
     grid-template-columns: 60px auto;

@@ -5,7 +5,7 @@ import {StoreContext} from './StoreContext'
 
 function OneProject(props) { 
 
-  const {projects, setNotifs} = useContext(StoreContext)
+  const {setNotifs} = useContext(StoreContext)
   const {id, title, client, progress, tasksnum, tasks, daysleft, color, shadow, activity} = props.proj
 
   const [slide, setSlide] = useState(false)
@@ -89,16 +89,15 @@ function OneProject(props) {
         <div className="pagemaingrid oneprojectcont">
           <div className="projecttoolbar">
             <h4><i className="far fa-calendar-alt"></i> Jan 15 2020</h4>
+            <h3>Tasks</h3>
             <button onClick={() => setShowAdd(!showadd)}>Add Task</button>
           </div>
           <div className="projectcontent">
             <div className="timelinecont">
               <hr/>
-              {
-                tasks && tasks.map(el => {
+                {tasks && tasks.map(el => {
                   return <div className="timecircle"></div>
-                })
-              }
+                })}
             </div>
             {alltasks}
           </div>

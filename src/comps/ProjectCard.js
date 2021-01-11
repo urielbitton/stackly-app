@@ -5,8 +5,8 @@ function ProjectCard(props) {
 
   const {id, name, client, tasksnum, daysleft, progress, color, shadow, icon} = props.proj
 
-  return (
-    <Link exact to={"/projects"+id}>
+  return (  
+    <Link to={`/project/${id}`}>
     <div className="projbox">
       <i class="far fa-ellipsis-v" onClick={(e) => e.preventDefault()}></i>
       <div className="iconcont" style={{boxShadow: `0 5px 10px ${shadow}`, background: color}}>

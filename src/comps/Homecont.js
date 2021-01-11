@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { BrowserRouter as Router,Switch,Route,Link, useLocation} from "react-router-dom"
 import Navbar from './Navbar'
 import Home from './Home'
@@ -10,24 +10,37 @@ import OneProject from './OneProject'
 import OneClient from './OneClient'
 import {StoreContext} from './StoreContext'
 import Notifs from './Notifs'
+import firebase from 'firebase'
+import {db} from './Fire'
 
 function Homecont(props) {
   
   const {projects, clients} = useContext(StoreContext)
 
+  const [userlist, setUserList] = useState([])
+  const [projlist, setProjList] = useState([])
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
+  const user = firebase.auth().currentUser
 
-  const oneproject = projects && projects.map(proj => {
-    return <Route exact path={"/projects"+proj.id}> 
+  const oneproject = projlist && projlist.map(proj => {
+    return <Route path={`/project/${proj.id}`}> 
       <OneProject proj={proj} shownotif={(time) => setUpdate(prev => prev+1, setTime(time))}/>
     </Route>
   }) 
   const oneclient = clients && clients.map(cli => {
-    return <Route path={"/clients"+cli.id}> 
+    return <Route path={`/clients/${cli.id}`}> 
       <OneClient cli={cli}/>
     </Route>
   }) 
+
+  useEffect(() => {
+    db.collection('users').doc(user.uid).onSnapshot(doc => {
+      const userlist = doc.data()
+      setUserList(userlist)
+      setProjList(userlist.projects)
+    })
+  },[]) 
 
   return ( 
     <div className="homecont">

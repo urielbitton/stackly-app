@@ -24,34 +24,6 @@ const StoreContextProvider = (props) => {
         {person:'Hank Xavier',task:'Requested homepage redesign',time:'1 hour'},
       ],
       active: true,
-    },
-    {
-      id: 2,
-      title: 'Law Service',
-      client: 'Zerdoun law',
-      progress: 80,
-      tasksnum: 12,
-      daysleft: 5,
-      color: '#bdeb34',
-      shadow: 'rgba(189, 235, 52,0.4)',
-      activity: [
-        {person:'Cindy Bitton',task:'Reviewed Documents',time:'5 min'},
-        {person:'Cindy Bitton',task:'Created appeal',time:'3 hours'},
-        {person:'Jake Lander',task:'Sent documents',time:'6 hours'},
-      ],
-      active: true,
-    },
-    {
-      id: 3,
-      title: 'Interior Design',
-      client: 'John Hopley',
-      progress: 40,
-      tasksnum: 4,
-      daysleft: 20,
-      color: '#ff0a64',
-      shadow: 'rgba(255, 10, 100,0.4)',
-      activity: [],
-      active: true,
     }
   ])
   const [clients] = useState([

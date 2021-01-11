@@ -16,8 +16,6 @@ function App() {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [hasAccount, setHasAccount] = useState(false)
-  const [monthrev, setMonthRev] = useState([])
-  const [revtotal, setRevTotal] = useState(0)
 
   const clearInputs = () => {
     setEmail('')
@@ -63,90 +61,33 @@ function App() {
         user.updateProfile({
           displayName: name
         })
-        const invoices = []
-        const estimates = []
+        const projects = []
         const clients = []
         const updates = []
-        const reminders = []
-        const trash = []
-        const revenues = []
         const userinfo = {
           fullname: name,
           email: user.email,
           phone: "",
-          fax: "",
-          address: "",
-          postal: "",
           city: "",
-          provstate: "",
           company: "", 
           jobtitle: "",
-          website:  "",
-          regnumber: "",
           companylogo: "",
           country: "",
-          profimg: "",
-          settings: {
-            general: {
-              darkmode: false,
-              widemode: false,
-              monthbar: true,
-              track_revenue: true,
-              track_client_spending: true,
-              reminders: true,
-              pinned: true,
-              goals: 10000,
-              email_notifs: true,
-              revenue_notifs: true,
-              show_updates: true,
-              enable_goals: true,
-            },
-            invoices: {
-              taxrate1: 0.09975,
-              taxrate2: 0.05,
-              taxname1: 'TPS',
-              taxname2: 'TVQ',
-              taxnum1: '', 
-              taxnum2: '',
-              currency: "CAD",
-              show_myname: true,
-              show_address: true,
-              show_city: true,
-              show_postal: true,
-              show_phone: true,
-              show_fax: true,
-              show_country: false,
-              show_provstate: false,
-              show_logo: true,
-              show_company_name: true,
-              show_cli_address: true,
-              show_cli_city: true,
-              show_cli_postal: true,
-              show_cli_phone: true,
-              show_cli_provstate: true,
-              show_cli_country: false,
-              show_currency: true,
-              show_invdate: true,
-              show_invnum: true, 
-              show_extraitems: false,
-              show_taxes: true,
-              enable_taxes: true,
-              notes: ''
-            },
-            theme: {
-              maintheme: 'Purple'
-            }
-          } 
-        }//end of userinfo object
+          profimg: ""
+        }
+        const settings = {
+          general: {
+            darkmode: false,
+            widemode: false,
+          },
+          projects: {}
+        }
         db.collection('users').doc(user.uid).set({
-          invoices,
-          estimates,
-          clients,
+          projects,
+          clients, 
           userinfo,
-          reminders,
           updates,
-          trash,
-          revenues,
+          settings,
           uid: user.uid
         })
       }//if (user)

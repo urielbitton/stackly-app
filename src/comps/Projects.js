@@ -17,6 +17,7 @@ function Projects(props) {
   const [name, setName] = useState('')
   const [client, setClient] = useState([])
   const [tasks, setTasks] = useState([])
+  const [activity, setActivity] = useState([])
   const [daysleft, setDaysLeft] = useState('')
   const [category, setCategory] =  useState('Design')
   const [active, setActive] = useState(true)
@@ -45,6 +46,7 @@ function Projects(props) {
         name,
         client, 
         tasks,
+        activity,
         daysleft,
         category, 
         active,
@@ -73,12 +75,14 @@ function Projects(props) {
   }
 
   useEffect(() => {
-    db.collection('users').doc(user.uid).get().then(doc => {
+    db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
       setProjList(userlist.projects)
+      //setTasks(userlist.projects.tasks)
+      //setActivity(userlist.projects.activity)
     })
-  },[])
+  },[]) 
 
   return (
     <div className="projectspage apppage">
@@ -88,9 +92,9 @@ function Projects(props) {
             <h4>Projects</h4>
             <div className="actions">
               <div><i className="far fa-sliders-h"></i></div>
-              <Link to="/projects/addproject"><button onClick={() => setShowAdd(!showadd)}><i className="far fa-plus"></i>Create Project</button></Link>
+              <button onClick={() => setShowAdd(!showadd)}><i className="far fa-plus"></i>Create Project</button>
             </div>
-          </div>
+          </div> 
           {projectsrow} 
         </div> 
       </div>
