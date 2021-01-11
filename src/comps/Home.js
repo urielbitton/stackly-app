@@ -60,7 +60,7 @@ function Home() {
               <h6>Development</h6>
               <h6>Jan 09 2021</h6>
               <h6>Not Done</h6>
-              <h6><i class="far fa-ellipsis-h"></i></h6>
+              <h6><i className="far fa-ellipsis-h"></i></h6>
             </div>
           </div>
         </div>
@@ -91,11 +91,11 @@ function Home() {
             <h5>Updates</h5>
             <hr className="updatebar"/>
             <div className="updateitem">
-              <h4><i class="fas fa-circle-notch"></i>Project Web Design is marked complete</h4>
+              <h4><i className="fas fa-circle-notch"></i>Project Web Design is marked complete</h4>
               <div className="view"><i className="far fa-angle-right"></i></div>
             </div>
             <div className="updateitem">
-              <h4><i class="fas fa-circle-notch"></i>Marc has sent you a new task</h4>
+              <h4><i className="fas fa-circle-notch"></i>Marc has sent you a new task</h4>
               <div className="view"><i className="far fa-angle-right"></i></div>
             </div>
           </div>

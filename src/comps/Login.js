@@ -15,14 +15,14 @@ function Login(props) {
         <h6>Create an account to get started.</h6>
         <div className="spacer"></div>
         <div className="loginbtndiv">
-          <button class="fblogin"><i class="fab fa-facebook-f"></i>Login with facebook</button>
-          <button class="glogin"><i class="fab fa-google"></i>Login with Google</button>
+          <button className="fblogin"><i className="fab fa-facebook-f"></i>Login with facebook</button>
+          <button className="glogin"><i className="fab fa-google"></i>Login with Google</button>
         </div>
       </div>
       <div className="logincont"> 
         <div className="spacerl"></div>
         <h3 className="logocont"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><span>stackly</span></h3>
-        <i class="fas fa-user-alt mainlogicon"></i>
+        <i className="fas fa-user-alt mainlogicon"></i>
         <h3>{hasAccount?"Login":"Register"}</h3> 
         <form onSubmit={(e) => e.preventDefault()}>  
           { 

@@ -18,15 +18,15 @@ function Navbar(props) {
         <div className="newbox boxmenu">
           <i className="far fa-plus"></i>
           <div className="slidemenu"> 
-            <Link to="/projects/addproject"><h6><i class="fal fa-project-diagram"></i>Create Project</h6></Link>
-            <Link to="/clients/addclient"><h6><i class="fal fa-users"></i>Create Client</h6></Link>
+            <Link to="/projects/addproject"><h6><i className="fal fa-project-diagram"></i>Create Project</h6></Link>
+            <Link to="/clients/addclient"><h6><i className="fal fa-users"></i>Create Client</h6></Link>
           </div>
         </div>
         <div className="searchbox boxmenu">
           <i className="far fa-search"></i>
           <div className="slidemenu">
             <div className="searchdiv">
-              <i class="far fa-search"></i><Inputs placeholder="Search..."/>
+              <i className="far fa-search"></i><Inputs placeholder="Search..."/>
             </div>
           </div>
         </div> 
@@ -34,21 +34,21 @@ function Navbar(props) {
           <i className="far fa-comments-alt"></i>
           <div className="notifcircle">5</div>
           <div className="slidemenu">
-            dd
+            messages 
           </div>
         </div>
         <div className="notifbox boxmenu">
         <i className="far fa-bell"></i>
         <div className="notifcircle">13</div>
         <div className="slidemenu">
-            dd
+            notifications
           </div>
         </div>
         <div className="optionsbox boxmenu">
           <i className="fas fa-th"></i>
           <div className="slidemenu"> 
-            <a href="#"><h6><i class="fas fa-moon"></i>Dark Mode</h6><Switchs onChange={(val) => {props.darkmode(val);setDarkmode(!darkmode)}} checked={darkmode}/></a>
-            <Link to="/support"><h6><i class="fas fa-question-circle"></i>Support</h6></Link>
+            <a href="#"><h6><i className="fas fa-moon"></i>Dark Mode</h6><Switchs onChange={(val) => {props.darkmode(val);setDarkmode(!darkmode)}} checked={darkmode}/></a>
+            <Link to="/support"><h6><i className="fas fa-question-circle"></i>Support</h6></Link>
           </div>
         </div>
       </div>

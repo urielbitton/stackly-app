@@ -14,7 +14,7 @@ export function Switchs(props) {
   return (   
     <div className="switchdiv"> 
     <h6>{props.title}</h6>    
-    <label class="form-switch">
+    <label className="form-switch">
         <input type="checkbox" onChange={(e) => props.onChange(e)} checked={props.checked}/>
         <i></i> 
     </label>  

@@ -3,12 +3,12 @@ import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
 
 function ProjectCard(props) {
 
-  const {id, name, client, tasksnum, daysleft, progress, color, shadow, icon} = props.proj
+  const {projectid, name, client, tasksnum, daysleft, progress, color, shadow, icon} = props.proj
 
   return (  
-    <Link to={`/project/${id}`}>
+    <Link to={`/project/${projectid}`}>
     <div className="projbox">
-      <i class="far fa-ellipsis-v" onClick={(e) => e.preventDefault()}></i>
+      <i className="far fa-ellipsis-v" onClick={(e) => e.preventDefault()}></i>
       <div className="iconcont" style={{boxShadow: `0 5px 10px ${shadow}`, background: color}}>
         <i className={`far ${icon}`}></i>
       </div> 
@@ -29,8 +29,8 @@ function ProjectCard(props) {
         </div>
       </div>
       <div className="projinforow">
-        <div><small><i class="far fa-tasks"></i>{tasksnum}</small></div>
-        <small><i class="far fa-clock"></i>{daysleft} days left</small>
+        <div><small><i className="far fa-tasks"></i>{tasksnum}</small></div>
+        <small><i className="far fa-clock"></i>{daysleft} days left</small>
       </div>
     </div>
     </Link>

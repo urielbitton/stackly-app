@@ -9,12 +9,12 @@ function Notifs(props) {
   const notifContRef = useRef()
 
   const recentnotifs = notifs.map(el => {
-    return <div className="notifs" ref={notifRef}>
+    return <div className="notifs" ref={notifRef} key={el.text}>
       <div>
-        <i class={el.icon}></i>
+        <i className={el.icon}></i>
         <p>{el.text}</p>
       </div>
-      <Link to={el.link}><button style={{display: el.showbtn?"block":"none"}}>{el.btntxt}</button></Link>
+      {/*<Link to={el.link}><button style={{display: el.showbtn?"block":"none"}}>{el.btntxt}</button></Link>*/}
       <i className="fal fa-times" onClick={() => hideNotif()}></i>
     </div>
   })    

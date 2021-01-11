@@ -25,10 +25,10 @@ function Projects(props) {
   const [icon, setIcon] = useState('fa-paint-brush-alt')
   const [progress, setProgress] = useState(0)
   const [taskname, setTaskName] = useState('')
-  const [taskdeadline, setTaskDeadline] = useState('')
+  const [taskdue, setTaskDue] = useState('')
   const [taskcolor, setTaskColor] = useState('#056dff')
   const [taskstatus, setTaskStatus] = useState('In Progress')
-  const [taskprior, setTaskPrior] = useState('None')
+  const [taskprior, setTaskPrior] = useState('')
   const [taskupdates, setTaskUpdates] = useState([])
   const user = firebase.auth().currentUser
   
@@ -42,7 +42,7 @@ function Projects(props) {
   function createProject() {
     if(name.length) {
       let projobj = {
-        id: db.collection("users").doc().id,
+        projectid: db.collection("users").doc().id,
         name,
         client, 
         tasks,
@@ -66,11 +66,23 @@ function Projects(props) {
   }
   function addTask() {
     if(taskname.length){
-      let currtask = {taskname,taskdeadline,taskcolor,taskstatus,taskprior,taskupdates}
+      let currtask = {
+        taskid: db.collection("users").doc().id,
+        taskname,
+        taskdue,
+        taskcolor,
+        taskstatus,
+        taskprior,
+        taskupdates
+      }
       tasks.push(currtask)
       props.shownotif(4000)
       setNotifs([{icon: 'fal fa-check-circle',text: `Task '${taskname}' has been added`}])
       setTaskName('')
+      setTaskPrior('')
+      setTaskColor('#056dff')
+      setTaskStatus('Not Started')
+      setTaskDue('')
     }
   }
 
@@ -79,8 +91,6 @@ function Projects(props) {
       const userlist = doc.data()
       setUserList(userlist)
       setProjList(userlist.projects)
-      //setTasks(userlist.projects.tasks)
-      //setActivity(userlist.projects.activity)
     })
   },[]) 
 
@@ -133,9 +143,9 @@ function Projects(props) {
           <div className="switchbox iconpick">
             <h6>Project Icon</h6> 
             <div className="iconspack">
-              <i class="far fa-paint-brush-alt" title="Design"></i>
-              <i class="fal fa-icons" title="Entertainment"></i>
-              <i class="fal fa-laptop-code" title="Development"></i>
+              <i className="far fa-paint-brush-alt" title="Design"></i>
+              <i className="fal fa-icons" title="Entertainment"></i>
+              <i className="fal fa-laptop-code" title="Development"></i>
             </div>
           </div>
           <div className="spacers"></div>
@@ -155,15 +165,28 @@ function Projects(props) {
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
             <Inputs title="Task Name" value={taskname} onChange={(e) => setTaskName(e.target.value)} />
-            <Inputs title="Task Deadline" value={taskdeadline} type="date" onChange={(e) => setTaskDeadline(e.target.value)} />
-            <Inputs title="Task Color" value={taskcolor} onChange={(e) => setTaskColor(e.target.value)} />
-            <Inputs title="Task Status" value={taskstatus} onChange={(e) => setTaskStatus(e.target.value)} />
-            <select value={taskprior} onChange={(e) => setTaskPrior(e.target.value)} >
-              <option value="High">High Priority</option>
-              <option value="low">Low Priority</option>
-            </select>
+            <Inputs title="Task Deadline" value={taskdue} type="date" onChange={(e) => setTaskDue(e.target.value)} />
+            <div className="switchbox">
+              <h6>Task Color</h6>
+              <Inputs type="color" onChange={(e) => setTaskColor(e.target.value)} value={taskcolor}/>  
+            </div>
+            <label>
+              <h6>Task Status</h6>
+              <select value={taskstatus} onChange={(e) => setTaskStatus(e.target.value)} >
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </label>
+            <div className="label">
+              <h6>Task Priority</h6>
+              <div className="addpriorcont">
+              <button onClick={() => setTaskPrior('low')} className={taskprior==='low'?"lowprior priorbtn activelowbtn":"lowprior priorbtn"}><i className="fas fa-star"></i>Low Priority</button>
+              <button onClick={() => setTaskPrior('high')} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
+              </div>
+            </div>
             <button onClick={() => addTask()}>Add</button>
-            <details>
+            <details open>
               <summary><span>Added Tasks</span><i className="far fa-angle-right"></i></summary>
               {tasksrow}
             </details>

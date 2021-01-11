@@ -24,13 +24,13 @@ function Homecont(props) {
   const user = firebase.auth().currentUser
 
   const oneproject = projlist && projlist.map(proj => {
-    return <Route path={`/project/${proj.id}`}> 
-      <OneProject proj={proj} shownotif={(time) => setUpdate(prev => prev+1, setTime(time))}/>
+    return <Route path={`/project/${proj.projectid}`}> 
+      <OneProject proj={proj} shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} key={proj.id} />
     </Route>
   }) 
   const oneclient = clients && clients.map(cli => {
     return <Route path={`/clients/${cli.id}`}> 
-      <OneClient cli={cli}/>
+      <OneClient cli={cli} key={cli.id} />
     </Route>
   }) 
 
@@ -44,7 +44,7 @@ function Homecont(props) {
 
   return ( 
     <div className="homecont">
-      <Navbar darkmode={props.darkmode}/>
+      <Navbar darkmode={props.darkmode} />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -59,13 +59,13 @@ function Homecont(props) {
             <MyTasks />
           </Route>
           <Route path="/settings"> 
-            <Settings shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} />
+            <Settings shownotif={(time) => setUpdate(prev => prev+1, setTime(time))}/>
           </Route>
           {oneproject}
           {oneclient}
         </Switch>
 
-        <Notifs update={update} time={time}/>
+        <Notifs update={update} time={time} key="notifs"/>
     </div> 
   )
 } 

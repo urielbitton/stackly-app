@@ -19,9 +19,9 @@ function Sidebar(props) {
           <i className="far fa-angle-right" style={{transform: slideprof?"rotate(90deg)":"rotate(0deg)"}}></i> 
         </div>
         <div className="accountlinks">
-          <Link to="/profile"><h6><i class="fal fa-user"></i><span>Profile</span></h6></Link>
-          <Link onClick={props.handleLogout}><h6><i class="fal fa-sign-out-alt"></i><span>Log Out</span></h6></Link>
-          <Link to="/helpcenter"><h6><i class="fal fa-question-circle"></i><span>Help Center</span></h6></Link>
+          <Link to="/profile"><h6><i className="fal fa-user"></i><span>Profile</span></h6></Link>
+          <Link to="" onClick={props.handleLogout}><h6><i className="fal fa-sign-out-alt"></i><span>Log Out</span></h6></Link>
+          <Link to="/helpcenter"><h6><i className="fal fa-question-circle"></i><span>Help Center</span></h6></Link>
         </div>
       </div> 
 
