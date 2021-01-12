@@ -59,7 +59,8 @@ function OneProject(props) {
         </div>
       </div> 
   })
-  const updatesrow = updatesList && updatesList.map(el => {
+
+  const updatesrow = taskupdates && taskupdates.map(el => {
     return <div className="updatebox" data-update={update}>
       <div> 
         <div className="clientcircle"><small>{el.updateperson.split(' ')[0][0]}{el.updateperson.split(' ')[1][0]}</small></div>
@@ -101,11 +102,6 @@ function OneProject(props) {
         }) 
       } 
     })
-  }
-  function deleteUpdate(el) {
-    let itemindex = taskupdates.indexOf(el)
-    taskupdates.splice(itemindex,1)
-    setUpdate(prev =>prev+1)
   }
   function addTask() {
     if(taskname.length) {
@@ -157,6 +153,7 @@ function OneProject(props) {
       }  
       tasklist && tasklist.forEach(el => {
         if(el.taskid === taskid) {
+          setTaskUpdates(el.taskupdates)
           let taskindex = tasklist.indexOf(el)
           tasklist[taskindex].taskupdates.push(updateobj)
           db.collection("users").doc(user.uid).update({
@@ -164,9 +161,21 @@ function OneProject(props) {
           })
         } 
       })
-      setUpdate(prev => prev+1)
     } 
     setUpdText('')
+  }
+  function deleteUpdate(el) {
+    tasklist && tasklist.forEach(el => {
+      if(el.taskid === taskid) {
+        setTaskUpdates(el.taskupdates)
+        let taskindex = tasklist.indexOf(el)
+        tasklist[taskindex].taskupdates.splice(taskindex,1)
+        db.collection("users").doc(user.uid).update({
+          projects: projlist
+        })
+      } 
+    })
+    
   }
   function formatDate(date) {
     var hours = date.getHours();
@@ -245,8 +254,8 @@ function OneProject(props) {
           <div className="actionsection">
             <button style={{background: proj.color}}>Contact Client</button>
           </div>
-        </div>
-      </div>
+        </div> 
+      </div> 
 
       <div className="tasksidecont" style={{right: slide?"0":"-550px"}}>
         <i className="fal fa-times" onClick={() => setSlide(!slide)}></i>

@@ -29,6 +29,7 @@ function Projects(props) {
   const [taskcolor, setTaskColor] = useState('#1cb7ff')
   const [taskstatus, setTaskStatus] = useState('In Progress')
   const [taskprior, setTaskPrior] = useState('')
+  const [tasknotes, setTaskNotes] = useState('')
   const [taskupdates, setTaskUpdates] = useState([])
   const user = firebase.auth().currentUser
   
@@ -73,8 +74,9 @@ function Projects(props) {
         taskcolor,
         taskstatus,
         taskprior,
-        taskupdates
-      }
+        taskupdates,
+        tasknotes
+      } 
       tasks.push(currtask)
       props.shownotif(4000)
       setNotifs([{icon: 'fal fa-check-circle',text: `Task '${taskname}' has been added`}])
@@ -83,6 +85,7 @@ function Projects(props) {
       setTaskColor('#056dff')
       setTaskStatus('Not Started')
       setTaskDue('')
+      setTaskNotes('')
     }
   }
 
@@ -185,6 +188,7 @@ function Projects(props) {
               <button onClick={() => setTaskPrior('high')} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
               </div>
             </div>
+            <textarea value={tasknotes} onChange={(e) => setTaskNotes(e.target.value)} placeholder="Enter task notes here..." />
             <button onClick={() => addTask()}>Add</button>
             <details open>
               <summary><span>Added Tasks</span><i className="far fa-angle-right"></i></summary>
