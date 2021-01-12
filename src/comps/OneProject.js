@@ -25,13 +25,11 @@ function OneProject(props) {
   const [taskprior, setTaskPrior] = useState('')
   const [projindex, setProjIndex] = useState('')
   const [updtext, setUpdText] = useState('')
-  const [upddate, setUpdDate] = useState('')
-  const [updperson, setUpdPerson] = useState('')
-  const [updedit, setUpdEdit] = useState(false)
-  const [taskindex, setTaskIndex] = useState('')
   const [tasklist, setTaskList] = useState([])
-  const [updateList, setUpdateList] = useState([])
+  const [tempUpdText, setTempUpdText] = useState('')
+  const [updatesList, setUpdatesList] = useState([])
   const user = firebase.auth().currentUser
+  let updatetime = formatDate(new Date())
 
   const recentactivity = proj.activity && proj.activity.map(el => {
     return <div className="activitydiv">
@@ -61,14 +59,14 @@ function OneProject(props) {
         </div>
       </div> 
   })
-  const updatesrow = updateList && updateList.map(el => {
+  const updatesrow = updatesList && updatesList.map(el => {
     return <div className="updatebox" data-update={update}>
-      <div>
+      <div> 
         <div className="clientcircle"><small>{el.updateperson.split(' ')[0][0]}{el.updateperson.split(' ')[1][0]}</small></div>
         <h5>{el.updateperson}</h5>
-        <h6>•&emsp;just now</h6>
+        <h6>•&emsp;<span>{el.updatedate.toString()}</span></h6>
       </div>
-      <textarea disabled={!el.edit} value={el.text} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev =>prev+1)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"-5px"}}/>
+      <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"-5px"}}/>
       <div> 
         <small onClick={!el.edit?() => editUpdateText(el):() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
         <small onClick={() => deleteUpdate(el)}>Delete</small>
@@ -88,11 +86,21 @@ function OneProject(props) {
   }
   function editUpdateText(el) {
     el.edit = !el.edit
-    setUpdate(prev =>prev+1)
+    setUpdate(prev =>prev+1) 
   }
   function saveUpdateText(el) {
     el.edit = !el.edit
     setUpdate(prev =>prev+1)
+    tasklist && tasklist.forEach(el2 => {
+      if(el2.taskid === taskid) {
+        let taskindex = tasklist.indexOf(el2)
+        let updateindex = taskupdates.indexOf(el)
+        projlist[projindex].tasks[taskindex].taskupdates[updateindex].updatetext = tempUpdText
+        db.collection("users").doc(user.uid).update({
+          projects: projlist
+        }) 
+      } 
+    })
   }
   function deleteUpdate(el) {
     let itemindex = taskupdates.indexOf(el)
@@ -143,22 +151,34 @@ function OneProject(props) {
       let updateobj = {
         updateid: db.collection("users").doc().id,
         updatetext: updtext,
-        updatedate: new Date(),
+        updatedate: updatetime,
         updateperson: user.displayName,
-        updateedit: updedit
+        edit: false
       }  
-      tasklist && tasklist.forEach(ta => {
-        if(ta.taskid === taskid) {
-          setTaskIndex(tasklist.indexOf(ta))
+      tasklist && tasklist.forEach(el => {
+        if(el.taskid === taskid) {
+          let taskindex = tasklist.indexOf(el)
+          tasklist[taskindex].taskupdates.push(updateobj)
+          db.collection("users").doc(user.uid).update({
+            projects: projlist
+          })
         } 
       })
-      tasklist[taskindex].taskupdates.push(updateobj)
-      db.collection("users").doc(user.uid).update({
-        projects: projlist
-      }) 
+      setUpdate(prev => prev+1)
     } 
+    setUpdText('')
   }
- 
+  function formatDate(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+  
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
@@ -169,11 +189,16 @@ function OneProject(props) {
           setProjIndex(userlist.projects.indexOf(el))   
           const tasklist = userlist.projects[userlist.projects.indexOf(el)].tasks
           setTaskList(tasklist)
+          tasklist && tasklist.forEach(el => {
+            if(el.taskid === taskid) {
+              let taskindex = tasklist.indexOf(el)
+              setUpdatesList(tasklist[taskindex].taskupdates)
+            } 
+          })
         }
-      })
-      
-    })     
-  },[])  
+      }) 
+    })  
+  },[])   
  
   return (
     <div className="oneprojectpage apppage">
@@ -242,7 +267,7 @@ function OneProject(props) {
           </div>
         </div>
         <hr/>
-        <div className="updatescont">
+        <div className="updatescont" data-update={update}>
           {updatesrow}
         </div>
         <hr/>

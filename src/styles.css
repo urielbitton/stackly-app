@@ -1479,7 +1479,7 @@ h4.noactivity {
   grid-gap: 10px;
 }
 .taskboxopts i {
-  color: #aaa;
+  color: #555;
   opacity: 0; 
   transition: all 0.2s;
   cursor: pointer;
@@ -1491,9 +1491,6 @@ h4.noactivity {
   opacity: 1;
 }
 .taskboxopts button {
-  margin-right: -25px;
-}
-.taskrow:hover .taskboxopts button {
   margin-right: 15px;
 }
 
@@ -1629,6 +1626,9 @@ button.highprior:hover, button.activehighbtn {
 .updatebox > div h6 {
   color: #aaa;
   font-weight: 500;
+}
+.updatebox > div h6 span {
+  top: 1px;
 }
 .updatebox > div > small {
   font-size: 11px;
@@ -1896,7 +1896,7 @@ button.highprior:hover, button.activehighbtn {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(https://i.imgur.com/2fDRA3c.jpg);
+  background-image: url(https://i.imgur.com/VVUl8jo.jpg);
   background-position: center;
   background-size: cover;
   
