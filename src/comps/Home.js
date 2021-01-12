@@ -39,7 +39,7 @@ function Home() {
                 <small><i className="fal fa-tasks"></i>5 New Tasks</small>
               </div>
             </div>
-            <img src="https://i.imgur.com/iOYuiob.png" alt=""/>
+            <img src="https://i.imgur.com/ij6HKa7.png" alt=""/>
           </div>
           <div className="dashgraph dashbox">
             <Charts type="bar-chart" /> 

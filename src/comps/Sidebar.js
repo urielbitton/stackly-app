@@ -45,7 +45,7 @@ function Sidebar(props) {
         <i className="fal fa-sparkles spark1"></i>
         <i className="fal fa-sparkles spark2"></i>
         <i className="fal fa-sparkles spark3"></i>
-        <img src="https://i.imgur.com/8i8FRix.png" alt=""/>
+        <img src="https://i.imgur.com/v2a6jdZ.png" alt=""/>
         <h6>Get your projects done lightning fast with our mobile app, coming soon.</h6>
       </div>
       <div className="spacer"></div>

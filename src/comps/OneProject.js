@@ -11,19 +11,26 @@ function OneProject(props) {
   const {proj} = props
 
   const [userlist, setUserList] = useState([])
-  const [project, setProject] = useState({})
   const [projlist, setProjList] = useState([])
-  const [taskslist, setTasksList] = useState([])
   const [slide, setSlide] = useState(false)
+  const [taskid, setTaskId] = useState('')
   const [taskname, setTaskName] = useState('')
   const [taskdue, setTaskDue] = useState('')
   const [taskstatus, setTaskStatus] = useState('')
   const [taskupdates, setTaskUpdates] = useState([])
   const [tasknotes, setTaskNotes] = useState('')
-  const [taskcolor, setTaskColor] = useState('#056dff')
+  const [taskcolor, setTaskColor] = useState('#1cb7ff')
   const [update, setUpdate] = useState(0)
   const [showadd, setShowAdd] = useState(false)
   const [taskprior, setTaskPrior] = useState('')
+  const [projindex, setProjIndex] = useState('')
+  const [updtext, setUpdText] = useState('')
+  const [upddate, setUpdDate] = useState('')
+  const [updperson, setUpdPerson] = useState('')
+  const [updedit, setUpdEdit] = useState(false)
+  const [taskindex, setTaskIndex] = useState('')
+  const [tasklist, setTaskList] = useState([])
+  const [updateList, setUpdateList] = useState([])
   const user = firebase.auth().currentUser
 
   const recentactivity = proj.activity && proj.activity.map(el => {
@@ -52,16 +59,16 @@ function OneProject(props) {
           <i className="far fa-edit"></i>
           <i className="far fa-trash"></i>
         </div>
-      </div>
+      </div> 
   })
-  const updatesrow = taskupdates && taskupdates.map(el => {
+  const updatesrow = updateList && updateList.map(el => {
     return <div className="updatebox" data-update={update}>
       <div>
-        <div className="clientcircle"><small>{el.person.split(' ')[0][0]}{el.person.split(' ')[1][0]}</small></div>
-        <h5>{el.person}</h5>
+        <div className="clientcircle"><small>{el.updateperson.split(' ')[0][0]}{el.updateperson.split(' ')[1][0]}</small></div>
+        <h5>{el.updateperson}</h5>
         <h6>•&emsp;just now</h6>
       </div>
-      <textarea disabled={!el.edit} value={el.text} onChange={(e) => {el.text = e.target.value;setUpdate(prev =>prev+1)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"-5px"}}/>
+      <textarea disabled={!el.edit} value={el.text} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev =>prev+1)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"-5px"}}/>
       <div> 
         <small onClick={!el.edit?() => editUpdateText(el):() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
         <small onClick={() => deleteUpdate(el)}>Delete</small>
@@ -71,6 +78,7 @@ function OneProject(props) {
 
   function slideDetails(el) {
     setSlide(!slide) 
+    setTaskId(el.taskid)
     setTaskName(el.taskname)
     setTaskDue(el.taskdue)
     setTaskUpdates(el.taskupdates)
@@ -100,29 +108,71 @@ function OneProject(props) {
         taskdue,
         taskprior,
         taskstatus,
-        taskupdates
+        taskupdates,
+        tasknotes
       }
-      taskslist.push(taskobj)
+      projlist[projindex].tasks.push(taskobj)
+      db.collection("users").doc(user.uid).update({
+        projects: projlist
+      }) 
       props.shownotif(4000) 
       setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
+      setTaskName('')
+      setTaskPrior('')
+      setTaskColor('#056dff')
+      setTaskStatus('Not Started')
+      setTaskDue('')
+      setTaskNotes('')
+    }
+    else {
+      props.shownotif(4000) 
+      setNotifs([{icon: 'fal fa-exclamation-circle',text: 'Task name cannot be empty.'}])
     }
   }
   function showAddFunc() {
     setShowAdd(!showadd)
     setTaskName('')
     setTaskDue('')
-    setTaskUpdates('')
+    setTaskUpdates([])
     setTaskStatus('')
     setTaskNotes('')
     setTaskPrior('')
+  }
+  function addUpdate() {
+    if(updtext.length) {
+      let updateobj = {
+        updateid: db.collection("users").doc().id,
+        updatetext: updtext,
+        updatedate: new Date(),
+        updateperson: user.displayName,
+        updateedit: updedit
+      }  
+      tasklist && tasklist.forEach(ta => {
+        if(ta.taskid === taskid) {
+          setTaskIndex(tasklist.indexOf(ta))
+        } 
+      })
+      tasklist[taskindex].taskupdates.push(updateobj)
+      db.collection("users").doc(user.uid).update({
+        projects: projlist
+      }) 
+    } 
   }
  
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
-      setProjList(userlist.projects)
-    })
+      setProjList(userlist.projects) 
+      userlist.projects && userlist.projects.forEach(el => {
+        if(el.projectid === proj.projectid) {
+          setProjIndex(userlist.projects.indexOf(el))   
+          const tasklist = userlist.projects[userlist.projects.indexOf(el)].tasks
+          setTaskList(tasklist)
+        }
+      })
+      
+    })     
   },[])  
  
   return (
@@ -197,8 +247,8 @@ function OneProject(props) {
         </div>
         <hr/>
         <div className="postcont">
-          <textarea placeholder="Add an update..."/>
-          <button>Add Update</button>
+          <textarea placeholder="Add an update..." onChange={(e) => setUpdText(e.target.value)} value={updtext}/>
+          <button onClick={() => addUpdate()}>Add Update</button>
         </div>
       </div>  
 

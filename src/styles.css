@@ -513,8 +513,8 @@ nav {
   overflow: hidden;
 }
 .banner img {
-  top: -70px;
-  width: 260px;
+  top: -60px;
+  width: 220px;
   height: 260px;
   object-fit: contain;
 }
@@ -921,7 +921,7 @@ nav {
 }
 .projbox .progresscont {
   width: 100%;
-  margin-top: 7px;
+  margin-top: 15px;
 }
 .projbox .progtube {
   width: 100%;
@@ -1896,17 +1896,17 @@ button.highprior:hover, button.activehighbtn {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(https://i.imgur.com/tCdCBuh.jpg);
+  background-image: url(https://i.imgur.com/2fDRA3c.jpg);
   background-position: center;
   background-size: cover;
   
 }
 .loginbgcover::after {
-  content: '';
+  content: ''; 
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(3, 28, 252,0.4);
+  background: linear-gradient(-90deg, rgba(0,37,255,0.4) 0%, rgba(26,0,110,0.6) 100%);
 }
 .logincover h3 {
   font-size: 60px;

@@ -21,6 +21,7 @@ function Homecont(props) {
   const [projlist, setProjList] = useState([])
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
+  const [addproj, setAddProj] = useState(false) 
   const user = firebase.auth().currentUser
 
   const oneproject = projlist && projlist.map(proj => {
@@ -44,13 +45,13 @@ function Homecont(props) {
 
   return ( 
     <div className="homecont">
-      <Navbar darkmode={props.darkmode} />
+      <Navbar darkmode={props.darkmode} addproj={() => setAddProj(true)}/>
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
           <Route path="/projects"> 
-            <Projects shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} />
+            <Projects shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} addproj={addproj}/>
           </Route>
           <Route path="/clients"> 
             <Clients />

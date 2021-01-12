@@ -18,8 +18,8 @@ function Navbar(props) {
         <div className="newbox boxmenu">
           <i className="far fa-plus"></i>
           <div className="slidemenu"> 
-            <Link to="/projects/addproject"><h6><i className="fal fa-project-diagram"></i>Create Project</h6></Link>
-            <Link to="/clients/addclient"><h6><i className="fal fa-users"></i>Create Client</h6></Link>
+            <Link to="/projects/" onClick={() => props.addproj()}><h6><i className="fal fa-project-diagram"></i>Create Project</h6></Link>
+            <Link to="/clients/"><h6><i className="fal fa-users"></i>Create Client</h6></Link>
           </div>
         </div>
         <div className="searchbox boxmenu">
