@@ -72,6 +72,8 @@ function Projects(props) {
         projects: firebase.firestore.FieldValue.arrayUnion(projobj)
       })
       setShowAdd(!showadd)
+      props.shownotif(4000)
+      setNotifs([{icon: 'fal fa-check-circle',text: `Project '${name}' has been created`}])
     } 
     else {
       props.shownotif(4000)
@@ -135,6 +137,7 @@ function Projects(props) {
           <button onClick={() => setSection(2)}>Add Client<i className="fal fa-plus"></i></button>
           <button onClick={() => setSection(3)}>Add Tasks<i className="fal fa-plus"></i></button>
           <Inputs title="Days Left" type="number" placeholder="30" value={daysleft} onChange={(e) => setDaysLeft(e.target.value)} />
+          <Inputs title="Progress" type="number" placeholder="50" value={progress} onChange={(e) => setProgress(e.target.value)} />
           <label>
             <h6>Category</h6>
             <select onChange={(e) => setCategory(e.target.value)} value={category}>
@@ -173,7 +176,7 @@ function Projects(props) {
           <div className="content">
             <Inputs title="Find a Client" iconclass="fal fa-search"/>
           </div>
-          <button onClick={() => setSection(1)}>Done</button>
+          <button onClick={() => setSection(1)}>Add</button>
         </div>
         <div className="taskssection" style={{left: section===1?"400px":section===3?"0":"400px"}}>
           <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
@@ -205,13 +208,12 @@ function Projects(props) {
               <h6>Notes</h6>
               <textarea value={tasknotes} onChange={(e) => setTaskNotes(e.target.value)} placeholder="Enter task notes here..." />
             </label>
-            <button onClick={() => addTask()}>Add</button>
             <details open>
               <summary><span>Added Tasks</span><i className="far fa-angle-right"></i></summary>
               {tasksrow}
             </details>
           </div>
-          <button onClick={() => setSection(1)}>Done</button>
+          <button onClick={() => addTask()}>Add</button>
         </div>
       </div>  
     </div>

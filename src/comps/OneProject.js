@@ -38,10 +38,26 @@ function OneProject(props) {
   const [projicon, setProjIcon] = useState('')
   const [projprogress, setProjProgress] = useState('')
   const [activeicon, setActiveIcon] = useState('')
+  const [addedit, setAddEdit] = useState(true)
   const user = firebase.auth().currentUser
   let updatetime = formatDate(new Date())
   let history = useHistory()
 
+
+  const alltasks = proj.tasks && proj.tasks.map(el => {
+    return <div className="taskrow" style={{background: el.taskcolor+"20"}}>
+        <h4>{el.taskname}</h4>
+        <div className="taskbox">
+          <h6>Date Due: <span>{el.taskdue}</span></h6>
+          <h6>Status <span style={{color: "var(--color)"}}>{el.taskstatus}</span></h6>
+        </div>
+        <div className="taskboxopts">
+          <button onClick={() => slideDetails(el)}>Details</button>
+          <i className="far fa-edit" onClick={() => editTask(el)}></i>
+          <i className="far fa-trash" onClick={() => deleteTask(el)}></i>
+        </div>
+      </div> 
+  }) 
   const recentactivity = proj.activity && proj.activity.map(el => {
     return <div className="activitydiv">
       <div className="actcont">
@@ -56,20 +72,6 @@ function OneProject(props) {
         <i className="fal fa-angle-right activitybtn"></i>
     </div> 
   })
-  const alltasks = proj.tasks && proj.tasks.map(el => {
-    return <div className="taskrow" style={{background: el.taskcolor+"20"}}>
-        <h4>{el.taskname}</h4>
-        <div className="taskbox">
-          <h6>Date Due: <span>{el.taskdue}</span></h6>
-          <h6>Status <span style={{color: "var(--color)"}}>{el.taskstatus}</span></h6>
-        </div>
-        <div className="taskboxopts">
-          <button onClick={() => slideDetails(el)}>Details</button>
-          <i className="far fa-edit"></i>
-          <i className="far fa-trash"></i>
-        </div>
-      </div> 
-  }) 
   const updatesrow = taskupdates && taskupdates.slice(0).reverse().map(el => {
     return <div className="updatebox" data-update={update}>
       <div> 
@@ -140,22 +142,48 @@ function OneProject(props) {
   }
   function addTask() {
     if(taskname.length) {
-      let taskobj = {
-        taskid: db.collection("users").doc().id,
-        taskname,
-        taskcolor,
-        taskdue,
-        taskprior,
-        taskstatus,
-        taskupdates,
-        tasknotes
+      if(addedit) { //if adding a task
+        let taskobj = {
+          taskid: db.collection("users").doc().id,
+          taskname,
+          taskcolor,
+          taskdue,
+          taskprior,
+          taskstatus,
+          taskupdates,
+          tasknotes
+        }
+        projlist[projindex].tasks.push(taskobj)
+        db.collection("users").doc(user.uid).update({
+          projects: projlist
+        }) 
+        props.shownotif(4000) 
+        setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
       }
-      projlist[projindex].tasks.push(taskobj)
-      db.collection("users").doc(user.uid).update({
-        projects: projlist
-      }) 
-      props.shownotif(4000) 
-      setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
+      else { //if editing a task
+        let taskobj = {
+          taskid,
+          taskname,
+          taskcolor,
+          taskdue,
+          taskprior,
+          taskstatus,
+          taskupdates,
+          tasknotes
+        } 
+        tasklist && tasklist.forEach(el => {
+          if(el.taskid === taskid) {
+            let taskindex = tasklist.indexOf(el)
+            projlist[projindex].tasks[taskindex] = taskobj
+            db.collection("users").doc(user.uid).update({
+              projects: projlist
+            }) 
+          } 
+        })
+        props.shownotif(4000) 
+        setNotifs([{icon: 'fal fa-check-circle',text: 'The current task has been saved.'}])
+        setShowAdd(!showadd)
+      }
       setTaskName('')
       setTaskPrior('')
       setTaskColor('#056dff')
@@ -169,6 +197,7 @@ function OneProject(props) {
     }
   }
   function showAddFunc() {
+    setAddEdit(true)
     setShowAdd(!showadd)
     setTaskName('')
     setTaskDue('')
@@ -237,6 +266,8 @@ function OneProject(props) {
       projects: projlist  
     })
     setShowEdit(!showedit)
+    props.shownotif(4000)
+    setNotifs([{icon: 'fal fa-check-circle',text: `Project '${proj.name}' has been saved`}])
   }
   function deleteProject() {
     projlist.splice(projindex,1)
@@ -244,6 +275,20 @@ function OneProject(props) {
       projects: projlist  
     })
     history.push('/projects')
+  }
+  function editTask(el) {
+    setAddEdit(false)
+    setShowAdd(!showadd)
+    setTaskId(el.taskid)
+    setTaskName(el.taskname)
+    setTaskDue(el.taskdue)
+    setTaskUpdates(el.taskupdates)
+    setTaskStatus(el.taskstatus)
+    setTaskNotes(el.tasknotes)
+    setTaskPrior(el.taskprior)
+  }
+  function deleteTask() {
+    
   }
   
   useEffect(() => {
@@ -264,7 +309,12 @@ function OneProject(props) {
           })
         }
       }) 
-    })  
+    }) 
+    //set activeicon in edit project container
+    iconspack && iconspack.map(el => {
+      if(proj.icon === el.class) 
+        setActiveIcon(iconspack.indexOf(el))
+    }) 
   },[])   
  
   return (
@@ -351,7 +401,7 @@ function OneProject(props) {
       <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>
         <div className="addsection">
           <a className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></a>
-          <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Task</h4></div>
+          <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>{addedit?"Add":"Edit"} Task</h4></div>
           <div className="content hidescroll">
             <Inputs title="Task title" placeholder="E.g. Install Plugins" onChange={(e) => setTaskName(e.target.value)} value={taskname} />
             <label>
@@ -376,7 +426,7 @@ function OneProject(props) {
               <textarea placeholder="add notes to this task..." onChange={(e) => setTaskNotes(e.target.value)} value={tasknotes} />
             </label>
           </div>
-          <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className="far fa-plus"></i>Add</button>
+          <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className={addedit?"fal fa-plus":"fal fa-edit"}></i>{addedit?"Add":"Edit"}</button>
         </div>
       </div> 
 
@@ -422,7 +472,7 @@ function OneProject(props) {
             <button onClick={() => deleteProject()} style={{background: "var(--red)", borderColor:"var(--red)"}}>Delete Project</button>
           </div>
         </div>
-      </div> 
+      </div>  
  
     </div>
   )
