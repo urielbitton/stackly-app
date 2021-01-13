@@ -59,9 +59,9 @@ img {
 button {
   outline: none;
   cursor: pointer;
-  border: none;
+  border: 1px solid var(--color);
   transition: all 0.2s;
-  padding: 10px 20px;
+  padding: 9px 20px;
   background: var(--color);
   color: #fff;
   border-radius: 6px;
@@ -1497,14 +1497,18 @@ h4.noactivity {
 .tasksidecont {
   position: fixed; 
   right: -550px;
-  top: 57px;
+  top: 0;
   height: 100vh;
   width: 500px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   background: #fff;
   z-index: 900;
   box-shadow: -10px 0px 20px -5px rgba(0,0,0,0.15);
   transition: all 0.3s;
   border-radius: 10px 0 0 10px;
+  overflow-y: scroll;
 }
 .tasksidecont .titlecont {
   padding: 20px;
@@ -1553,12 +1557,12 @@ h4.noactivity {
 .tasksidecont .priorcont button {
   cursor: auto;
 }
-.priorcont {
+.tasksidecont .priorcont {
   display: flex;
   justify-content: flex-start;
-  flex-direction: column;
-  padding: 10px 20px;
-  grid-gap: 10px;
+  align-items: center;
+  padding: 15px 20px;
+  grid-gap: 10px 30px;
 }
 button.priorbtn {
   padding: 7px 10px;
@@ -1568,12 +1572,12 @@ button.priorbtn {
   color: #aaa;
   font-size: 12px;
 }
-.priorcont > div {
+.tasksidecont .priorcont > div {
   display: flex;
   justify-content:flex-start;
   grid-gap: 20px;
 }
-.priorcont h5 { 
+.tasksidecont .priorcont h5 { 
   color: #555;
 }
 button.lowprior:hover, button.activelowbtn {
@@ -1588,7 +1592,7 @@ button.highprior:hover, button.activehighbtn {
 }
 .updatescont {
   padding: 20px;
-  height: 360px;
+  height: 440px;
   width: 100%;
   overflow-y: scroll;
 }
@@ -1642,10 +1646,8 @@ button.highprior:hover, button.activehighbtn {
   font-size: 13px;
   color: #333;
   margin: 10px 0;
-  margin-bottom: -5px;
+  margin-bottom: 0px;
   background: none;
-  height: auto;
-  min-height: auto;
   resize: none;
   cursor: auto;
   transition: all 0.2s;
@@ -2096,15 +2098,34 @@ details[open] summary ~ * {
   padding: 5px;
   border-radius: 5px;
 }
-.addprojectcont .iconspack i:hover {
+.addprojectcont .iconspack i:hover, .activeicon {
   color: var(--color);
   background: var(--light)
 }
 
-
-
-
-
+.notasksmsg {
+  text-align: center;
+  color: #aaa;
+  font-weight: 500;
+}
+.editprojbtn {
+  margin-right: 10px;
+  background: none;
+  color: var(--color);
+}
+.editprojbtn:hover {
+  background: var(--color);
+  color: #fff;
+}
+.editprojbtngroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 20px;
+}
+.editprojbtngroup button {
+  padding: 10px 20px;
+}
 
 
 

@@ -31,7 +31,7 @@ function Projects(props) {
   const [taskprior, setTaskPrior] = useState('')
   const [tasknotes, setTaskNotes] = useState('')
   const [taskupdates, setTaskUpdates] = useState([])
-  const [activeicon, setActiveIcon] = useState(false) 
+  const [activeicon, setActiveIcon] = useState('') 
   const user = firebase.auth().currentUser
   
   const projectsrow = projlist && projlist.map(proj => {
@@ -50,7 +50,7 @@ function Projects(props) {
     {class: "fa-project-diagram", title: "General"}
   ]
   const iconsrow = iconspack && iconspack.map(el => {
-    return <i className={activeicon?`activeicon fal ${el.class}`:`fal ${el.class}`} title={el.title} key={el.title} onClick={() => setIcon(el.class, setActiveIcon(true))}></i>
+    return <i className={activeicon===iconspack.indexOf(el)?`activeicon fal ${el.class}`:`fal ${el.class}`} title={el.title} key={el.title} onClick={() => setIcon(el.class, setActiveIcon(iconspack.indexOf(el)))}></i>
   })
 
   function createProject() {
@@ -128,7 +128,7 @@ function Projects(props) {
       
       <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>
         <div className="addsection" style={{left: section===1?"0":"-200%"}}>
-        <Link to="" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
+        <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
         <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Create Project</h4></div>
         <div className="content hidescroll">
           <Inputs title="Project Name" placeholder="Web Development" value={name} onChange={(e) => setName(e.target.value)} />

@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react'
+import { useHistory } from "react-router-dom"
 import Circle from './Circle'
-import { Inputs } from './Inputs'
+import { Inputs, Switchs } from './Inputs'
 import {StoreContext} from './StoreContext'
 import firebase from 'firebase'
 import {db} from './Fire'
@@ -22,14 +23,24 @@ function OneProject(props) {
   const [taskcolor, setTaskColor] = useState('#1cb7ff')
   const [update, setUpdate] = useState(0)
   const [showadd, setShowAdd] = useState(false)
+  const [showedit, setShowEdit] = useState(false)
   const [taskprior, setTaskPrior] = useState('')
   const [projindex, setProjIndex] = useState('')
   const [updtext, setUpdText] = useState('')
   const [tasklist, setTaskList] = useState([])
   const [tempUpdText, setTempUpdText] = useState('')
   const [updatesList, setUpdatesList] = useState([])
+  const [projname, setProjName] = useState('')
+  const [daysleft, setDaysLeft] = useState('')
+  const [projcat, setProjCat] = useState('')
+  const [projactive, setProjActive] = useState('')
+  const [projcolor, setProjColor] = useState('')
+  const [projicon, setProjIcon] = useState('')
+  const [projprogress, setProjProgress] = useState('')
+  const [activeicon, setActiveIcon] = useState('')
   const user = firebase.auth().currentUser
   let updatetime = formatDate(new Date())
+  let history = useHistory()
 
   const recentactivity = proj.activity && proj.activity.map(el => {
     return <div className="activitydiv">
@@ -59,7 +70,6 @@ function OneProject(props) {
         </div>
       </div> 
   }) 
-
   const updatesrow = taskupdates && taskupdates.slice(0).reverse().map(el => {
     return <div className="updatebox" data-update={update}>
       <div> 
@@ -67,12 +77,24 @@ function OneProject(props) {
         <h5>{el.updateperson}</h5>
         <h6>•&emsp;<span>{el.updatedate.toString()}</span></h6>
       </div>
-      <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"-5px"}}/>
+      <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"0px"}}/>
       <div> 
         <small onClick={!el.edit?() => editUpdateText(el):() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
         <small onClick={() => deleteUpdate(el)}>Delete</small>
       </div>
     </div>
+  })
+  const iconspack = [
+    {class:'fa-paint-brush-alt',title:'Design'},
+    {class: "fa-icons", title:'Entertainment'},
+    {class: "fa-laptop-code", title: "Development"},
+    {class: "fa-dollar-sign", title:"Finance"},
+    {class: "fa-shield-check", title:"Security"},
+    {class: "fa-cloud-upload", title: "Cloud System"},
+    {class: "fa-project-diagram", title: "General"}
+  ]
+  const iconsrow = iconspack && iconspack.map(el => {
+    return <i className={activeicon===iconspack.indexOf(el)?`activeicon fal ${el.class}`:`fal ${el.class}`} title={el.title} key={el.title} onClick={() => setProjIcon(el.class, setActiveIcon(iconspack.indexOf(el)))}></i>
   })
 
   function slideDetails(el) {
@@ -100,6 +122,19 @@ function OneProject(props) {
         db.collection("users").doc(user.uid).update({
           projects: projlist
         }) 
+      } 
+    })
+  }
+  function deleteUpdate(el) {
+    tasklist && tasklist.forEach(el2 => {
+      if(el2.taskid === taskid) {
+        setTaskUpdates(el2.taskupdates)
+        let taskindex = tasklist.indexOf(el2)  
+        let updateindex = taskupdates.indexOf(el)
+        projlist[projindex].tasks[taskindex].taskupdates.splice(updateindex,1)
+        db.collection("users").doc(user.uid).update({
+          projects: projlist
+        })
       } 
     })
   }
@@ -142,6 +177,16 @@ function OneProject(props) {
     setTaskNotes('')
     setTaskPrior('')
   }
+  function showEditFunc() {
+    setShowEdit(!showedit)
+    setProjName(proj.name)
+    setDaysLeft(proj.daysleft)
+    setProjCat(proj.category)
+    setProjActive(proj.active)
+    setProjColor(proj.color)
+    setProjIcon(proj.icon)
+    setProjProgress(proj.progress)
+  }
   function addUpdate() {
     if(updtext.length) {
       let updateobj = {
@@ -164,28 +209,41 @@ function OneProject(props) {
     } 
     setUpdText('')
   }
-  function deleteUpdate(el) {
-    tasklist && tasklist.forEach(el => {
-      if(el.taskid === taskid) {
-        setTaskUpdates(el.taskupdates)
-        let taskindex = tasklist.indexOf(el)
-        tasklist[taskindex].taskupdates.splice(taskindex,1)
-        db.collection("users").doc(user.uid).update({
-          projects: projlist
-        })
-      } 
-    })
-    
-  }
   function formatDate(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+    var ampm = hours >= 12 ? 'pm' : 'am'
+    hours = hours % 12
+    hours = hours ? hours : 12
+    minutes = minutes < 10 ? '0'+minutes : minutes
+    var strTime = hours + ':' + minutes + ' ' + ampm
+    return strTime
+  }
+  function markComplete() {
+    projlist[projindex].progress = 100
+    db.collection("users").doc(user.uid).update({
+      projects: projlist 
+    })
+  }
+  function saveProject() {
+    projlist[projindex].name = projname
+    projlist[projindex].active = projactive
+    projlist[projindex].category = projcat
+    projlist[projindex].daysleft = daysleft
+    projlist[projindex].icon = projicon
+    projlist[projindex].progress = projprogress
+    projlist[projindex].color = projcolor
+    db.collection("users").doc(user.uid).update({
+      projects: projlist  
+    })
+    setShowEdit(!showedit)
+  }
+  function deleteProject() {
+    projlist.splice(projindex,1)
+    db.collection("users").doc(user.uid).update({
+      projects: projlist  
+    })
+    history.push('/projects')
   }
   
   useEffect(() => {
@@ -216,7 +274,10 @@ function OneProject(props) {
           <div className="projecttoolbar">
             <h4><i className="far fa-calendar-alt"></i> Jan 15 2020</h4>
             <h3>Tasks</h3>
-            <button onClick={() => showAddFunc()}>Add Task</button>
+            <div>
+              <button className="editprojbtn" onClick={() => showEditFunc()}>Edit Project</button>
+              <button onClick={() => showAddFunc()}>Add Task</button>
+            </div>
           </div>
           <div className="projectcontent">
             <div className="timelinecont">
@@ -225,7 +286,7 @@ function OneProject(props) {
                   return <div className="timecircle"></div>
                 })}
             </div>
-            {alltasks}
+            {proj.tasks.length?alltasks:<h4 className="notasksmsg">You have no tasks.</h4>}
           </div>
         </div>
         <div className="pageside">
@@ -233,11 +294,11 @@ function OneProject(props) {
           <div className="titleshead">
             <div>
               <h4>{proj.name}</h4>
-              <h6>{proj.client}</h6>
+              <h6>Client Name</h6>
             </div>
             <div>
               <small>{proj.daysleft} days left</small>
-              <small>Tasks: {proj.tasksnum}</small>
+              <small>Tasks: {proj.tasks.length}</small>
             </div>
           </div>
           <Circle percent={proj.progress} text={proj.progress+"%"} text2="Complete" color={proj.color} /> 
@@ -252,7 +313,7 @@ function OneProject(props) {
 
           </div> 
           <div className="actionsection">
-            <button style={{background: proj.color}}>Mark Complete</button>
+            <button style={{background: proj.color, borderColor:proj.color}} onClick={() => markComplete()}>Mark Complete</button>
           </div>
         </div> 
       </div> 
@@ -284,7 +345,7 @@ function OneProject(props) {
           <textarea placeholder="Add an update..." onChange={(e) => setUpdText(e.target.value)} value={updtext}/>
           <button onClick={() => addUpdate()}>Add Update</button>
         </div>
-      </div>  
+      </div> 
 
       <div className="addcover" style={{display: showadd?"block":"none"}}></div>
       <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>
@@ -316,6 +377,50 @@ function OneProject(props) {
             </label>
           </div>
           <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className="far fa-plus"></i>Add</button>
+        </div>
+      </div> 
+
+      <div className="addcover" style={{display: showedit?"block":"none"}}></div>
+      <div className="addprojectcont" style={{bottom: showedit?"0":"-190%"}}>
+        <div className="addsection">
+          <a className="closeadd"><i className="fal fa-times" onClick={() => setShowEdit(!showedit)}></i></a>
+          <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Edit Project</h4></div>
+          <div className="content hidescroll">
+            <Inputs title="Project Name" placeholder="E.g. Web Development" onChange={(e) => setProjName(e.target.value)} value={projname} />
+            <Inputs title="Days Left" onChange={(e) => setDaysLeft(e.target.value)} value={daysleft}/> 
+            <label>
+              <h6>Category</h6>
+              <select value={projcat} onChange={(e) => setProjCat(e.target.value)} >
+                <option value="Design">Design</option>
+                <option value="Development">Development</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Financial">Financial</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Media">Media</option>
+                <option value="General Services">General Services</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+            <Inputs title="Progress" onChange={(e) => setProjProgress(e.target.value)} value={projprogress} />
+            <div className="switchbox">
+              <h6>Active</h6> 
+              <Switchs onChange={(e) => setProjActive(e.target.checked)} selected={projactive} checked={projactive}/>
+            </div>
+            <div className="switchbox">
+              <h6>Project Color</h6>
+              <Inputs type="color" onChange={(e) => setProjColor(e.target.value)} value={projcolor}/>  
+            </div>
+            <div className="switchbox iconpick">
+              <h6>Project Icon</h6> 
+              <div className="iconspack">
+                {iconsrow}
+              </div>
+            </div>
+          </div> 
+          <div className="editprojbtngroup">
+            <button onClick={() => saveProject()}>Save</button>
+            <button onClick={() => deleteProject()} style={{background: "var(--red)", borderColor:"var(--red)"}}>Delete Project</button>
+          </div>
         </div>
       </div> 
  
