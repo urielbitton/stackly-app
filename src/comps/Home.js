@@ -10,18 +10,22 @@ function Home() {
   const {projects, clients} = useContext(StoreContext)
 
   const [userlist, setUserList] = useState([])
+  const [userinfo, setUserInfo] = useState([])
+  const [fullname, setFullName] = useState('')
   const activetasks = projects.reduce((a,b) => a+b.tasksnum,0)
   const user = firebase.auth().currentUser
 
 
   useEffect(() => {
-    /*db.collection('users').doc(user.uid).get().then(doc => {
+    db.collection('users').doc(user.uid).get().then(doc => {
       const userlist = doc.data()
       setUserList(userlist)
-    })*/
+      setUserInfo(userlist.userinfo)
+      setFullName(userlist.userinfo.fullname)
+    })
   },[]) 
 
-  return (
+  return ( 
     <div className="home apppage">
       <div className="apptitles">
         <h5>Overview</h5>
@@ -32,7 +36,7 @@ function Home() {
         <div className="homemain">
           <div className="banner homebanner">
             <div className="bannertext">
-              <h4>Good Morning, {user.displayName.split(' ')[0]}</h4>
+              <h4>Good Morning, {fullname?fullname.split(' ')[0]:""}</h4>
               <h6>Check your recent notifications and tasks</h6>
               <div className="quicknotifs">
                 <small><i className="fal fa-bell"></i>3 Notifications</small>

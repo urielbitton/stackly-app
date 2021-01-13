@@ -25,10 +25,11 @@ function App() {
     setEmailError('')
     setPasswordError('')
   }
-
+ 
   const handleLogin = () => {
     clearErrors()
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(err => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(err => {
       switch(err.code) {
         case "auth/invalid-email":
         case "auth/user/disabled":
@@ -100,6 +101,7 @@ function App() {
   }
   const handleLogout = () => {
     firebase.auth().signOut()
+    window.location.reload()
   }
   const authListener = () => {
     firebase.auth().onAuthStateChanged(user => {
@@ -113,16 +115,16 @@ function App() {
     })
   }
 
-  useEffect(() => {
+  useEffect(() => { 
     authListener()
-  },[]) 
+  },[])  
 
   return (
     <div className="app">
       <StoreContextProvider>
         <Router>
         { 
-          user?<AppContainer handleLogout={handleLogout} name={name} />:
+          user?<AppContainer handleLogout={handleLogout} />:
           <Login 
           email={email} 
           name={name}

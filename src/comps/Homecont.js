@@ -45,7 +45,7 @@ function Homecont(props) {
 
   return ( 
     <div className="homecont">
-      <Navbar darkmode={props.darkmode} addproj={() => setAddProj(true)}/>
+      <Navbar darkmode={props.darkmode} addproj={() => setAddProj(true)} handleLogout={props.handleLogout}/>
         <Switch>
           <Route exact path="/">
             <Home />

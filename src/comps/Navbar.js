@@ -49,6 +49,7 @@ function Navbar(props) {
           <div className="slidemenu"> 
             <a href="#"><h6><i className="fas fa-moon"></i>Dark Mode</h6><Switchs onChange={(val) => {props.darkmode(val);setDarkmode(!darkmode)}} checked={darkmode}/></a>
             <Link to="/support"><h6><i className="fas fa-question-circle"></i>Support</h6></Link>
+            <a href="#" onClick={() => props.handleLogout()}><h6><i className="fas fa-sign-out-alt"></i>Logout</h6></a>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ function AppContainer(props) {
   return (
     <div className={fold?darkmode?"appcontainer foldappcontainer darkapp":"foldappcontainer appcontainer":darkmode?"appcontainer darkapp":"appcontainer"}>
       <Sidebar foldsidebar={() => setFold(!fold)} handleLogout={props.handleLogout} />
-      <Homecont darkmode={(val) => setDarkmode(val)}/>
+      <Homecont darkmode={(val) => setDarkmode(val)} handleLogout={props.handleLogout}/>
     </div>
   )
 }

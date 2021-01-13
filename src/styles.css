@@ -442,7 +442,7 @@ nav {
   margin-right: 15px;
 }
 .slidemenu a h6 {
-  font-size: 12px;
+  font-size: 13px;
 }
 .boxmenu:hover .slidemenu {
   visibility: visible;
@@ -1825,6 +1825,7 @@ button.highprior:hover, button.activehighbtn {
 }
 .settingspage .settingsbtn {
   width: 130px;
+  padding: 10px 7px;
   grid-column: 1/-1;
 }
 .removeacccont {
@@ -1937,9 +1938,11 @@ button.highprior:hover, button.activehighbtn {
 }
 .loginbtndiv .glogin {
   background: #DB4437;
+  border:none;
 }
 .loginbtndiv .fblogin {
   background: #415dae;
+  border:none;
 }
 .loginbtndiv button:hover {
   box-shadow: none;
