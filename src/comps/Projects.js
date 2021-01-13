@@ -31,6 +31,7 @@ function Projects(props) {
   const [taskprior, setTaskPrior] = useState('')
   const [tasknotes, setTaskNotes] = useState('')
   const [taskupdates, setTaskUpdates] = useState([])
+  const [activeicon, setActiveIcon] = useState(false) 
   const user = firebase.auth().currentUser
   
   const projectsrow = projlist && projlist.map(proj => {
@@ -39,9 +40,21 @@ function Projects(props) {
   const tasksrow = tasks && tasks.map(el => {
     return <p>{el.taskname}</p>
   })
+  const iconspack = [
+    {class:'fa-paint-brush-alt',title:'Design'},
+    {class: "fa-icons", title:'Entertainment'},
+    {class: "fa-laptop-code", title: "Development"},
+    {class: "fa-dollar-sign", title:"Finance"},
+    {class: "fa-shield-check", title:"Security"},
+    {class: "fa-cloud-upload", title: "Cloud System"},
+    {class: "fa-project-diagram", title: "General"}
+  ]
+  const iconsrow = iconspack && iconspack.map(el => {
+    return <i className={activeicon?`activeicon fal ${el.class}`:`fal ${el.class}`} title={el.title} key={el.title} onClick={() => setIcon(el.class, setActiveIcon(true))}></i>
+  })
 
   function createProject() {
-    if(name.length) {
+    if(name.length) { 
       let projobj = {
         projectid: db.collection("users").doc().id,
         name,
@@ -115,7 +128,7 @@ function Projects(props) {
       
       <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>
         <div className="addsection" style={{left: section===1?"0":"-200%"}}>
-        <Link to="/projects" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
+        <Link to="" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
         <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Create Project</h4></div>
         <div className="content hidescroll">
           <Inputs title="Project Name" placeholder="Web Development" value={name} onChange={(e) => setName(e.target.value)} />
@@ -146,9 +159,7 @@ function Projects(props) {
           <div className="switchbox iconpick">
             <h6>Project Icon</h6> 
             <div className="iconspack">
-              <i className="far fa-paint-brush-alt" title="Design"></i>
-              <i className="fal fa-icons" title="Entertainment"></i>
-              <i className="fal fa-laptop-code" title="Development"></i>
+              {iconsrow}
             </div>
           </div>
           <div className="spacers"></div>
@@ -156,6 +167,7 @@ function Projects(props) {
         <button onClick={() => createProject()}>Create</button>
         </div>
         <div className="clientsection" style={{left: section===1?"400px":section===2?"0":"400px"}}>
+          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Client</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
@@ -164,6 +176,7 @@ function Projects(props) {
           <button onClick={() => setSection(1)}>Done</button>
         </div>
         <div className="taskssection" style={{left: section===1?"400px":section===3?"0":"400px"}}>
+          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Tasks</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
@@ -188,7 +201,10 @@ function Projects(props) {
               <button onClick={() => setTaskPrior('high')} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
               </div>
             </div>
-            <textarea value={tasknotes} onChange={(e) => setTaskNotes(e.target.value)} placeholder="Enter task notes here..." />
+            <label>
+              <h6>Notes</h6>
+              <textarea value={tasknotes} onChange={(e) => setTaskNotes(e.target.value)} placeholder="Enter task notes here..." />
+            </label>
             <button onClick={() => addTask()}>Add</button>
             <details open>
               <summary><span>Added Tasks</span><i className="far fa-angle-right"></i></summary>

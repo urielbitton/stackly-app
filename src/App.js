@@ -73,7 +73,9 @@ function App() {
           jobtitle: "",
           companylogo: "",
           country: "",
-          profimg: ""
+          profimg: "",
+          id: user.uid,
+          coid: db.collection("users").doc().id
         }
         const settings = {
           general: {

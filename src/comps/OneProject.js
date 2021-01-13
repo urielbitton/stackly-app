@@ -58,9 +58,9 @@ function OneProject(props) {
           <i className="far fa-trash"></i>
         </div>
       </div> 
-  })
+  }) 
 
-  const updatesrow = taskupdates && taskupdates.map(el => {
+  const updatesrow = taskupdates && taskupdates.slice(0).reverse().map(el => {
     return <div className="updatebox" data-update={update}>
       <div> 
         <div className="clientcircle"><small>{el.updateperson.split(' ')[0][0]}{el.updateperson.split(' ')[1][0]}</small></div>
@@ -252,7 +252,7 @@ function OneProject(props) {
 
           </div> 
           <div className="actionsection">
-            <button style={{background: proj.color}}>Contact Client</button>
+            <button style={{background: proj.color}}>Mark Complete</button>
           </div>
         </div> 
       </div> 
