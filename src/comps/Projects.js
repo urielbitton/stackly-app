@@ -5,6 +5,7 @@ import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
 import firebase from 'firebase'
 import {db} from './Fire'
+import SendInvite from './SendInvite'
 
 function Projects(props) {
 
@@ -134,8 +135,8 @@ function Projects(props) {
         <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Create Project</h4></div>
         <div className="content hidescroll">
           <Inputs title="Project Name" placeholder="Web Development" value={name} onChange={(e) => setName(e.target.value)} />
-          <button onClick={() => setSection(2)}>Add Client<i className="fal fa-plus"></i></button>
           <button onClick={() => setSection(3)}>Add Tasks<i className="fal fa-plus"></i></button>
+          <button onClick={() => setSection(2)}>Add Client<i className="fal fa-plus"></i></button>
           <Inputs title="Days Left" type="number" placeholder="30" value={daysleft} onChange={(e) => setDaysLeft(e.target.value)} />
           <Inputs title="Progress" type="number" placeholder="50" value={progress} onChange={(e) => setProgress(e.target.value)} />
           <label>
@@ -170,16 +171,16 @@ function Projects(props) {
         <button onClick={() => createProject()}>Create</button>
         </div>
         <div className="clientsection" style={{left: section===1?"400px":section===2?"0":"400px"}}>
-          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
+          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd, setTimeout(() => {setSection(1)},300))}></i></Link>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Client</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
-            <Inputs title="Find a Client" iconclass="fal fa-search"/>
+            <SendInvite projname={name} />
           </div>
           <button onClick={() => setSection(1)}>Add</button>
         </div>
         <div className="taskssection" style={{left: section===1?"400px":section===3?"0":"400px"}}>
-          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
+          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd, setTimeout(() => {setSection(1)},300))}></i></Link>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Tasks</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">

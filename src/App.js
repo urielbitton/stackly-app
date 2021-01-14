@@ -16,6 +16,8 @@ function App() {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [hasAccount, setHasAccount] = useState(false)
+  const [typetoggle, setTypeToggle] = useState(true)
+  const [sharecode, setShareCode] = useState('')
 
   const clearInputs = () => {
     setEmail('')
@@ -76,7 +78,7 @@ function App() {
           country: "",
           profimg: "",
           id: user.uid,
-          coid: db.collection("users").doc().id
+          contractor: typetoggle
         }
         const settings = {
           general: {
@@ -138,6 +140,10 @@ function App() {
           setHasAccount={setHasAccount} 
           emailError={emailError}
           passwordError={passwordError}
+          typetoggle={typetoggle}
+          setTypeToggle={setTypeToggle}
+          sharecode={sharecode}
+          setShareCode={setShareCode}
         />
         }
         </Router>

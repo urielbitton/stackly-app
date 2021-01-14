@@ -1874,6 +1874,7 @@ button.highprior:hover, button.activehighbtn {
 }
 .removeacccont button {
   background: var(--red);
+  border-color: var(--red)
 }
 .switchgrid {
   display: grid;
@@ -2164,10 +2165,24 @@ details[open] summary ~ * {
   padding: 10px 20px;
 }
 
-
-
-
-
+.sendinvitecont {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  grid-gap: 20px;
+}
+.sendinvitecont small {
+  text-align: center;
+}
+.logincont .switchgrid {
+  margin-top: 10px;
+}
+.logincont .switchgrid > div {
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
 
 
 
