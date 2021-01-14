@@ -81,9 +81,9 @@ input {
   border: none;
   padding: 13px 10px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid #ddd; 
 } 
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
   border: 1px solid var(--color);
   box-shadow: 0px 0px 11px 0px rgba(53,182,250,0.14);
 }
@@ -1247,7 +1247,7 @@ nav {
   border-radius: 100%;
 }
 .oneprojectpage .progcircle svg {
-  transform: scale(3)
+  transform: scale(3);
 }
 .pagesidebg {
   position: absolute;
@@ -1298,6 +1298,10 @@ nav {
   flex-direction: column;
   overflow-y: scroll;
 }
+.sidecontentinner {
+  height: 100%;
+  overflow-y: scroll;
+}
 .sidecontent h4 {
   color: #fff;
   font-size: 15px;
@@ -1310,6 +1314,16 @@ nav {
   margin-top: 5px;
   margin-bottom: 20px;
 }
+.sidecontent .clearbtn {
+  color:#ddd;
+  font-size: 11px;
+  top: 4px;
+  cursor: pointer;
+  height: 5px;
+}
+.sidecontent .clearbtn:hover {
+  text-decoration: underline;
+}
 
 .activitydiv {
   display: flex;
@@ -1317,10 +1331,26 @@ nav {
   align-items: center;
   grid-gap: 20px;
   padding: 15px 5px;
+  padding-bottom: 15px;
   width: 100%;
   margin-bottom: 10px;
   border-bottom: 1px solid #ffffff15;
-} 
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.activitydiv i {
+  transition: all 0.2s;
+}
+.activitysidecont {
+  position: absolute;
+  bottom: 20px;
+  color: #ddd;
+  font-size: 12.5px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: all 0.2s;
+}
 .actcont {
   display: flex;
   justify-content: flex-start;

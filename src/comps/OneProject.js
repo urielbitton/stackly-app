@@ -39,8 +39,11 @@ function OneProject(props) {
   const [projprogress, setProjProgress] = useState('')
   const [activeicon, setActiveIcon] = useState('')
   const [addedit, setAddEdit] = useState(true)
+  const [priorpromise, setPriorPromise] = useState()
   const user = firebase.auth().currentUser
+  let date = new Date()
   let updatetime = formatDate(new Date())
+  let formatdate = date.toString().split(' ').slice(1,4).toString().replaceAll(',',' ')
   let history = useHistory()
 
 
@@ -54,22 +57,25 @@ function OneProject(props) {
         <div className="taskboxopts">
           <button onClick={() => slideDetails(el)}>Details</button>
           <i className="far fa-edit" onClick={() => editTask(el)}></i>
-          <i className="far fa-trash" onClick={() => deleteTask(el)}></i>
         </div>
       </div> 
   }) 
-  const recentactivity = proj.activity && proj.activity.map(el => {
-    return <div className="activitydiv">
+  const recentactivity = proj.activity && proj.activity.slice(0).reverse().map(el => {
+    return <div className="activitydiv" style={{paddingBottom:"15px"}}>
       <div className="actcont">
         <div className="clientcicrcle">
-          <small>{el.person.split(' ')[0][0]}{el.person.split(' ')[1][0]}</small>
+          <small>{el.actperson.split(' ')[0][0]}{el.actperson.split(' ')[1][0]}</small>
         </div>
         <div>
-          <h5>{el.task}</h5>
-          <h6>{el.time}</h6>
+          <h5>{el.actaction}: {el.acttext}</h5>
+          <h6>{el.actdate}</h6>
         </div>
         </div>
         <i className="fal fa-angle-right activitybtn"></i>
+        <div className="activitysidecont">
+          <small>Created at: {el.acttime}, {el.actdate}</small>
+          <small>Added by: {el.actperson}</small>
+        </div>
     </div> 
   })
   const updatesrow = taskupdates && taskupdates.slice(0).reverse().map(el => {
@@ -124,7 +130,7 @@ function OneProject(props) {
         db.collection("users").doc(user.uid).update({
           projects: projlist
         }) 
-      } 
+      }  
     })
   }
   function deleteUpdate(el) {
@@ -159,6 +165,7 @@ function OneProject(props) {
         }) 
         props.shownotif(4000) 
         setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
+        createActivity('Added task',taskname) 
       }
       else { //if editing a task
         let taskobj = {
@@ -182,7 +189,11 @@ function OneProject(props) {
         })
         props.shownotif(4000) 
         setNotifs([{icon: 'fal fa-check-circle',text: 'The current task has been saved.'}])
-        setShowAdd(!showadd)
+        if(priorpromise===0) 
+          createActivity('Changed','Task priority to Low')
+        else if(priorpromise===1)
+          createActivity('Changed','Task priority to High')
+
       }
       setTaskName('')
       setTaskPrior('')
@@ -190,6 +201,8 @@ function OneProject(props) {
       setTaskStatus('Not Started')
       setTaskDue('')
       setTaskNotes('')
+      setTimeout(() => { setShowAdd(!showadd)}, 30)
+      openCloseAct()
     }
     else {
       props.shownotif(4000) 
@@ -233,8 +246,9 @@ function OneProject(props) {
           db.collection("users").doc(user.uid).update({
             projects: projlist
           })
-        } 
-      })
+          createActivity('Added update',`on task '${tasklist[taskindex].taskname}'`)
+        }  
+      }) 
     } 
     setUpdText('')
   }
@@ -268,6 +282,7 @@ function OneProject(props) {
     setShowEdit(!showedit)
     props.shownotif(4000)
     setNotifs([{icon: 'fal fa-check-circle',text: `Project '${proj.name}' has been saved`}])
+    createActivity('Edited','Project details')
   }
   function deleteProject() {
     projlist.splice(projindex,1)
@@ -288,7 +303,58 @@ function OneProject(props) {
     setTaskPrior(el.taskprior)
   }
   function deleteTask() {
-    
+    tasklist && tasklist.forEach(el => {
+      if(el.taskid === taskid) {
+        setTaskUpdates(el.taskupdates)
+        let taskindex = tasklist.indexOf(el)
+        tasklist.splice(taskindex,1)
+        db.collection("users").doc(user.uid).update({
+          projects: projlist
+        }) 
+      } 
+    })
+    setTimeout(() => { setShowAdd(!showadd)}, 30)
+  }
+  function createActivity(action,text) {
+    let actobj = {
+      actperson: user.displayName,
+      acttext: text,
+      actdate: formatdate,
+      actaction: action,
+      acttime: updatetime
+    }
+    projlist[projindex].activity.push(actobj)
+    db.collection("users").doc(user.uid).update({
+      projects: projlist 
+    }) 
+  }
+  function clearActivity() {
+    projlist[projindex].activity = []
+    db.collection("users").doc(user.uid).update({
+      projects: projlist 
+    })
+  }
+  function openCloseAct() {
+    //open/close activitydivs
+    document.querySelectorAll('.activitydiv i').forEach(el => {
+      el.onclick = () => {
+        if(el.closest('.activitydiv').style.paddingBottom === '15px') {
+          document.querySelectorAll('.activitydiv').forEach(el => {
+            el.style.paddingBottom = '15px'
+            el.closest('.activitydiv').querySelector('.activitysidecont').style.opacity = '0'
+            el.querySelector('i').style.transform = 'rotate(0deg)'
+          })
+          el.closest('.activitydiv').style.paddingBottom = '65px'
+          el.style.transform = 'rotate(90deg)'
+          el.closest('.activitydiv').querySelector('.activitysidecont').style.opacity = '1'
+        }
+        else {
+          el.closest('.activitydiv').style.paddingBottom = '15px'
+          el.style.transform = 'rotate(0deg)'
+          el.closest('.activitydiv').querySelector('.activitysidecont').style.opacity = '0'
+        }
+      }
+    })
   }
   
   useEffect(() => {
@@ -310,11 +376,14 @@ function OneProject(props) {
         }
       }) 
     }) 
+  },[])
+  useEffect(() => {
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {
       if(proj.icon === el.class) 
         setActiveIcon(iconspack.indexOf(el))
     }) 
+    openCloseAct()
   },[])   
  
   return (
@@ -357,10 +426,18 @@ function OneProject(props) {
             <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
           </div>
           <div className="sidecontent hidescroll">
-            <h4>Recent Activity</h4>
-            <h6>January 05 2021</h6>
-            {proj.activity.length?recentactivity:<h4 className="noactivity">No Activity Yet...</h4>}
-
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <div>
+                <h4>Recent Activity</h4>
+                <h6>January 05 2021</h6>
+              </div>
+              {proj.activity.length?
+              <small className="clearbtn" onClick={() => clearActivity()}>Clear</small>
+              :""}
+            </div>
+            <div className="sidecontentinner hidescroll">
+              {proj.activity.length?recentactivity:<h4 className="noactivity">No Activity Yet...</h4>}
+            </div>
           </div> 
           <div className="actionsection">
             <button style={{background: proj.color, borderColor:proj.color}} onClick={() => markComplete()}>Mark Complete</button>
@@ -418,15 +495,18 @@ function OneProject(props) {
             </div>
             <Inputs title="Date Due" type="date" onChange={(e) => setTaskDue(e.target.value)} value={taskdue} />
             <div className="addpriorcont">
-              <button onClick={() => setTaskPrior('low')} className={taskprior==='low'?"lowprior priorbtn activelowbtn":"lowprior priorbtn"}><i className="fas fa-star"></i>Low Priority</button>
-              <button onClick={() => setTaskPrior('high')} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
+              <button onClick={() => setTaskPrior('low', setPriorPromise(0))} className={taskprior==='low'?"lowprior priorbtn activelowbtn":"lowprior priorbtn"}><i className="fas fa-star"></i>Low Priority</button>
+              <button onClick={() => setTaskPrior('high', setPriorPromise(0))} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
             </div>
             <label> 
               <h6>Notes</h6>
               <textarea placeholder="add notes to this task..." onChange={(e) => setTaskNotes(e.target.value)} value={tasknotes} />
             </label>
           </div>
-          <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className={addedit?"fal fa-plus":"fal fa-edit"}></i>{addedit?"Add":"Edit"}</button>
+          <div className="editprojbtngroup">
+            <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className={addedit?"fal fa-plus":"fal fa-edit"}></i>{addedit?"Add":"Edit"}</button>
+            <button style={{background:"var(--red)", borderColor:"var(--red)"}} onClick={() => deleteTask()}>Delete</button>
+          </div>
         </div>
       </div> 
 
