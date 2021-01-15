@@ -19,7 +19,7 @@ function Homecont(props) {
 
   const [userlist, setUserList] = useState([])
   const [projlist, setProjList] = useState([])
-  const [shareids, setShareIds] = useState([])
+  const [shareids, setShareIds] = useState([''])
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
   const [addproj, setAddProj] = useState(false) 
@@ -33,16 +33,22 @@ function Homecont(props) {
   const oneclient = clients && clients.map(cli => {
     return <Route path={`/clients/${cli.id}`}> 
       <OneClient cli={cli} key={cli.id} />
-    </Route>
-  }) 
-
+    </Route> 
+  })   
+ 
   useEffect(() => { 
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
-      setProjList(userlist.projects)
-      setShareIds(userlist.shareids)
+      setShareIds(userlist.shareids)  
     })
+    db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
+      let projects = []
+      query.forEach(doc => {
+        projects.push(doc.data()) 
+      })   
+      setProjList(projects)   
+    }) 
   },[]) 
 
   return ( 

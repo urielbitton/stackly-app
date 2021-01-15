@@ -18,7 +18,7 @@ function OneProject(props) {
   const [taskid, setTaskId] = useState('')
   const [taskname, setTaskName] = useState('')
   const [taskdue, setTaskDue] = useState('')
-  const [taskstatus, setTaskStatus] = useState('')
+  const [taskstatus, setTaskStatus] = useState('Not Started')
   const [taskupdates, setTaskUpdates] = useState([])
   const [tasknotes, setTaskNotes] = useState('')
   const [taskcolor, setTaskColor] = useState('#1cb7ff')
@@ -28,7 +28,7 @@ function OneProject(props) {
   const [taskprior, setTaskPrior] = useState('')
   const [projindex, setProjIndex] = useState('')
   const [updtext, setUpdText] = useState('')
-  const [tasklist, setTaskList] = useState([])
+  const [tasklist, setTaskList] = useState(proj.tasks)
   const [tempUpdText, setTempUpdText] = useState('')
   const [updatesList, setUpdatesList] = useState([])
   const [projname, setProjName] = useState('')
@@ -65,7 +65,7 @@ function OneProject(props) {
     return <div className="activitydiv" style={{paddingBottom:"15px"}}>
       <div className="actcont">
         <div className="clientcicrcle">
-          <small>{el.actperson.split(' ')[0][0]}{el.actperson.split(' ')[1][0]}</small>
+          <small>{el.actperson.split(' ')[0][0]}</small> 
         </div>
         <div>
           <h5>{el.actaction}: {el.acttext}</h5>
@@ -127,10 +127,8 @@ function OneProject(props) {
       if(el2.taskid === taskid) {
         let taskindex = tasklist.indexOf(el2)
         let updateindex = taskupdates.indexOf(el)
-        projlist[projindex].tasks[taskindex].taskupdates[updateindex].updatetext = tempUpdText
-        db.collection("users").doc(user.uid).update({
-          projects: projlist
-        }) 
+        proj.tasks[taskindex].taskupdates[updateindex].updatetext = tempUpdText
+        db.collection("projects").doc(proj.projectid).update(proj) 
       }  
     })
   }
@@ -140,10 +138,8 @@ function OneProject(props) {
         setTaskUpdates(el2.taskupdates)
         let taskindex = tasklist.indexOf(el2)  
         let updateindex = taskupdates.indexOf(el)
-        projlist[projindex].tasks[taskindex].taskupdates.splice(updateindex,1)
-        db.collection("users").doc(user.uid).update({
-          projects: projlist
-        })
+        proj.tasks[taskindex].taskupdates.splice(updateindex,1)
+        db.collection("projects").doc(proj.projectid).update(proj) 
       } 
     })
   }
@@ -160,10 +156,8 @@ function OneProject(props) {
           taskupdates,
           tasknotes
         }
-        projlist[projindex].tasks.push(taskobj)
-        db.collection("users").doc(user.uid).update({
-          projects: projlist
-        }) 
+        proj.tasks.push(taskobj)
+        db.collection("projects").doc(proj.projectid).update(proj)  
         props.shownotif(4000) 
         setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
         createActivity('Added task',taskname) 
@@ -182,10 +176,8 @@ function OneProject(props) {
         tasklist && tasklist.forEach(el => {
           if(el.taskid === taskid) {
             let taskindex = tasklist.indexOf(el)
-            projlist[projindex].tasks[taskindex] = taskobj
-            db.collection("users").doc(user.uid).update({
-              projects: projlist
-            }) 
+            proj.tasks[taskindex] = taskobj
+            db.collection("projects").doc(proj.projectid).update(proj) 
           } 
         })
         props.shownotif(4000) 
@@ -201,7 +193,7 @@ function OneProject(props) {
       setTaskColor('#056dff')
       setTaskStatus('Not Started')
       setTaskDue('')
-      setTaskNotes('')
+      setTaskNotes('') 
       setTimeout(() => { setShowAdd(!showadd)}, 30)
       openCloseAct()
     }
@@ -244,9 +236,7 @@ function OneProject(props) {
           setTaskUpdates(el.taskupdates)
           let taskindex = tasklist.indexOf(el)
           tasklist[taskindex].taskupdates.push(updateobj)
-          db.collection("users").doc(user.uid).update({
-            projects: projlist
-          })
+          db.collection("projects").doc(proj.projectid).update(proj) 
           createActivity('Added update',`on task '${tasklist[taskindex].taskname}'`)
         }  
       }) 
@@ -264,22 +254,18 @@ function OneProject(props) {
     return strTime
   }
   function markComplete() {
-    projlist[projindex].progress = 100
-    db.collection("users").doc(user.uid).update({
-      projects: projlist 
-    })
+    proj.progress = 100
+    db.collection("projects").doc(proj.projectid).update(proj) 
   }
   function saveProject() {
-    projlist[projindex].name = projname
-    projlist[projindex].active = projactive
-    projlist[projindex].category = projcat
-    projlist[projindex].daysleft = daysleft
-    projlist[projindex].icon = projicon
-    projlist[projindex].progress = projprogress
-    projlist[projindex].color = projcolor
-    db.collection("users").doc(user.uid).update({
-      projects: projlist  
-    })
+    proj.name = projname
+    proj.active = projactive
+    proj.category = projcat
+    proj.daysleft = daysleft
+    proj.icon = projicon
+    proj.progress = projprogress
+    proj.color = projcolor
+    db.collection("projects").doc(proj.projectid).update(proj) 
     setShowEdit(!showedit)
     props.shownotif(4000)
     setNotifs([{icon: 'fal fa-check-circle',text: `Project '${proj.name}' has been saved`}])
@@ -287,9 +273,7 @@ function OneProject(props) {
   }
   function deleteProject() {
     projlist.splice(projindex,1)
-    db.collection("users").doc(user.uid).update({
-      projects: projlist  
-    })
+    db.collection("projects").doc(proj.projectid).update(proj) 
     history.push('/projects')
   }
   function editTask(el) {
@@ -306,14 +290,11 @@ function OneProject(props) {
   function deleteTask() {
     tasklist && tasklist.forEach(el => {
       if(el.taskid === taskid) {
-        setTaskUpdates(el.taskupdates)
         let taskindex = tasklist.indexOf(el)
-        tasklist.splice(taskindex,1)
-        db.collection("users").doc(user.uid).update({
-          projects: projlist
-        }) 
+        tasklist.splice(taskindex,1) 
+        db.collection("projects").doc(proj.projectid).update(proj) 
       } 
-    })
+    }) 
     setTimeout(() => { setShowAdd(!showadd)}, 30)
   }
   function createActivity(action,text) {
@@ -324,16 +305,12 @@ function OneProject(props) {
       actaction: action,
       acttime: updatetime
     }
-    projlist[projindex].activity.push(actobj)
-    db.collection("users").doc(user.uid).update({
-      projects: projlist 
-    }) 
+    proj.activity.push(actobj)
+    db.collection("projects").doc(proj.projectid).update(proj) 
   }
   function clearActivity() {
-    projlist[projindex].activity = []
-    db.collection("users").doc(user.uid).update({
-      projects: projlist 
-    })
+    proj.activity = []
+    db.collection("projects").doc(proj.projectid).update(proj) 
   }
   function openCloseAct() {
     //open/close activitydivs
@@ -359,18 +336,13 @@ function OneProject(props) {
   }
   
   useEffect(() => {
-    db.collection('users').doc(user.uid).onSnapshot(doc => {
-      const userlist = doc.data()
-      setUserList(userlist)
-      setProjList(userlist.projects) 
-      setShareIds(userlist.shareids)
-      userlist.projects && userlist.projects.forEach(el => {
-        if(el.projectid === proj.projectid) {
-          setProjIndex(userlist.projects.indexOf(el))   
-          const tasklist = userlist.projects[userlist.projects.indexOf(el)].tasks
-          setTaskList(tasklist)
-          tasklist && tasklist.forEach(el => {
-            if(el.taskid === taskid) {
+    db.collection('projects').doc('projects').onSnapshot(doc => {
+      const projects = doc.data()
+      setProjList(projects)  
+      projects && projects.forEach(el => {
+        if(el.projectid === proj.projectid) {  
+          tasklist && tasklist.forEach(el => { 
+            if(el.taskid === taskid) { 
               let taskindex = tasklist.indexOf(el)
               setUpdatesList(tasklist[taskindex].taskupdates)
             } 
@@ -378,15 +350,14 @@ function OneProject(props) {
         }
       }) 
     }) 
-  },[])
-  useEffect(() => {
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {
       if(proj.icon === el.class) 
         setActiveIcon(iconspack.indexOf(el))
     }) 
     openCloseAct()
-  },[])   
+  },[])
+  
  
   return (
     <div className="oneprojectpage apppage">

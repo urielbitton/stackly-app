@@ -68,7 +68,6 @@ function App() {
         if(sharecode.length) {
           shareids.push(sharecode)
         }
-        const projects = []
         const clients = []
         const updates = []
         const userinfo = {
@@ -92,7 +91,6 @@ function App() {
           projects: {}
         }
         db.collection('users').doc(user.uid).set({
-          projects,
           clients, 
           userinfo,
           updates,

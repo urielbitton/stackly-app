@@ -13,7 +13,7 @@ function Projects(props) {
 
   const [userlist, setUserList] = useState([])
   const [projlist, setProjList] = useState([])
-  const [shareids, setShareIds] = useState([])
+  const [shareids, setShareIds] = useState([''])
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
   const [name, setName] = useState('')
@@ -69,11 +69,15 @@ function Projects(props) {
         active,
         progress,
         color,
-        icon
+        icon,
+        uid: user.uid
       }
+      db.collection('projects').doc(projid).set(
+        projobj 
+      ) 
       db.collection('users').doc(user.uid).update({
-        projects: firebase.firestore.FieldValue.arrayUnion(projobj)
-      })
+        shareids: firebase.firestore.FieldValue.arrayUnion(projid)
+      }) 
       setShowAdd(!showadd)
       props.shownotif(4000)
       setNotifs([{icon: 'fal fa-check-circle',text: `Project '${name}' has been created`}])
@@ -82,7 +86,7 @@ function Projects(props) {
       props.shownotif(4000)
       setNotifs([{icon: 'fal fa-exclamation-circle',text: `Project name cannot be empty.`}])
     }
-  }
+  } 
   function addTask() {
     if(taskname.length){
       let currtask = {
@@ -111,12 +115,18 @@ function Projects(props) {
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
-      setProjList(userlist.projects)
       setShareIds(userlist.shareids) 
     }) 
+    db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
+      let projects = []
+      query.forEach(doc => {
+        projects.push(doc.data()) 
+      })   
+      setProjList(projects)   
+    })    
   },[])
 
-  return (
+  return ( 
     <div className="projectspage apppage">
       <div className="pagegrid">
         <div className="pagemaingrid">
@@ -124,12 +134,12 @@ function Projects(props) {
             <h4>Projects</h4>
             <div className="actions">
               <div><i className="far fa-sliders-h"></i></div>
-              <button onClick={() => {setShowAdd(!showadd);setProjId(db.collection("users").doc().id)}}><i className="far fa-plus"></i>Create Project</button>
+              <button onClick={() => {setShowAdd(!showadd);setProjId(db.collection("projects").doc().id)}}><i className="far fa-plus"></i>Create Project</button>
             </div>
           </div> 
-          {projectsrow} 
-        </div> 
-      </div>
+          {projectsrow}    
+        </div>  
+      </div>  
       <div className="addcover" style={{display: showadd?"block":"none"}}></div>
       
       <div className="addprojectcont" style={{bottom: showadd?"0":"-190%"}}>
@@ -193,7 +203,7 @@ function Projects(props) {
               <h6>Task Color</h6>
               <Inputs type="color" onChange={(e) => setTaskColor(e.target.value)} value={taskcolor}/>  
             </div>
-            <label>
+            <label> 
               <h6>Task Status</h6>
               <select value={taskstatus} onChange={(e) => setTaskStatus(e.target.value)} >
                 <option value="Not Started">Not Started</option>

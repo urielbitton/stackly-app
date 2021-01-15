@@ -20,10 +20,13 @@ function Home() {
     db.collection('users').doc(user.uid).get().then(doc => {
       const userlist = doc.data()
       setUserList(userlist)
-      setProjList(userlist.projects)
       setUserInfo(userlist.userinfo)
       setFullName(userlist.userinfo.fullname)
     })
+    db.collection('projects').doc('projects').onSnapshot(doc => {
+      const projects = doc.data().projects
+      setProjList(projects)
+    }) 
   },[]) 
 
   return ( 
@@ -69,12 +72,12 @@ function Home() {
             </div>
           </div>
         </div>
-        <div className="homeside">
+        <div className="homeside"> 
           <Calendars />
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-rocket-launch"></i>
-              <h4>Active Projects<span>{projlist.length}</span></h4>
+              <h4>Active Projects<span>{projlist && projlist.length}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>
