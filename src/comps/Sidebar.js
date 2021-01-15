@@ -1,9 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router,Switch,Route,Link, NavLink } from "react-router-dom"
+import firebase from 'firebase'
+import {db} from './Fire'
 
 function Sidebar(props) {
 
   const [slideprof, setSlideProf] = useState(false)
+  const [userlist, setUserList] = useState([])
+  const [userinfo, setUserInfo] = useState([])
+  const user = firebase.auth().currentUser
+
+  useEffect(() => {
+    db.collection('users').doc(user.uid).onSnapshot(doc => {
+      const userlist = doc.data()
+      setUserList(userlist)
+      setUserInfo(userlist.userinfo) 
+    })
+  },[])
 
   return (
     <div className="sidebar hidescroll">
@@ -14,8 +27,8 @@ function Sidebar(props) {
       <div className="profcont" style={{minHeight: slideprof?"270px":"150px"}}>
         <img src="https://i.imgur.com/JWVZJyP.jpg" alt=""/>
         <div onClick={() => setSlideProf(!slideprof)} className="mainprof">
-          <h4>Uriel Bitton</h4>
-          <h6>App Developer</h6>
+          <h4>{user.displayName}</h4>
+          <h6>{userinfo.jobtitle}</h6>
           <i className="far fa-angle-right" style={{transform: slideprof?"rotate(90deg)":"rotate(0deg)"}}></i> 
         </div>
         <div className="accountlinks">

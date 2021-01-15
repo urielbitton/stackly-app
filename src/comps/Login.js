@@ -40,7 +40,7 @@ function Login(props) {
           }
           {
             !typetoggle?
-            <Inputs title="Share Code" value={sharecode} onChange={(e) => setShareCode(e.target.value)}/>:""
+            <Inputs title="Invitation Code" value={sharecode} onChange={(e) => setShareCode(e.target.value)}/>:""
           }
         </form>  
         {hasAccount?

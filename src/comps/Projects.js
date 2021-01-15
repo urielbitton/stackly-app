@@ -13,6 +13,7 @@ function Projects(props) {
 
   const [userlist, setUserList] = useState([])
   const [projlist, setProjList] = useState([])
+  const [shareids, setShareIds] = useState([])
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
   const [name, setName] = useState('')
@@ -33,6 +34,7 @@ function Projects(props) {
   const [tasknotes, setTaskNotes] = useState('')
   const [taskupdates, setTaskUpdates] = useState([])
   const [activeicon, setActiveIcon] = useState('') 
+  const [projid, setProjId] = useState('')
   const user = firebase.auth().currentUser
   
   const projectsrow = projlist && projlist.map(proj => {
@@ -57,7 +59,7 @@ function Projects(props) {
   function createProject() {
     if(name.length) { 
       let projobj = {
-        projectid: db.collection("users").doc().id,
+        projectid: projid,
         name,
         client, 
         tasks,
@@ -110,8 +112,9 @@ function Projects(props) {
       const userlist = doc.data()
       setUserList(userlist)
       setProjList(userlist.projects)
-    })
-  },[]) 
+      setShareIds(userlist.shareids) 
+    }) 
+  },[])
 
   return (
     <div className="projectspage apppage">
@@ -121,7 +124,7 @@ function Projects(props) {
             <h4>Projects</h4>
             <div className="actions">
               <div><i className="far fa-sliders-h"></i></div>
-              <button onClick={() => setShowAdd(!showadd)}><i className="far fa-plus"></i>Create Project</button>
+              <button onClick={() => {setShowAdd(!showadd);setProjId(db.collection("users").doc().id)}}><i className="far fa-plus"></i>Create Project</button>
             </div>
           </div> 
           {projectsrow} 
@@ -175,7 +178,7 @@ function Projects(props) {
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Client</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
-            <SendInvite projname={name} />
+            <SendInvite projname={name} projid={projid} />
           </div>
           <button onClick={() => setSection(1)}>Add</button>
         </div>

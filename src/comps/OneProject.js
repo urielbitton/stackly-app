@@ -10,9 +10,10 @@ function OneProject(props) {
 
   const {setNotifs} = useContext(StoreContext)
   const {proj} = props
-
+  
   const [userlist, setUserList] = useState([])
   const [projlist, setProjList] = useState([])
+  const [shareids, setShareIds] = useState([])
   const [slide, setSlide] = useState(false)
   const [taskid, setTaskId] = useState('')
   const [taskname, setTaskName] = useState('')
@@ -362,6 +363,7 @@ function OneProject(props) {
       const userlist = doc.data()
       setUserList(userlist)
       setProjList(userlist.projects) 
+      setShareIds(userlist.shareids)
       userlist.projects && userlist.projects.forEach(el => {
         if(el.projectid === proj.projectid) {
           setProjIndex(userlist.projects.indexOf(el))   

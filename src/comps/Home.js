@@ -7,19 +7,20 @@ import firebase from 'firebase'
 
 function Home() {
 
-  const {projects, clients} = useContext(StoreContext)
-
   const [userlist, setUserList] = useState([])
   const [userinfo, setUserInfo] = useState([])
+  const [projlist, setProjList] = useState([])
+  const [clientlist, setClientList] = useState([])
   const [fullname, setFullName] = useState('')
-  const activetasks = projects.reduce((a,b) => a+b.tasksnum,0)
+  const activetasks = 0
   const user = firebase.auth().currentUser
-
+ 
 
   useEffect(() => {
     db.collection('users').doc(user.uid).get().then(doc => {
       const userlist = doc.data()
       setUserList(userlist)
+      setProjList(userlist.projects)
       setUserInfo(userlist.userinfo)
       setFullName(userlist.userinfo.fullname)
     })
@@ -73,7 +74,7 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-rocket-launch"></i>
-              <h4>Active Projects<span>{projects.length}</span></h4>
+              <h4>Active Projects<span>{projlist.length}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>
@@ -87,7 +88,7 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-user-friends"></i>
-              <h4>Active Clients<span>{clients.length}</span></h4>
+              <h4>Active Clients<span>{clientlist.length}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div> 

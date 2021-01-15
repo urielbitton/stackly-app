@@ -15,7 +15,7 @@ function SendInvite(props) {
 
   function handleSend() { 
     const templateid = 'template_x8smust'
-    sendFeedback(templateid, {from_name:user.displayName, email_to:emailto, projname:props.projname, shareid})
+    sendFeedback(templateid, {from_name:user.displayName, email_to:emailto, projname:props.projname, shareid:props.projid})
   }
   function sendFeedback (templateid, variables) { 
     window.emailjs.send(

@@ -19,6 +19,7 @@ function Homecont(props) {
 
   const [userlist, setUserList] = useState([])
   const [projlist, setProjList] = useState([])
+  const [shareids, setShareIds] = useState([])
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
   const [addproj, setAddProj] = useState(false) 
@@ -35,11 +36,12 @@ function Homecont(props) {
     </Route>
   }) 
 
-  useEffect(() => {
+  useEffect(() => { 
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
       setProjList(userlist.projects)
+      setShareIds(userlist.shareids)
     })
   },[]) 
 

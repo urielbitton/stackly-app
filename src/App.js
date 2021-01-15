@@ -18,6 +18,7 @@ function App() {
   const [hasAccount, setHasAccount] = useState(false)
   const [typetoggle, setTypeToggle] = useState(true)
   const [sharecode, setShareCode] = useState('')
+  const [shareids, setShareIds] = useState([])
 
   const clearInputs = () => {
     setEmail('')
@@ -64,6 +65,9 @@ function App() {
         user.updateProfile({
           displayName: name
         })
+        if(sharecode.length) {
+          shareids.push(sharecode)
+        }
         const projects = []
         const clients = []
         const updates = []
@@ -93,7 +97,8 @@ function App() {
           userinfo,
           updates,
           settings,
-          uid: user.uid
+          uid: user.uid,
+          shareids
         })
       }//if (user)
       else {
