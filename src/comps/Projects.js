@@ -122,7 +122,7 @@ function Projects(props) {
       query.forEach(doc => {
         projects.push(doc.data()) 
       })   
-      setProjList(projects)   
+      setProjList(projects)          
     })    
   },[])
 
@@ -203,7 +203,7 @@ function Projects(props) {
               <h6>Task Color</h6>
               <Inputs type="color" onChange={(e) => setTaskColor(e.target.value)} value={taskcolor}/>  
             </div>
-            <label> 
+            <label>    
               <h6>Task Status</h6>
               <select value={taskstatus} onChange={(e) => setTaskStatus(e.target.value)} >
                 <option value="Not Started">Not Started</option>

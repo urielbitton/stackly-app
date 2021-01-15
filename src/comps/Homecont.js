@@ -12,14 +12,14 @@ import {StoreContext} from './StoreContext'
 import Notifs from './Notifs'
 import firebase from 'firebase'
 import {db} from './Fire'
-
-function Homecont(props) {
+  
+function Homecont(props) {   
   
   const {projects, clients} = useContext(StoreContext)
 
-  const [userlist, setUserList] = useState([])
-  const [projlist, setProjList] = useState([])
-  const [shareids, setShareIds] = useState([''])
+  const [userlist, setUserList] = useState([]) 
+  const [projlist, setProjList] = useState([])  
+  const [shareids, setShareIds] = useState([' ']) 
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
   const [addproj, setAddProj] = useState(false) 
@@ -36,7 +36,7 @@ function Homecont(props) {
     </Route> 
   })   
  
-  useEffect(() => { 
+  useEffect(() => {  
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
