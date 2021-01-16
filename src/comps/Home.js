@@ -23,10 +23,13 @@ function Home() {
       setUserInfo(userlist.userinfo)
       setFullName(userlist.userinfo.fullname)
     })
-    db.collection('projects').doc('projects').onSnapshot(doc => {
-      const projects = doc.data().projects
+    db.collection("projects").get().then(snap => {
+      let projects = []
+      snap.forEach(doc => {
+        projects.push(doc.data())
+      })
       setProjList(projects)
-    }) 
+    }); 
   },[]) 
 
   return ( 

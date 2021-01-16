@@ -264,7 +264,7 @@ function OneProject(props) {
     proj.daysleft = daysleft
     proj.icon = projicon
     proj.progress = projprogress
-    proj.color = projcolor
+    proj.color = projcolor 
     db.collection("projects").doc(proj.projectid).update(proj) 
     setShowEdit(!showedit)
     props.shownotif(4000)
@@ -272,8 +272,8 @@ function OneProject(props) {
     createActivity('Edited','Project details')
   }
   function deleteProject() {
-    projlist.splice(projindex,1)
-    db.collection("projects").doc(proj.projectid).update(proj) 
+    const projRef = db.collection("projects").doc(proj.projectid)
+    projRef.delete()
     history.push('/projects')
   }
   function editTask(el) {
@@ -336,19 +336,11 @@ function OneProject(props) {
   }
   
   useEffect(() => {
-    db.collection('projects').doc('projects').onSnapshot(doc => {
-      const projects = doc.data()
-      setProjList(projects)  
-      projects && projects.forEach(el => {
-        if(el.projectid === proj.projectid) {  
-          tasklist && tasklist.forEach(el => { 
-            if(el.taskid === taskid) { 
-              let taskindex = tasklist.indexOf(el)
-              setUpdatesList(tasklist[taskindex].taskupdates)
-            } 
-          })
-        }
-      }) 
+    proj.tasks && proj.tasks.forEach(el => { 
+      if(el.taskid === taskid) { 
+        let taskindex = tasklist.indexOf(el)
+        setUpdatesList(tasklist[taskindex].taskupdates)
+      } 
     }) 
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {

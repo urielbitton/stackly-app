@@ -12,7 +12,7 @@ import {StoreContext} from './StoreContext'
 import Notifs from './Notifs'
 import firebase from 'firebase'
 import {db} from './Fire'
-  
+   
 function Homecont(props) {   
   
   const {projects, clients} = useContext(StoreContext)
@@ -42,14 +42,15 @@ function Homecont(props) {
       setUserList(userlist)
       setShareIds(userlist.shareids)  
     })
-    db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
+    db.collection("projects").onSnapshot(snap => {
       let projects = []
-      query.forEach(doc => {
-        projects.push(doc.data()) 
-      })   
-      setProjList(projects)   
-    }) 
-  },[]) 
+      snap.forEach(doc => { 
+        if(shareids.includes(doc.data().projectid)) 
+          projects.push(doc.data())
+      })
+      setProjList(projects)
+  })  
+  }) 
 
   return ( 
     <div className="homecont">

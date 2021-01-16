@@ -13,7 +13,7 @@ function Projects(props) {
 
   const [userlist, setUserList] = useState([])
   const [projlist, setProjList] = useState([])
-  const [shareids, setShareIds] = useState([''])
+  const [shareids, setShareIds] = useState([' '])
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
   const [name, setName] = useState('')
@@ -114,16 +114,26 @@ function Projects(props) {
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
-      setUserList(userlist)
-      setShareIds(userlist.shareids) 
-    }) 
-    db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
+      setUserList(userlist)  
+      setShareIds(userlist.shareids)  
+      console.log('hit')  
+    })     
+    db.collection("projects").onSnapshot(snap => {
+        let projects = []
+        snap.forEach(doc => { 
+          if(shareids.includes(doc.data().projectid)) 
+            projects.push(doc.data())
+        })
+        setProjList(projects) 
+    })  
+    //Alternative method
+    /*db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
       let projects = []
       query.forEach(doc => {
         projects.push(doc.data()) 
       })   
-      setProjList(projects)          
-    })    
+      setProjList(projects)           
+    })*/  
   },[])
 
   return ( 

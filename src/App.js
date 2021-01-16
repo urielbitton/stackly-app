@@ -68,6 +68,7 @@ function App() {
         if(sharecode.length) {
           shareids.push(sharecode)
         }
+        shareids.push('0')
         const clients = []
         const updates = []
         const userinfo = {
