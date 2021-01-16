@@ -53,7 +53,7 @@ function SendInvite(props) {
 
   return ( 
     <div className="sendinvitecont">
-      <Inputs title="Find a Client" iconclass="fal fa-search" value={emailto} onChange={(e) => validateInput(e.target.value)}/>
+      <Inputs title={props.title} iconclass="fal fa-search" value={emailto} onChange={(e) => validateInput(e.target.value)}/>
       <button onClick={() => sendInvitation()}>Send Invitation</button> 
       <small style={{color: error?"var(--red)":"var(--color)"}}>{notify}</small>
     </div>

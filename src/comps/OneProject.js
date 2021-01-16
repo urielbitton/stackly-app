@@ -5,6 +5,7 @@ import { Inputs, Switchs } from './Inputs'
 import {StoreContext} from './StoreContext'
 import firebase from 'firebase'
 import {db} from './Fire'
+import SendInvite from './SendInvite'
 
 function OneProject(props) { 
 
@@ -12,8 +13,6 @@ function OneProject(props) {
   const {proj} = props
   
   const [userlist, setUserList] = useState([])
-  const [projlist, setProjList] = useState([])
-  const [shareids, setShareIds] = useState([])
   const [slide, setSlide] = useState(false)
   const [taskid, setTaskId] = useState('')
   const [taskname, setTaskName] = useState('')
@@ -41,6 +40,11 @@ function OneProject(props) {
   const [activeicon, setActiveIcon] = useState('')
   const [addedit, setAddEdit] = useState(true)
   const [priorpromise, setPriorPromise] = useState()
+  const [showinv, setShowInv] = useState(false)
+  const [notify, setNotify] = useState('')
+  const [selectuser, setSelectUser] = useState(false)
+  const [keyword, setKeyword] = useState('') 
+  const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const user = firebase.auth().currentUser
   let date = new Date()
   let updatetime = formatDate(new Date())
@@ -334,8 +338,25 @@ function OneProject(props) {
       }
     })
   }
+  function inviteByUser() {
+
+  }
+  const usersrow = userlist && userlist.map(el => {
+    if(pattern.test(el.userinfo.fullname.toLowerCase()))
+    return <div className="usersrowdiv">
+      <h6>{el.userinfo.fullname}<span>{el.userinfo.email}</span></h6>
+      <input type="checkbox" name={el.userinfo.uid} onChange={(e) => setSelectUser(e.target.checked)} />
+    </div>   
+  })
   
   useEffect(() => {
+    db.collection('users').orderBy('userinfo.fullname','asc').onSnapshot(snap => {
+      let users = []
+      snap.forEach(use => {
+        users.push(use.data())
+      })
+      setUserList(users)
+    })
     proj.tasks && proj.tasks.forEach(el => { 
       if(el.taskid === taskid) { 
         let taskindex = tasklist.indexOf(el)
@@ -405,7 +426,7 @@ function OneProject(props) {
             </div>
           </div> 
           <div className="actionsection">
-            <button style={{background: proj.color, borderColor:proj.color}} onClick={() => markComplete()}>Mark Complete</button>
+            <button style={{background: proj.color, borderColor:proj.color}} onClick={() => setShowInv(!showinv)}>Invite Client</button>
           </div>
         </div> 
       </div> 
@@ -518,7 +539,31 @@ function OneProject(props) {
           </div>
         </div>
       </div>  
- 
+      
+      <div className="addcover" style={{display: showinv?"block":"none"}}></div>
+      <div className="addprojectcont" style={{bottom: showinv?"0":"-190%"}}>
+        <div className="addsection">
+          <a className="closeadd"><i className="fal fa-times" onClick={() => setShowInv(!showinv)}></i></a>
+          <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Invite Client</h4></div>
+          <div className="content hidescroll">
+            <SendInvite title="Invite client by email"/>
+            <div className="sendinvitecont">
+              <Inputs title="Invite client by user name" iconclass="fal fa-search" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+              <div className="usersrowhead"><h6>User name - Email</h6><h6>Invite</h6></div>
+              {usersrow}
+              {
+                selectuser?<button onClick={() => inviteByUser()}>Invite User</button>:
+                <button disabled style={{opacity: "0.3"}}>Invite User</button> 
+              }
+              <small>{notify}</small> 
+            </div>
+          </div> 
+          <div className="editprojbtngroup">
+            <button onClick={() => setShowInv(!showinv, setSelectUser(false))}>Done</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }

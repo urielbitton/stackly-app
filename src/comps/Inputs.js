@@ -5,11 +5,11 @@ export function Inputs(props) {
     <label className="labelinput">
       <h6>{props.title}</h6>
       <i className={props.iconclass}></i>
-      <input style={{paddingR: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onChange(e)}/>
+      <input style={{paddingRight: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onChange(e)} name={props.name} checked={props.checked} />
     </label>
   )   
 }  
-
+ 
 export function Switchs(props) {
   return (   
     <div className="switchdiv"> 

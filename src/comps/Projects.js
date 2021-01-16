@@ -70,7 +70,7 @@ function Projects(props) {
         progress,
         color,
         icon,
-        uid: user.uid
+        creator: user.uid,
       }
       db.collection('projects').doc(projid).set(
         projobj 
@@ -112,29 +112,27 @@ function Projects(props) {
   }
 
   useEffect(() => {
-    db.collection('users').doc(user.uid).onSnapshot(doc => {
-      const userlist = doc.data()
+    db.collection('users').doc(user.uid).onSnapshot(use => {
+      const userlist = use.data()
       setUserList(userlist)  
-      setShareIds(userlist.shareids)  
-      console.log('hit')  
-    })     
-    db.collection("projects").onSnapshot(snap => {
-        let projects = []
-        snap.forEach(doc => { 
-          if(shareids.includes(doc.data().projectid)) 
+      db.collection('projects').onSnapshot(snap => {
+        let projects = [] 
+        snap.forEach(doc => {       
+          if(userlist.shareids.includes(doc.data().projectid)) 
             projects.push(doc.data())
         })
-        setProjList(projects) 
-    })  
+        setProjList(projects)   
+      })  
+    })             
     //Alternative method
     /*db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
       let projects = []
       query.forEach(doc => {
         projects.push(doc.data()) 
-      })   
+      })    
       setProjList(projects)           
-    })*/  
-  },[])
+    })*/       
+  },[]) 
 
   return ( 
     <div className="projectspage apppage">
@@ -228,7 +226,7 @@ function Projects(props) {
               <button onClick={() => setTaskPrior('high')} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
               </div>
             </div>
-            <label>
+            <label> 
               <h6>Notes</h6>
               <textarea value={tasknotes} onChange={(e) => setTaskNotes(e.target.value)} placeholder="Enter task notes here..." />
             </label>

@@ -36,21 +36,20 @@ function Homecont(props) {
     </Route> 
   })   
  
-  useEffect(() => {  
-    db.collection('users').doc(user.uid).onSnapshot(doc => {
-      const userlist = doc.data()
-      setUserList(userlist)
-      setShareIds(userlist.shareids)  
-    })
-    db.collection("projects").onSnapshot(snap => {
-      let projects = []
-      snap.forEach(doc => { 
-        if(shareids.includes(doc.data().projectid)) 
-          projects.push(doc.data())
-      })
-      setProjList(projects)
-  })  
-  }) 
+  useEffect(() => {
+    db.collection('users').doc(user.uid).onSnapshot(use => {
+      const userlist = use.data()
+      setUserList(userlist)  
+      db.collection('projects').onSnapshot(snap => {
+        let projects = [] 
+        snap.forEach(doc => {       
+          if(userlist.shareids.includes(doc.data().projectid)) 
+            projects.push(doc.data())
+        })
+        setProjList(projects)   
+      })  
+    })                   
+  },[])
 
   return ( 
     <div className="homecont">

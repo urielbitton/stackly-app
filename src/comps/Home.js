@@ -16,14 +16,14 @@ function Home() {
   const user = firebase.auth().currentUser
  
 
-  useEffect(() => {
-    db.collection('users').doc(user.uid).get().then(doc => {
+  useEffect(() => { 
+    db.collection('users').doc(user.uid).onSnapshot(doc => {
       const userlist = doc.data()
       setUserList(userlist)
       setUserInfo(userlist.userinfo)
       setFullName(userlist.userinfo.fullname)
     })
-    db.collection("projects").get().then(snap => {
+    db.collection("projects").onSnapshot(snap => {
       let projects = []
       snap.forEach(doc => {
         projects.push(doc.data())

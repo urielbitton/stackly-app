@@ -10,12 +10,11 @@ function Clients(props) {
 
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
-  const [cardColor, setCardColor] = useState('')
+  const [cardColor, setCardColor] = useState('#056dff')
 
   const clientsrow = clients && clients.map(cli => {
     return <ClientCard cli={cli} key={cli.id} sendclientid={props.sendclientid}/>
   })
-  console.log(cardColor)
 
   return (
     <div className="clientspage apppage">
