@@ -96,7 +96,15 @@ function App() {
           settings,
           uid: user.uid,
           shareids,
-          invites
+          invites 
+        })
+        let notifObj = {
+          notifid: db.collection("notifications").doc().id,
+          notiftext: "Welcome to Stackly App. Go to settings to set up your account information.",
+          notifdate: new Date()
+        }
+        db.collection('notifications').doc(user.uid).set({
+          notifs: firebase.firestore.FieldValue.arrayUnion(notifObj) 
         })
       }//if (user)
       else {
