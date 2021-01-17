@@ -82,8 +82,8 @@ function Home() {
               <h4>Good Morning, {fullname?fullname.split(' ')[0]:""}</h4>
               <h6>Check your recent notifications and tasks</h6>
               <div className="quicknotifs">
-                <small><i className="fal fa-bell"></i>3 Notifications</small>
-                <small><i className="fal fa-tasks"></i>5 New Tasks</small>
+                <small><i className="fal fa-bell"></i>0 Notifications</small>
+                <small><i className="fal fa-tasks"></i>0 New Tasks</small>
               </div>
             </div>
             <img src="https://i.imgur.com/ij6HKa7.png" alt=""/>

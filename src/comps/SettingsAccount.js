@@ -1,10 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Inputs} from './Inputs'
 import { StoreContext } from './StoreContext'
+import firebase from 'firebase'
+import {db} from './Fire'
 
 function SettingsAccount(props) {
 
   const {setNotifs} = useContext(StoreContext)
+
+  const [userlist, setUserList] = useState([])
+  const [userinfo, setUserInfo] = useState([])
   const [uploaded, setUploaded] = useState(false)
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
@@ -14,6 +19,7 @@ function SettingsAccount(props) {
   const [country, setCountry] = useState('')
   const [company, setCompany] = useState('')
   const [jobtitle, setJobtitle] = useState('')
+  const user = firebase.auth().currentUser
 
   function uploadImg() {
     setUploaded(!uploaded)
@@ -24,9 +30,39 @@ function SettingsAccount(props) {
     setNotifs([{icon: 'fal fa-save',text: 'Your profile image has been saved.'}])
   }
   function saveAccount() {
+    let userObj = {
+      fullname: fname+" "+lname,
+      email,
+      phone,
+      city,
+      country,
+      company,
+      jobtitle,
+      profimg: '',
+      companylogo: ''
+    } 
+    db.collection('users').doc(user.uid).update({
+      userinfo: userObj
+    }) 
     props.shownotif(4000)
     setNotifs([{icon: 'fal fa-save',text: 'Your account settings have been saved.'}])
   }
+
+  useEffect(() => {
+    db.collection('users').doc(user.uid).onSnapshot(use => {
+      const userlist = use.data()
+      setUserList(userlist)     
+      setUserInfo(userlist.userinfo)
+      setFname(userlist.userinfo.fullname.split(' ')[0])
+      setLname(userlist.userinfo.fullname.split(' ')[1])
+      setEmail(userlist.userinfo.email)
+      setPhone(userlist.userinfo.phone)
+      setCity(userlist.userinfo.city)
+      setCountry(userlist.userinfo.country)
+      setCompany(userlist.userinfo.company)
+      setJobtitle(userlist.userinfo.jobtitle)
+    })
+  },[])
 
   return (
     <div className="settingsaccount">

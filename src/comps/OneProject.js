@@ -402,7 +402,7 @@ function OneProject(props) {
             <div className="timelinecont">
               <hr/>
                 {proj.tasks && proj.tasks.map(el => {
-                  return <div className="timecircle"></div>
+                  return <div className="timecircle" style={{background: el.taskcolor}}></div>
                 })}
             </div>
             {proj.tasks.length?alltasks:<h4 className="notasksmsg">There are no tasks yet.</h4>}

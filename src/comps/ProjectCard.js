@@ -3,7 +3,7 @@ import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
 
 function ProjectCard(props) {
 
-  const {projectid, name, client, tasksnum, daysleft, progress, color, shadow, icon} = props.proj
+  const {projectid, name, client, tasks, daysleft, progress, color, shadow, icon} = props.proj
 
   return (  
     <Link to={`/project/${projectid}`}>
@@ -29,7 +29,7 @@ function ProjectCard(props) {
         </div>
       </div>
       <div className="projinforow">
-        <div><small><i className="far fa-tasks"></i>{tasksnum}</small></div>
+        <div><small><i className="far fa-tasks"></i>{tasks.length} tasks</small></div>
         <small><i className="far fa-clock"></i>{daysleft} days left</small>
       </div>
     </div>
