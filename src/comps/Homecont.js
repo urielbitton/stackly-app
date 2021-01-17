@@ -22,8 +22,7 @@ function Homecont(props) {
   const [shareids, setShareIds] = useState([' ']) 
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
-  const [addproj, setAddProj] = useState(false) 
-  const user = firebase.auth().currentUser
+  const user = firebase.auth().currentUser 
 
   const oneproject = projlist && projlist.map(proj => {
     return <Route path={`/project/${proj.projectid}`}> 
@@ -34,7 +33,7 @@ function Homecont(props) {
     return <Route path={`/clients/${cli.id}`}> 
       <OneClient cli={cli} key={cli.id} />
     </Route> 
-  })   
+  })    
  
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
@@ -53,13 +52,13 @@ function Homecont(props) {
 
   return ( 
     <div className="homecont">
-      <Navbar darkmode={props.darkmode} addproj={() => setAddProj(true)} handleLogout={props.handleLogout}/>
+      <Navbar darkmode={props.darkmode} handleLogout={props.handleLogout}/>
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
           <Route path="/projects"> 
-            <Projects shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} addproj={addproj}/>
+            <Projects shownotif={(time) => setUpdate(prev => prev+1, setTime(time))} />
           </Route>
           <Route path="/clients"> 
             <Clients />

@@ -8,6 +8,7 @@ function Sidebar(props) {
   const [slideprof, setSlideProf] = useState(false)
   const [userlist, setUserList] = useState([])
   const [userinfo, setUserInfo] = useState([])
+  const [profimg, setProfImg] = useState('')
   const user = firebase.auth().currentUser
 
   useEffect(() => {
@@ -15,8 +16,9 @@ function Sidebar(props) {
       const userlist = doc.data()
       setUserList(userlist)
       setUserInfo(userlist.userinfo) 
-    })
-  },[])
+      setProfImg(userlist.userinfo.profimg)
+    })  
+  },[]) 
 
   return (
     <div className="sidebar hidescroll">
@@ -25,10 +27,10 @@ function Sidebar(props) {
         <hr/><hr/><hr/>
       </div>
       <div className="profcont" style={{minHeight: slideprof?"270px":"150px"}}>
-        <img src="https://i.imgur.com/JWVZJyP.jpg" alt=""/>
+      <img src={profimg.length?profimg:"https://i.imgur.com/yxij2KH.jpg"} alt=""/>
         <div onClick={() => setSlideProf(!slideprof)} className="mainprof">
-          <h4>{user.displayName}</h4>
-          <h6>{userinfo.jobtitle}</h6>
+          <h4>{userinfo.fullname?userinfo.fullname:""}</h4>
+          <h6>{userinfo.jobtitle?userinfo.jobtitle:""}</h6>
           <i className="far fa-angle-right" style={{transform: slideprof?"rotate(90deg)":"rotate(0deg)"}}></i> 
         </div>
         <div className="accountlinks">

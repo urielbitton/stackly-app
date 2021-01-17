@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
+import firebase from 'firebase'
 
 function Login(props) {
 
@@ -18,7 +19,7 @@ function Login(props) {
           <button className="fblogin"><i className="fab fa-facebook-f"></i>Login with facebook</button>
           <button className="glogin"><i className="fab fa-google"></i>Login with Google</button>
         </div>
-      </div>
+      </div> 
       <div className="logincont"> 
         <div className="spacerl"></div>
         <h3 className="logocont"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><span>stackly</span></h3>
@@ -44,7 +45,7 @@ function Login(props) {
         <><button onClick={handleLogin}>Log in</button><small>Don't have an account? <span onClick={() => setHasAccount(!hasAccount)}>Create Account</span></small></>
         :<><button onClick={handleSignup}>Register</button><small>Already have an account? <span onClick={() => setHasAccount(!hasAccount)}>Sign In</span></small></>}
       </div>
-    </div> 
+    </div>  
   )
 }
 

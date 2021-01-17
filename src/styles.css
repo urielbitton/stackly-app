@@ -56,7 +56,7 @@ img {
   object-fit: cover;
   max-width: 100%;
 }
-button {
+button, .uploadbtn {
   outline: none;
   cursor: pointer;
   border: 1px solid var(--color);
@@ -1910,13 +1910,20 @@ button.highprior:hover, button.activehighbtn {
   border-radius: 100%;
   margin-right: 20px;
 }
-.settingsgrid .profcont button {
+.settingsgrid .profcont input.uploadpiclogo {
+  display: none;
+}
+.settingsgrid .profcont button, .settingsgrid .profcont .uploadbtn {
   margin: auto 10px;
   background: #fff;
   border: 1px solid #e5e5e5;
   color: #777;
 }
-.settingsgrid .profcont button:hover {
+.settingsgrid .profcont .uploadbtn {
+  padding: 8px 20px;
+  font-size: 13px;
+}
+.settingsgrid .profcont button:hover, .settingsgrid .profcont .uploadbtn:hover {
   filter: brightness(100%);
   border: 1px solid var(--color);
   color: var(--color);
@@ -1939,6 +1946,7 @@ button.highprior:hover, button.activehighbtn {
   grid-column: 1/-1;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 .removeacccont h6 {
@@ -1951,7 +1959,8 @@ button.highprior:hover, button.activehighbtn {
 }
 .removeacccont button {
   background: var(--red);
-  border-color: var(--red)
+  border-color: var(--red);
+  height: 40px;
 }
 .switchgrid {
   display: grid;

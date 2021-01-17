@@ -11,6 +11,7 @@ function SettingsAccount(props) {
   const [userlist, setUserList] = useState([])
   const [userinfo, setUserInfo] = useState([])
   const [uploaded, setUploaded] = useState(false)
+  const [removed, setRemoved] = useState(false)
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
@@ -19,17 +20,48 @@ function SettingsAccount(props) {
   const [country, setCountry] = useState('')
   const [company, setCompany] = useState('')
   const [jobtitle, setJobtitle] = useState('')
+  const [profimg, setProfImg] = useState('')
+  const [deleteword, setDeleteWord] = useState('')
   const user = firebase.auth().currentUser
 
   function uploadImg() {
-    setUploaded(!uploaded)
-  }
+    let file = document.querySelector(".uploadpiclogo").files[0]
+    if(file.size <= 2097152) {
+      setUploaded(!uploaded) 
+      let reader = new FileReader()
+      reader.onloadend = function(){
+        setProfImg(reader.result) 
+      } 
+      if(file) {
+        reader.readAsDataURL(file)
+      } 
+    }
+    else {
+      props.shownotif(4000)
+      setNotifs([{icon: 'fal fa-exclamation-circle',text: 'Image is too large (max. 2MB).'}])
+    }
+  } 
   function saveImg() {
     setUploaded(!uploaded)
+    saveData()
     props.shownotif(4000)
     setNotifs([{icon: 'fal fa-save',text: 'Your profile image has been saved.'}])
   }
   function saveAccount() {
+    saveData()
+    props.shownotif(4000)
+    setNotifs([{icon: 'fal fa-save',text: 'Your account settings have been saved.'}])
+  }
+  function removeProfImg() {
+    setUploaded(false)
+    setRemoved(!removed)
+    setProfImg('')
+  }
+  function saveData() {
+    user.updateProfile({
+      displayName: fname+" "+lname,
+    }) 
+    user.updateEmail(email)
     let userObj = {
       fullname: fname+" "+lname,
       email,
@@ -38,14 +70,22 @@ function SettingsAccount(props) {
       country,
       company,
       jobtitle,
-      profimg: '',
-      companylogo: ''
+      profimg,
     } 
     db.collection('users').doc(user.uid).update({
       userinfo: userObj
     }) 
-    props.shownotif(4000)
-    setNotifs([{icon: 'fal fa-save',text: 'Your account settings have been saved.'}])
+  }
+  function deleteAccount() {
+    if(deleteword === fname.toLowerCase()) {
+      db.collection('users').doc(user.uid).delete()
+      user.delete().then(() => {
+        console.log('Account has been deleted.')
+      }).catch((error) => {
+        props.shownotif(4000)
+        setNotifs([{icon: 'fal fa-exclamation-circle',text: 'An error has occured. Please try again.'}])
+      })
+    }
   }
 
   useEffect(() => {
@@ -61,6 +101,7 @@ function SettingsAccount(props) {
       setCountry(userlist.userinfo.country)
       setCompany(userlist.userinfo.company)
       setJobtitle(userlist.userinfo.jobtitle)
+      setProfImg(userlist.userinfo.profimg)
     })
   },[])
 
@@ -69,9 +110,16 @@ function SettingsAccount(props) {
       <h2>Account</h2>
       <div className="settingsgrid">
         <div className="profcont">
-          <img src="https://i.imgur.com/yxij2KH.jpg" alt=""/>
-          <button className={uploaded?"saveimgbtn":""} onClick={uploaded?() => saveImg():() => uploadImg()}>{uploaded?"Save":"Upload"}</button>
-          <button>Remove</button>
+          <img src={profimg.length?profimg:"https://i.imgur.com/yxij2KH.jpg"} alt=""/>
+          {
+            !uploaded?
+            <label>
+              <input type="file" className="uploadpiclogo" onChange={() => uploadImg()}/>
+              <div className="uploadbtn">Upload</div> 
+            </label>:
+            <button className="saveimgbtn" onClick={() => saveImg()}>Save</button>
+          }
+          <button onClick={!removed?() => removeProfImg():() => {saveData();setRemoved(!removed)}}>{!removed?"Remove":"Save"}</button>
         </div>
         <hr/>
         <Inputs title="First Name" placeholder="E.g. John" value={fname} onChange={(e) => setFname(e.target.value)} />
@@ -88,9 +136,10 @@ function SettingsAccount(props) {
           <div>
             <h6>Delete Account</h6>
             <small>If you delete your account, all your data will be lost.</small>
+            <Inputs placeholder={`Type in '${fname.toLowerCase()}' to delete your account.`} value={deleteword} onChange={(e) => setDeleteWord(e.target.value)} />
           </div>
-          <button>Delete Account</button>
-        </div>
+          <button disabled={deleteword===fname.toLowerCase()?false:true} style={{opacity: deleteword===fname.toLowerCase()?"1":"0.3"}} onClick={deleteword===fname.toLowerCase()?() => deleteAccount():null}>Delete Account</button>
+        </div> 
         <div className="spacer"></div>
       </div>
     </div>

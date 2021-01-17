@@ -61,15 +61,14 @@ function App() {
         default:
       }
     })
-    Fire.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(user => {
       if(user) {
         user.updateProfile({
           displayName: name
         })
-        if(sharecode.length) {
+        if(!sharecode.length) {
           shareids.push(sharecode)
         }
-        shareids.push('0')
         const clients = []
         const updates = []
         const userinfo = {
