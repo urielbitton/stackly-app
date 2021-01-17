@@ -177,7 +177,8 @@ function OneProject(props) {
           taskprior,
           taskstatus,
           taskupdates,
-          tasknotes
+          tasknotes,
+          taskcreatorid: user.uid
         } 
         proj.tasks && proj.tasks.forEach(el => {
           if(el.taskid === taskid) {
