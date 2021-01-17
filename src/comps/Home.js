@@ -13,7 +13,7 @@ function Home() {
   const [clientlist, setClientList] = useState([])
   const [fullname, setFullName] = useState('')
   const [invites, setInvites] = useState([])
-  const activetasks = 0
+  const [tasksarr, setTasksArr] = useState([])
   const user = firebase.auth().currentUser
  
   const invitesrow = invites && invites.map(el => {
@@ -53,9 +53,16 @@ function Home() {
           if(userlist.shareids.includes(doc.data().projectid)) 
             projects.push(doc.data())
         })
-        setProjList(projects)   
+        projects.forEach(el => {
+          if(el.active)
+          el.tasks.forEach(el2 => {
+            tasksarr.push(el2.taskid)
+          }) 
+        })  
+        setProjList(projects)  
       })  
     }) 
+    
   },[]) 
 
   return ( 
@@ -123,7 +130,7 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-tasks"></i>
-              <h4>Active Tasks<span>{activetasks}</span></h4>
+              <h4>Active Tasks<span>{tasksarr.length}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>

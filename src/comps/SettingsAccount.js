@@ -86,7 +86,7 @@ function SettingsAccount(props) {
         setNotifs([{icon: 'fal fa-exclamation-circle',text: 'An error has occured. Please try again.'}])
       })
     }
-  }
+  } 
 
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
