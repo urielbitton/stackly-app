@@ -18,6 +18,7 @@ function App() {
   const [hasAccount, setHasAccount] = useState(false)
   const [sharecode, setShareCode] = useState('')
   const [shareids, setShareIds] = useState([])
+  const [invites, setInvites] = useState([])
   const [entercode, setEnterCode] = useState(false)
 
   const clearInputs = () => {
@@ -95,7 +96,8 @@ function App() {
           updates,
           settings,
           uid: user.uid,
-          shareids
+          shareids,
+          invites
         })
       }//if (user)
       else {
