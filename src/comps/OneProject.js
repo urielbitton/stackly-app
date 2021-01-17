@@ -42,10 +42,11 @@ function OneProject(props) {
   const [priorpromise, setPriorPromise] = useState()
   const [showinv, setShowInv] = useState(false)
   const [notify, setNotify] = useState('')
-  const [selectuser, setSelectUser] = useState(false)
+  const [selectuserid, setSelectUserId] = useState('')
   const [keyword, setKeyword] = useState('') 
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const user = firebase.auth().currentUser
+  const [editallow, setEditAllow] = useState(proj.creatorid === user.uid)
   let date = new Date()
   let updatetime = formatDate(new Date())
   let formatdate = date.toString().split(' ').slice(1,4).toString().replaceAll(',',' ')
@@ -61,7 +62,7 @@ function OneProject(props) {
         </div>
         <div className="taskboxopts">
           <button onClick={() => slideDetails(el)}>Details</button>
-          <i className="far fa-edit" onClick={() => editTask(el)}></i>
+          <i style={{display: el.taskcreatorid===user.uid?"block":"none"}} className="far fa-edit" onClick={el.taskcreatorid===user.uid?() => editTask(el):null}></i>
         </div>
       </div> 
   }) 
@@ -92,8 +93,8 @@ function OneProject(props) {
       </div>
       <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"0px"}}/>
       <div> 
-        <small onClick={!el.edit?() => editUpdateText(el):() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
-        <small onClick={() => deleteUpdate(el)}>Delete</small>
+        <small onClick={!el.edit?el.updatecreatorid===user.uid?() => editUpdateText(el):null:() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
+        <small onClick={el.updatecreatorid===user.uid?() => deleteUpdate(el):null}>Delete</small>
       </div>
     </div>
   })
@@ -158,7 +159,8 @@ function OneProject(props) {
           taskprior,
           taskstatus,
           taskupdates,
-          tasknotes
+          tasknotes,
+          taskcreatorid: user.uid
         }
         proj.tasks.push(taskobj)
         db.collection("projects").doc(proj.projectid).update(proj)  
@@ -233,6 +235,7 @@ function OneProject(props) {
         updatetext: updtext,
         updatedate: updatetime,
         updateperson: user.displayName,
+        updatecreatorid: user.uid,
         edit: false
       }  
       tasklist && tasklist.forEach(el => {
@@ -339,17 +342,34 @@ function OneProject(props) {
     })
   }
   function inviteByUser() {
-
+    db.collection('users').doc(selectuserid).onSnapshot(doc => {
+      const useData = doc.data()
+      let inviteobj = {projectid: proj.projectid, projectname: proj.name, inviter:user.displayName}
+      if(selectuserid.length && !useData.invites.includes(proj.projectid)) {
+        db.collection('users').doc(selectuserid).update({
+          invites: firebase.firestore.FieldValue.arrayUnion(inviteobj) 
+        }).then(doc => {
+          setNotify('The selected user has been invited to your project.')
+          setSelectUserId('') 
+        })
+      }
+      else if(useData.invites.includes(proj.projectid)) {
+        setNotify('This user has already been invited to your project. You can ask them to accept your invitation on their account.')
+      }
+      else {
+        setNotify('Please select a user to invite to your project')
+      }
+    })
   }
   const usersrow = userlist && userlist.map(el => {
-    if(pattern.test(el.userinfo.fullname.toLowerCase()))
+    if(pattern.test(el.userinfo.fullname.toLowerCase()) && el.uid !== user.uid)
     return <div className="usersrowdiv">
       <h6>{el.userinfo.fullname}<span>{el.userinfo.email}</span></h6>
-      <input type="checkbox" name={el.userinfo.uid} onChange={(e) => setSelectUser(e.target.checked)} />
+      <button onClick={selectuserid===el.uid?() => setSelectUserId(''):() => setSelectUserId(el.uid)} style={{width: selectuserid===el.uid?"40px":""}}>{selectuserid===el.uid?<i className="fal fa-check"></i>:"Select"}</button>
     </div>   
-  })
+  }) 
   
-  useEffect(() => {
+  useEffect(() => { 
     db.collection('users').orderBy('userinfo.fullname','asc').onSnapshot(snap => {
       let users = []
       snap.forEach(use => {
@@ -370,7 +390,6 @@ function OneProject(props) {
     }) 
     openCloseAct()
   },[])
-  
  
   return (
     <div className="oneprojectpage apppage">
@@ -380,7 +399,7 @@ function OneProject(props) {
             <h4><i className="far fa-calendar-alt"></i> Jan 15 2020</h4>
             <h3>Tasks</h3>
             <div>
-              <button className="editprojbtn" onClick={() => showEditFunc()}>Edit Project</button>
+              <button style={{display: editallow?"block":"none"}} className="editprojbtn" onClick={editallow?() => showEditFunc():null}>Edit Project</button>
               <button onClick={() => showAddFunc()}>Add Task</button>
             </div>
           </div>
@@ -391,7 +410,7 @@ function OneProject(props) {
                   return <div className="timecircle"></div>
                 })}
             </div>
-            {proj.tasks.length?alltasks:<h4 className="notasksmsg">You have no tasks.</h4>}
+            {proj.tasks.length?alltasks:<h4 className="notasksmsg">There are no tasks yet.</h4>}
           </div>
         </div>
         <div className="pageside">
@@ -399,10 +418,10 @@ function OneProject(props) {
           <div className="titleshead">
             <div>
               <h4>{proj.name}</h4>
-              <h6>Client Name</h6>
+              <h6>Creator: {proj.creatorname}</h6>
             </div>
             <div>
-              <small>{proj.daysleft} days left</small>
+              <small>Days left: {proj.daysleft}</small>
               <small>Tasks: {proj.tasks.length}</small>
             </div>
           </div>
@@ -418,7 +437,7 @@ function OneProject(props) {
                 <h6>January 05 2021</h6>
               </div>
               {proj.activity.length?
-              <small className="clearbtn" onClick={() => clearActivity()}>Clear</small>
+              <small style={{display: editallow?"block":"none"}} className="clearbtn" onClick={editallow?() => clearActivity():null}>Clear</small>
               :""}
             </div>
             <div className="sidecontentinner hidescroll">
@@ -543,7 +562,7 @@ function OneProject(props) {
       <div className="addcover" style={{display: showinv?"block":"none"}}></div>
       <div className="addprojectcont" style={{bottom: showinv?"0":"-190%"}}>
         <div className="addsection">
-          <a className="closeadd"><i className="fal fa-times" onClick={() => setShowInv(!showinv)}></i></a>
+          <a className="closeadd"><i className="fal fa-times" onClick={() => {setShowInv(!showinv);setSelectUserId('');setNotify('')}}></i></a>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Invite Client</h4></div>
           <div className="content hidescroll">
             <SendInvite title="Invite client by email"/>
@@ -552,14 +571,14 @@ function OneProject(props) {
               <div className="usersrowhead"><h6>User name - Email</h6><h6>Invite</h6></div>
               {usersrow}
               {
-                selectuser?<button onClick={() => inviteByUser()}>Invite User</button>:
+                selectuserid?<button onClick={() => inviteByUser()}>Invite User</button>:
                 <button disabled style={{opacity: "0.3"}}>Invite User</button> 
               }
               <small>{notify}</small> 
             </div>
           </div> 
           <div className="editprojbtngroup">
-            <button onClick={() => setShowInv(!showinv, setSelectUser(false))}>Done</button>
+            <button onClick={() => {setShowInv(!showinv);setSelectUserId('');setNotify('')}}>Done</button>
           </div>
         </div>
       </div>

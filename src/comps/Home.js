@@ -12,31 +12,67 @@ function Home() {
   const [projlist, setProjList] = useState([])
   const [clientlist, setClientList] = useState([])
   const [fullname, setFullName] = useState('')
+  const [invites, setInvites] = useState([])
   const activetasks = 0
   const user = firebase.auth().currentUser
  
+  const invitesrow = invites && invites.map(el => {
+    return <div className="invitesrow">
+      <small><span>{el.projectname}</span></small>
+      <small>{el.inviter}</small>
+      <button onClick={() => acceptInvitation(el)}>Accept</button>
+    </div>
+  })
+
+  function acceptInvitation(el) {
+    db.collection("users").doc(user.uid).update({
+      shareids: firebase.firestore.FieldValue.arrayUnion(el.projectid)
+    }).then(doc => {
+      invites && invites.map(el => {
+        if(userlist.shareids.includes(el.projectid)) {
+          let invindex = invites.indexOf(el)
+          invites.splice(invindex,1)
+        }
+      })
+      db.collection("users").doc(user.uid).update({
+        invites
+      })
+    })
+  }
 
   useEffect(() => { 
-    db.collection('users').doc(user.uid).onSnapshot(doc => {
-      const userlist = doc.data()
-      setUserList(userlist)
+    db.collection('users').doc(user.uid).onSnapshot(use => {
+      const userlist = use.data()
+      setUserList(userlist)  
       setUserInfo(userlist.userinfo)
       setFullName(userlist.userinfo.fullname)
-    })
-    db.collection("projects").onSnapshot(snap => {
-      let projects = []
-      snap.forEach(doc => {
-        projects.push(doc.data())
-      })
-      setProjList(projects)
-    }); 
+      setInvites(userlist.invites)
+      db.collection('projects').onSnapshot(snap => {
+        let projects = [] 
+        snap.forEach(doc => {       
+          if(userlist.shareids.includes(doc.data().projectid)) 
+            projects.push(doc.data())
+        })
+        setProjList(projects)   
+      })  
+    }) 
   },[]) 
 
   return ( 
     <div className="home apppage">
       <div className="apptitles">
-        <h5>Overview</h5>
-        <h6>An overview of your projects, clients and tasks.</h6>
+        <div>
+          <h5>Overview</h5>
+          <h6>An overview of your projects, clients and tasks.</h6>
+        </div>
+        <div className="invitationscont" style={{display: invites.length?"block":"none"}}>
+          <h5>Invitations</h5>
+          <h6>You have <span>{invites.length}</span> new {invites.length>1?"invitations":"invitation"}</h6>
+          <div className="invitewindow">
+            <div className="inviteshead"><small>Project</small></div>
+            {invitesrow}
+          </div>
+        </div>
       </div>
 
       <div className="homegrid">

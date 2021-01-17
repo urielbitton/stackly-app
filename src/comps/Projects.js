@@ -70,7 +70,8 @@ function Projects(props) {
         progress,
         color,
         icon,
-        creator: user.uid,
+        creatorid: user.uid,
+        creatorname: user.displayName
       }
       db.collection('projects').doc(projid).set(
         projobj 

@@ -16,9 +16,9 @@ function App() {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [hasAccount, setHasAccount] = useState(false)
-  const [typetoggle, setTypeToggle] = useState(true)
   const [sharecode, setShareCode] = useState('')
   const [shareids, setShareIds] = useState([])
+  const [entercode, setEnterCode] = useState(false)
 
   const clearInputs = () => {
     setEmail('')
@@ -81,8 +81,6 @@ function App() {
           companylogo: "",
           country: "",
           profimg: "",
-          id: user.uid,
-          contractor: typetoggle
         }
         const settings = {
           general: {
@@ -144,8 +142,8 @@ function App() {
           setHasAccount={setHasAccount} 
           emailError={emailError}
           passwordError={passwordError}
-          typetoggle={typetoggle}
-          setTypeToggle={setTypeToggle}
+          entercode={entercode}
+          setEnterCode={setEnterCode}
           sharecode={sharecode}
           setShareCode={setShareCode}
         />

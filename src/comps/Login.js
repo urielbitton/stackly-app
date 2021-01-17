@@ -4,7 +4,7 @@ import {Inputs, Switchs} from './Inputs'
 
 function Login(props) {
 
-  const {name, setName, email, setEmail, typetoggle, setTypeToggle, sharecode, setShareCode, password, setPassword, handleLogin, handleSignup, hasAccount, setHasAccount, emailError, passwordError } = props
+  const {name, setName, email, setEmail, entercode, setEnterCode, sharecode, setShareCode, password, setPassword, handleLogin, handleSignup, hasAccount, setHasAccount, emailError, passwordError } = props
 
   return (  
     <div className="loginpage">  
@@ -32,16 +32,13 @@ function Login(props) {
           <p className="errormsg">{emailError}</p>
           <label><Inputs title="Password" placeholder="Password" type="password" required="true" value={password} onChange={(e) => setPassword(e.target.value)}/></label>
           <p className="errormsg">{passwordError}</p>
+          <small style={{marginBottom: entercode?"10px":""}} className="entercode" onClick={() => setEnterCode(!entercode)}>Enter an invitation code<i class="fal fa-angle-down" style={{transform: entercode?"rotate(0)":"rotate(-90deg)"}}></i></small>
+          <div className="invitecodecont" style={{height: entercode?"60px":"0"}}>
           {
-            !hasAccount?
-            <div className="switchgrid">
-              <div><h6>Register as: <span style={{color:"var(--color)"}}>{typetoggle?"Contractor":"Client"}</span></h6><Switchs onChange={(e) => setTypeToggle(e.target.checked)} checked={typetoggle} /></div>
-            </div>:""
-          }
-          {
-            !typetoggle?
+            entercode?
             <Inputs title="Invitation Code" value={sharecode} onChange={(e) => setShareCode(e.target.value)}/>:""
           }
+          </div>
         </form>  
         {hasAccount?
         <><button onClick={handleLogin}>Log in</button><small>Don't have an account? <span onClick={() => setHasAccount(!hasAccount)}>Create Account</span></small></>
