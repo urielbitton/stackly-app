@@ -27,7 +27,6 @@ function OneProject(props) {
   const [taskprior, setTaskPrior] = useState('')
   const [projindex, setProjIndex] = useState('')
   const [updtext, setUpdText] = useState('')
-  const [tasklist, setTaskList] = useState(proj.tasks)
   const [tempUpdText, setTempUpdText] = useState('')
   const [updatesList, setUpdatesList] = useState([])
   const [projname, setProjName] = useState('')
@@ -92,7 +91,7 @@ function OneProject(props) {
         <h6>•&emsp;<span>{el.updatedate.toString()}</span></h6>
       </div>
       <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"0px"}}/>
-      <div> 
+      <div style={{display: el.updatecreatorid===user.uid?"flex":"none"}}> 
         <small onClick={!el.edit?el.updatecreatorid===user.uid?() => editUpdateText(el):null:() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
         <small onClick={el.updatecreatorid===user.uid?() => deleteUpdate(el):null}>Delete</small>
       </div>
@@ -128,9 +127,9 @@ function OneProject(props) {
   function saveUpdateText(el) {
     el.edit = !el.edit
     setUpdate(prev =>prev+1)
-    tasklist && tasklist.forEach(el2 => {
+    proj.tasks && proj.tasks.forEach(el2 => {
       if(el2.taskid === taskid) {
-        let taskindex = tasklist.indexOf(el2)
+        let taskindex = proj.tasks.indexOf(el2)
         let updateindex = taskupdates.indexOf(el)
         proj.tasks[taskindex].taskupdates[updateindex].updatetext = tempUpdText
         db.collection("projects").doc(proj.projectid).update(proj) 
@@ -138,13 +137,14 @@ function OneProject(props) {
     })
   }
   function deleteUpdate(el) {
-    tasklist && tasklist.forEach(el2 => {
-      if(el2.taskid === taskid) {
+    proj.tasks && proj.tasks.forEach(el2 => {
+      if(el2.taskid === taskid) { 
         setTaskUpdates(el2.taskupdates)
-        let taskindex = tasklist.indexOf(el2)  
+        let taskindex = proj.tasks.indexOf(el2)  
         let updateindex = taskupdates.indexOf(el)
         proj.tasks[taskindex].taskupdates.splice(updateindex,1)
         db.collection("projects").doc(proj.projectid).update(proj) 
+        console.log(updateindex)
       } 
     })
   }
@@ -179,9 +179,9 @@ function OneProject(props) {
           taskupdates,
           tasknotes
         } 
-        tasklist && tasklist.forEach(el => {
+        proj.tasks && proj.tasks.forEach(el => {
           if(el.taskid === taskid) {
-            let taskindex = tasklist.indexOf(el)
+            let taskindex = proj.tasks.indexOf(el)
             proj.tasks[taskindex] = taskobj
             db.collection("projects").doc(proj.projectid).update(proj) 
           } 
@@ -238,13 +238,13 @@ function OneProject(props) {
         updatecreatorid: user.uid,
         edit: false
       }  
-      tasklist && tasklist.forEach(el => {
+      proj.tasks && proj.tasks.forEach(el => {
         if(el.taskid === taskid) {
           setTaskUpdates(el.taskupdates)
-          let taskindex = tasklist.indexOf(el)
-          tasklist[taskindex].taskupdates.push(updateobj)
+          let taskindex = proj.tasks.indexOf(el)
+          proj.tasks[taskindex].taskupdates.push(updateobj)
           db.collection("projects").doc(proj.projectid).update(proj) 
-          createActivity('Added update',`on task '${tasklist[taskindex].taskname}'`)
+          createActivity('Added update',`on task '${proj.tasks[taskindex].taskname}'`)
         }  
       }) 
     } 
@@ -295,10 +295,10 @@ function OneProject(props) {
     setTaskPrior(el.taskprior)
   }
   function deleteTask() {
-    tasklist && tasklist.forEach(el => {
+    proj.tasks && proj.tasks.forEach(el => {
       if(el.taskid === taskid) {
-        let taskindex = tasklist.indexOf(el)
-        tasklist.splice(taskindex,1) 
+        let taskindex = proj.tasks.indexOf(el)
+        proj.tasks.splice(taskindex,1) 
         db.collection("projects").doc(proj.projectid).update(proj) 
       } 
     }) 
@@ -377,12 +377,6 @@ function OneProject(props) {
       })
       setUserList(users)
     })
-    proj.tasks && proj.tasks.forEach(el => { 
-      if(el.taskid === taskid) { 
-        let taskindex = tasklist.indexOf(el)
-        setUpdatesList(tasklist[taskindex].taskupdates)
-      } 
-    }) 
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {
       if(proj.icon === el.class) 
@@ -399,7 +393,7 @@ function OneProject(props) {
             <h4><i className="far fa-calendar-alt"></i> Jan 15 2020</h4>
             <h3>Tasks</h3>
             <div>
-              <button style={{display: editallow?"block":"none"}} className="editprojbtn" onClick={editallow?() => showEditFunc():null}>Edit Project</button>
+              <button style={{display: editallow?"inline":"none"}} className="editprojbtn" onClick={editallow?() => showEditFunc():null}>Edit Project</button>
               <button onClick={() => showAddFunc()}>Add Task</button>
             </div>
           </div>
@@ -445,7 +439,7 @@ function OneProject(props) {
             </div>
           </div> 
           <div className="actionsection">
-            <button style={{background: proj.color, borderColor:proj.color}} onClick={() => setShowInv(!showinv)}>Invite Client</button>
+            <button style={{background: proj.color, borderColor:proj.color, display:editallow?"block":"none"}} onClick={editallow?() => setShowInv(!showinv):null}>Invite Client</button>
           </div>
         </div> 
       </div> 
