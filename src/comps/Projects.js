@@ -124,6 +124,26 @@ function Projects(props) {
       setTaskNotes('')
     }
   }
+  function inviteByUser() {
+    db.collection('users').doc(selectuserid).onSnapshot(doc => {
+      const useData = doc.data()
+      let inviteobj = {projectid: projid, projectname: name, inviter:user.displayName}
+      if(selectuserid.length && !useData.invites.includes(projid)) {
+        db.collection('users').doc(selectuserid).update({
+          invites: firebase.firestore.FieldValue.arrayUnion(inviteobj) 
+        }).then(doc => {
+          setNotify('The selected user has been invited to your project.')
+          setSelectUserId('') 
+        })
+      }
+      else if(useData.invites.includes(projid)) {
+        setNotify('This user has already been invited to your project. You can ask them to accept your invitation on their account.')
+      }
+      else {
+        setNotify('Please select a user to invite to your project')
+      }
+    })
+  } 
 
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
