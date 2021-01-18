@@ -46,7 +46,7 @@ function App() {
         default:
       } 
     })
-  }
+  } 
   const handleSignup = () => {
     clearErrors()
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(err => {
@@ -58,54 +58,54 @@ function App() {
         case "auth/weak-password":
           setPasswordError(err.message)
         break
-        default:
+        default: 
       }
     })
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
-        user.updateProfile({
-          displayName: name
-        })
-        if(!sharecode.length) {
+        if(!shareids.length) {
           shareids.push(sharecode)
+          user.updateProfile({
+            displayName: name
+          }) 
+          const clients = []
+          const updates = []
+          const userinfo = {
+            fullname: name,
+            email: user.email,
+            phone: "",
+            city: "",
+            company: "", 
+            jobtitle: "",
+            companylogo: "",
+            country: "",
+            profimg: "",
+          }
+          const settings = {
+            general: {
+              darkmode: false,
+              widemode: false,
+            },
+            projects: {}
+          }
+          db.collection('users').doc(user.uid).set({
+            clients, 
+            userinfo,
+            updates,
+            settings,
+            uid: user.uid,
+            shareids,
+            invites 
+          })
+          let notifObj = {
+            notifid: db.collection("notifications").doc().id,
+            notiftext: "Welcome to Stackly App. Go to settings to set up your account information.",
+            notifdate: new Date()
+          }
+          db.collection('notifications').doc(user.uid).set({
+            notifs: firebase.firestore.FieldValue.arrayUnion(notifObj) 
+          })
         }
-        const clients = []
-        const updates = []
-        const userinfo = {
-          fullname: name,
-          email: user.email,
-          phone: "",
-          city: "",
-          company: "", 
-          jobtitle: "",
-          companylogo: "",
-          country: "",
-          profimg: "",
-        }
-        const settings = {
-          general: {
-            darkmode: false,
-            widemode: false,
-          },
-          projects: {}
-        }
-        db.collection('users').doc(user.uid).set({
-          clients, 
-          userinfo,
-          updates,
-          settings,
-          uid: user.uid,
-          shareids,
-          invites 
-        })
-        let notifObj = {
-          notifid: db.collection("notifications").doc().id,
-          notiftext: "Welcome to Stackly App. Go to settings to set up your account information.",
-          notifdate: new Date()
-        }
-        db.collection('notifications').doc(user.uid).set({
-          notifs: firebase.firestore.FieldValue.arrayUnion(notifObj) 
-        })
       }//if (user)
       else {
         setUser('')
@@ -114,7 +114,6 @@ function App() {
   }
   const handleLogout = () => {
     firebase.auth().signOut()
-    window.location.reload()
   }
   const authListener = () => {
     firebase.auth().onAuthStateChanged(user => {

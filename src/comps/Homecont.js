@@ -33,7 +33,7 @@ function Homecont(props) {
     return <Route path={`/clients/${cli.id}`}> 
       <OneClient cli={cli} key={cli.id} />
     </Route> 
-  })    
+  })      
  
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
