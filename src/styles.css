@@ -423,6 +423,11 @@ nav {
   visibility: hidden;
   transition: all 0.2s;
   opacity: 0;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+}
+.notifbox .slidemenu, .msgbox .slidemenu {
+  height: 400px;
 }
 .slidemenu a {
   display: flex;
@@ -443,6 +448,9 @@ nav {
 }
 .slidemenu a h6 {
   font-size: 13px;
+}
+.boxmenu:hover {
+  z-index: 100;
 }
 .boxmenu:hover .slidemenu {
   visibility: visible;
@@ -893,6 +901,11 @@ nav {
   align-items: center;
   width: 100%;
   grid-column: 1/-1;
+  margin-bottom: 20px;
+}
+.pagetitlestxt h6 {
+  color: #999;
+  font-weight: 500;
 }
 .pagetitles .actions {
   display: flex;
@@ -2325,10 +2338,47 @@ details[open] summary ~ * {
   border-bottom: 1px solid #ccc;
 }
 
-
-
-
-
+.notifrow {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-gap: 7px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  transition: all 0.2s;
+} 
+.notifrow:hover {
+  background: #f5f5f5;
+}
+.notifrow .notifimg {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 25px;
+  border-radius: 100%;
+  margin-left: 15px;
+}
+.notifrow .notifcontent {
+  padding: 0 10px;
+  width: 260px;
+}
+.notifrow h5 {
+  font-size: 12px;
+  color: #222;
+}
+.notifrow h6 {
+  font-size: 11px;
+  color: #444;
+  font-weight: 500;
+  margin-top: 5px;
+}
+.notifrow small {
+  color: var(--color);
+  font-size: 10px;
+  display: block;
+  margin-top: 5px;
+}
 
 
 

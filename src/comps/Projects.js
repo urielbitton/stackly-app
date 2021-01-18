@@ -180,7 +180,10 @@ function Projects(props) {
       <div className="pagegrid">
         <div className="pagemaingrid">
           <div className="pagetitles">
-            <h4>Projects</h4>
+            <div className="pagetitlestxt">
+              <h4>Projects</h4>
+              <h6>{projlist?projlist.length:0} total</h6>
+            </div>
             <div className="actions">
               <div><i className="far fa-sliders-h"></i></div>
               <button onClick={() => {setShowAdd(!showadd);setProjId(db.collection("projects").doc().id)}}><i className="far fa-plus"></i>Create Project</button>

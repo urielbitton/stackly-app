@@ -6,6 +6,7 @@ import {StoreContext} from './StoreContext'
 import firebase from 'firebase'
 import {db} from './Fire'
 import SendInvite from './SendInvite'
+import ElapsedTime from './ElapsedTime'
 
 function OneProject(props) { 
 
@@ -46,9 +47,6 @@ function OneProject(props) {
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const user = firebase.auth().currentUser
   const [editallow, setEditAllow] = useState(proj.creatorid === user.uid)
-  let date = new Date()
-  let updatetime = formatDate(new Date())
-  let formatdate = date.toString().split(' ').slice(1,4).toString().replaceAll(',',' ')
   let history = useHistory()
 
 
@@ -73,12 +71,12 @@ function OneProject(props) {
         </div>
         <div>
           <h5>{el.actaction}: {el.acttext}</h5>
-          <h6>{el.actdate}</h6>
+          <h6><ElapsedTime providedtime={el.actdate.toDate()}/></h6>
         </div>
         </div>
         <i className="fal fa-angle-right activitybtn"></i>
         <div className="activitysidecont">
-          <small>Created at: {el.acttime}, {el.actdate}</small>
+          <small>Created at: </small>
           <small>Added by: {el.actperson}</small>
         </div>
     </div> 
@@ -88,7 +86,7 @@ function OneProject(props) {
       <div> 
         <div className="clientcircle"><small>{el.updateperson.split(' ')[0][0]}{el.updateperson.split(' ')[1][0]}</small></div>
         <h5>{el.updateperson}</h5>
-        <h6>•&emsp;<span>{el.updatedate.toString()}</span></h6>
+        <h6>•&emsp;<span><ElapsedTime providedtime={el.updatedate.toDate()}/></span></h6>
       </div>
       <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"0px"}}/>
       <div style={{display: el.updatecreatorid===user.uid?"flex":"none"}}> 
@@ -234,7 +232,7 @@ function OneProject(props) {
       let updateobj = {
         updateid: db.collection("users").doc().id,
         updatetext: updtext,
-        updatedate: updatetime,
+        updatedate: firebase.firestore.Timestamp.now(),
         updateperson: user.displayName,
         updatecreatorid: user.uid,
         edit: false
@@ -309,9 +307,8 @@ function OneProject(props) {
     let actobj = {
       actperson: user.displayName,
       acttext: text,
-      actdate: formatdate,
       actaction: action,
-      acttime: updatetime
+      actdate: firebase.firestore.Timestamp.now()
     }
     proj.activity.push(actobj)
     db.collection("projects").doc(proj.projectid).update(proj) 

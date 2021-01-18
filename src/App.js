@@ -81,7 +81,7 @@ function App() {
             country: "",
             profimg: "",
           }
-          const settings = {
+          const settings = { 
             general: {
               darkmode: false,
               widemode: false,
@@ -98,9 +98,10 @@ function App() {
             invites 
           })
           let notifObj = {
+            notiffrom: 'Stackly Platform',
             notifid: db.collection("notifications").doc().id,
             notiftext: "Welcome to Stackly App. Go to settings to set up your account information.",
-            notifdate: new Date()
+            notifdate: firebase.firestore.Timestamp.now()
           }
           db.collection('notifications').doc(user.uid).set({
             notifs: firebase.firestore.FieldValue.arrayUnion(notifObj) 

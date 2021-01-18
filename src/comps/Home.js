@@ -14,6 +14,7 @@ function Home() {
   const [fullname, setFullName] = useState('')
   const [invites, setInvites] = useState([])
   const [tasksarr, setTasksArr] = useState([])
+  const [activeprojs, setActiveProjs] = useState([])
   const user = firebase.auth().currentUser
  
   const invitesrow = invites && invites.map(el => {
@@ -22,7 +23,7 @@ function Home() {
       <small>{el.inviter}</small>
       <button onClick={() => acceptInvitation(el)}>Accept</button>
     </div>
-  })
+  }) 
 
   function acceptInvitation(el) {
     db.collection("users").doc(user.uid).update({
@@ -59,8 +60,12 @@ function Home() {
             tasksarr.push(el2.taskid)
           }) 
         })  
+        projects.forEach(el => {
+          if(el.active)
+            activeprojs.push(el.projectid)
+        })
         setProjList(projects)  
-      })  
+      }) 
     }) 
     
   },[]) 
@@ -71,6 +76,7 @@ function Home() {
         <div>
           <h5>Overview</h5>
           <h6>An overview of your projects, clients and tasks.</h6>
+          
         </div>
         <div className="invitationscont" style={{display: invites.length?"block":"none"}}>
           <h5>Invitations</h5>
@@ -89,7 +95,7 @@ function Home() {
               <h4>Good Morning, {fullname?fullname.split(' ')[0]:""}</h4>
               <h6>Check your recent notifications and tasks</h6>
               <div className="quicknotifs">
-                <small><i className="fal fa-bell"></i>0 Notifications</small>
+                <small><i className="fal fa-sync-alt"></i>0 New Updates</small>
                 <small><i className="fal fa-tasks"></i>0 New Tasks</small>
               </div>
             </div>
@@ -123,14 +129,14 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-rocket-launch"></i>
-              <h4>Active Projects<span>{projlist && projlist.length}</span></h4>
+              <h4>Active Projects<span>{activeprojs?activeprojs.length:0}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-tasks"></i>
-              <h4>Active Tasks<span>{tasksarr.length}</span></h4>
+              <h4>Active Tasks<span>{tasksarr?tasksarr.length:0}</span></h4>
             </div>
             <div className="view"><i className="far fa-angle-right"></i></div>
           </div>

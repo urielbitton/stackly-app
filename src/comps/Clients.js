@@ -21,7 +21,10 @@ function Clients(props) {
       <div className="pagegrid">
         <div className="pagemaingrid">
           <div className="pagetitles">
-            <h4>Clients</h4>
+            <div className="pagetitlestxt">
+              <h4>Clients</h4>
+              <h6>2 total</h6> 
+            </div>
             <div className="actions">
               <div><i className="far fa-sliders-h"></i></div>
               <Link to="/clients/addclient"><button onClick={() => setShowAdd(!showadd)}><i className="far fa-plus"></i>Create Client</button></Link>

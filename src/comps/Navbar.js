@@ -1,11 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
+import firebase from 'firebase'
+import {db} from './Fire'
+import ElapsedTime from './ElapsedTime'
 
 function Navbar(props) {
 
   const [shownew, setShowNew] = useState(false)
   const [darkmode, setDarkmode] = useState(false)
+  const [notifs, setNotifs] = useState([])
+  const [elapsedTime, setElapsedTime] = useState('')
+  const user = firebase.auth().currentUser
+
+  const recentnotifs = notifs && notifs.slice(0,5).reverse().map(el => {
+    return <div className="notifrow">
+      <div className="notifimg" style={{backgroundImage: el.notiffrom==="Stackly Platform"?"url(https://i.imgur.com/wazsi0l.png)":""}}></div>
+      <div className="notifcontent">
+        <h5>{el.notiffrom}</h5>
+        <h6>{el.notiftext}</h6>
+        <small><ElapsedTime providedtime={el.notifdate.toDate()}/></small>
+      </div>
+    </div>
+  })
+
+
+  useEffect(() => {
+    db.collection('notifications').doc(user.uid).onSnapshot(snap => {
+      setNotifs(snap.data().notifs)
+    })    
+  },[])
 
   return (
     <nav>
@@ -41,7 +65,7 @@ function Navbar(props) {
         <i className="far fa-bell"></i>
         <div className="notifcircle">13</div>
         <div className="slidemenu">
-            notifications
+            {recentnotifs}
           </div>
         </div>
         <div className="optionsbox boxmenu">
