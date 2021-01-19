@@ -6,6 +6,7 @@ import Login from "./comps/Login"
 import StoreContextProvider from "./comps/StoreContext"
 import {db, Fire} from './comps/Fire'
 import firebase from 'firebase'
+import {SendNotif} from './comps/SendNotif'
  
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
   const [shareids, setShareIds] = useState([])
   const [invites, setInvites] = useState([])
   const [entercode, setEnterCode] = useState(false)
+  const [notifsnum, setNotifsNum] = useState(0)
 
   const clearInputs = () => {
     setEmail('')
@@ -97,18 +99,14 @@ function App() {
             shareids,
             invites 
           })
-          let notifObj = {
-            notifsubject: 'Stackly Platform', 
-            notifid: db.collection("notifications").doc().id,
-            notiftext: "Welcome to Stackly App. Go to settings to set up your account information.",
-            notifdate: firebase.firestore.Timestamp.now(),
-            notiflink: 'settings',
-            notiftype: 'stackly'
-          }
-          db.collection('notifications').doc(user.uid).set({
-            notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
-            notifsnum: 1
-          }) 
+          SendNotif('Stackly Platform', 
+            `Welcome to Stackly App. Go to settings to set up your account information.`,
+            `settings`, 
+            'View now',
+            '#e04f4c',
+            'fa-list-ul',
+            1
+          )  
         }
       }//if (user)
       else {
@@ -136,7 +134,7 @@ function App() {
   },[])  
 
   return (
-    <div className="app">
+    <div className="app"> 
       <StoreContextProvider>
         <Router>
         { 

@@ -7,6 +7,7 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import SendInvite from './SendInvite'
 import ElapsedTime from './ElapsedTime'
+import {SendNotif} from './SendNotif'
 
 function OneProject(props) { 
 
@@ -26,10 +27,8 @@ function OneProject(props) {
   const [showadd, setShowAdd] = useState(false)
   const [showedit, setShowEdit] = useState(false)
   const [taskprior, setTaskPrior] = useState('')
-  const [projindex, setProjIndex] = useState('')
   const [updtext, setUpdText] = useState('')
   const [tempUpdText, setTempUpdText] = useState('')
-  const [updatesList, setUpdatesList] = useState([])
   const [projname, setProjName] = useState('')
   const [daysleft, setDaysLeft] = useState('')
   const [projcat, setProjCat] = useState('')
@@ -53,7 +52,7 @@ function OneProject(props) {
 
 
   const alltasks = proj.tasks && proj.tasks.map(el => {
-    return <div className="taskrow" style={{background: el.taskcolor+"20"}}>
+    return <div className="taskrow" style={{background: el.taskcolor+"20", opacity: el.taskstatus==='Completed'?"0.4":"1"}}>
         <h4>{el.taskname}</h4>
         <div className="taskbox">
           <h6>Date Due: <span>{el.taskdue}</span></h6>
@@ -162,27 +161,20 @@ function OneProject(props) {
           taskupdates,
           tasknotes,
           taskcreatorid: user.uid
-        }
+        } 
         proj.tasks.push(taskobj)
         db.collection("projects").doc(proj.projectid).update(proj)  
         props.shownotif(4000) 
         setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
         createActivity('Added task',taskname) 
-        //add notif
-        let notifObj = {
-          notifsubject: 'New Task',
-          notifid: db.collection("notifications").doc().id,
-          notiftext: `${user.displayName} has added task '${taskname}' to your project '${proj.name}'.`,
-          notifdate: firebase.firestore.Timestamp.now(),
-          notiflink: `project/${proj.projectid}`,
-          notiftype: 'task',
-          notifcolor: '#e04f4c',
-          notificon: 'fa-list-ul'
-        }
-        db.collection('notifications').doc(user.uid).update({
-          notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
-          notifsnum: notifsnum+1
-        })
+        SendNotif('New Task', 
+        `${user.displayName} has added task '${taskname}' to your project '${proj.name}'.`,
+         `project/${proj.projectid}`, 
+         'View now',
+         '#e04f4c',
+         'fa-list-ul',
+         notifsnum
+        ) 
       }
       else { //if editing a task
         let taskobj = {
@@ -434,7 +426,8 @@ function OneProject(props) {
           <div className="titleshead">
             <div>
               <h4>{proj.name}</h4>
-              <h6>Creator: {proj.creatorname}</h6>
+              <h6>Contractor: {proj.creatorname}</h6>
+              <h6>Client: {proj.client}</h6> 
             </div>
             <div>
               <small>Days left: {proj.daysleft}</small>
@@ -470,7 +463,7 @@ function OneProject(props) {
         <i className="fal fa-times" onClick={() => setSlide(!slide)}></i>
         <div className="titlecont">
           <h2>{taskname}</h2>
-          <h6>Client: <span>{proj.client}</span></h6>
+          <h6>Client: <span>{proj.client}</span></h6> 
           <h6>Date Due: <span>{taskdue}</span></h6>
           <h6>Status: <span>{taskstatus}</span></h6>
           <h6>Notes</h6>

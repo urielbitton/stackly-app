@@ -17,10 +17,10 @@ function Navbar(props) {
 
   const recentnotifs = notifs && notifs.slice(0,8).reverse().map(el => {
     return <div className="notifrow" onClick={() => history.push(`/${el.notiflink}`)}>
-      <div className="notifimg" style={el.notiftype==="stackly"?{backgroundImage: el.notiftype==="stackly"?"url(https://i.imgur.com/wazsi0l.png)":""}:{background: el.notifcolor, width:"30px",height:"30px"}}>{el.notificon?<i className={"fal "+el.notificon}></i>:""}</div>
+      <div className="notifimg" style={el.notiftype==="stackly"?{backgroundImage: el.notiftype==="stackly"?"url(https://i.imgur.com/wazsi0l.png)":""}:{background: el.notifcolor, width:"30px",height:"30px"}}>{el.notificon?<i style={{color:"#fff"}} className={"fal "+el.notificon}></i>:""}</div>
       <div className="notifcontent">
         <h5>{el.notifsubject}</h5>
-        <h6>{el.notiftext} {el.notiftype==='task'?<span>View now.</span>:""}</h6>
+        <h6>{el.notiftext} {el.notiftype==='viewable'?<span>View now.</span>:""}</h6>
         <small><ElapsedTime providedtime={el.notifdate.toDate()}/></small>
       </div>
     </div>  

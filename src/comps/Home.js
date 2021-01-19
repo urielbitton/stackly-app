@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
+import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
 import Calendars from './Calendars'
 import Charts from "./Chart"
 import {StoreContext} from './StoreContext'
@@ -15,6 +16,7 @@ function Home() {
   const [invites, setInvites] = useState([])
   const [tasksarr, setTasksArr] = useState([])
   const [activeprojs, setActiveProjs] = useState([])
+  const [daytime, setDaytime] = useState('')
   const user = firebase.auth().currentUser
  
   const invitesrow = invites && invites.map(el => {
@@ -67,7 +69,13 @@ function Home() {
         setProjList(projects)  
       }) 
     }) 
-    
+    let time = new Date().getHours()
+    if(time >= 0 && time < 12) 
+      setDaytime('Morning') 
+    else if(time >= 12 && time <=17)
+      setDaytime('Afternoon')
+    else  
+      setDaytime('Evening')
   },[]) 
 
   return ( 
@@ -92,7 +100,7 @@ function Home() {
         <div className="homemain">
           <div className="banner homebanner">
             <div className="bannertext">
-              <h4>Good Morning, {fullname?fullname.split(' ')[0]:""}</h4>
+              <h4>Good {daytime}, {fullname?fullname.split(' ')[0]:""}</h4>
               <h6>Check your recent notifications and tasks</h6>
               <div className="quicknotifs">
                 <small><i className="fal fa-sync-alt"></i>0 New Updates</small>
@@ -131,14 +139,14 @@ function Home() {
               <i className="fal fa-rocket-launch"></i>
               <h4>Active Projects<span>{activeprojs?activeprojs.length:0}</span></h4>
             </div>
-            <div className="view"><i className="far fa-angle-right"></i></div>
+            <div className="view"><Link to="/projects"><i className="far fa-angle-right"></i></Link></div>
           </div>
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-tasks"></i>
               <h4>Active Tasks<span>{tasksarr?tasksarr.length:0}</span></h4>
             </div>
-            <div className="view"><i className="far fa-angle-right"></i></div>
+            <div className="view"><Link to="/mytasks"><i className="far fa-angle-right"></i></Link></div>
           </div>
           <div className="statusbox dashbox">
             <div className="iconcont">

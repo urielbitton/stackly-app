@@ -6,6 +6,7 @@ import {Inputs, Switchs} from './Inputs'
 import firebase from 'firebase'
 import {db} from './Fire'
 import SendInvite from './SendInvite'
+import {SendNotif} from './SendNotif'
 
 function Projects(props) {
 
@@ -37,6 +38,7 @@ function Projects(props) {
   const [activeicon, setActiveIcon] = useState('') 
   const [notify, setNotify] = useState('')
   const [selectuserid, setSelectUserId] = useState('')
+  const [notifsnum, setNotifsNum] = useState(0)
   const [keyword, setKeyword] = useState('') 
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const [projid, setProjId] = useState('')
@@ -56,7 +58,8 @@ function Projects(props) {
     {class: "fa-dollar-sign", title:"Finance"},
     {class: "fa-shield-check", title:"Security"},
     {class: "fa-cloud-upload", title: "Cloud System"},
-    {class: "fa-project-diagram", title: "General"}
+    {class: "fa-project-diagram", title: "General"},
+    {class: "fa-mobile", title: 'Mobile App'}
   ]
   const iconsrow = iconspack && iconspack.map(el => {
     return <i className={activeicon===iconspack.indexOf(el)?`activeicon fal ${el.class}`:`fal ${el.class}`} title={el.title} key={el.title} onClick={() => setIcon(el.class, setActiveIcon(iconspack.indexOf(el)))}></i>
@@ -92,6 +95,14 @@ function Projects(props) {
       db.collection('users').doc(user.uid).update({
         shareids: firebase.firestore.FieldValue.arrayUnion(projid)
       }) 
+      SendNotif('New Project', 
+        `${user.displayName} has created a new project '${name}'.`,
+         `project/${projid}`, 
+         'View now',
+         '#056dff',
+         'fa-project-diagram',
+         notifsnum
+        )
       setShowAdd(!showadd)
       props.shownotif(4000)
       setNotifs([{icon: 'fal fa-check-circle',text: `Project '${name}' has been created`}])
@@ -158,7 +169,10 @@ function Projects(props) {
         })
         setProjList(projects)   
       })  
-    })   
+    })    
+    db.collection('notifications').doc(user.uid).onSnapshot(snap => {
+      setNotifsNum(snap.data().notifsnum)
+    })
     db.collection('users').orderBy('userinfo.fullname','asc').onSnapshot(snap => {
       let users = []
       snap.forEach(use => {
