@@ -5,7 +5,7 @@ export function Inputs(props) {
     <label className="labelinput">
       <h6>{props.title}</h6>
       <i className={props.iconclass}></i>
-      <input style={{paddingRight: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onChange(e)} name={props.name} checked={props.checked} />
+      <input style={{paddingRight: props.iconclass?"40px":"10px"}} placeholder={props.placeholder} type={props.type} value={props.value} onChange={(e) => props.onChange(e)} name={props.name} checked={props.checked} disabled={props.disabled} />
     </label>
   )   
 }  

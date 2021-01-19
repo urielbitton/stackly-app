@@ -23,6 +23,7 @@ function OneProject(props) {
   const [taskupdates, setTaskUpdates] = useState([])
   const [tasknotes, setTaskNotes] = useState('')
   const [taskcolor, setTaskColor] = useState('#1cb7ff')
+  const [taskcreatorid, setTaskCreatorId] = useState('')
   const [update, setUpdate] = useState(0)
   const [showadd, setShowAdd] = useState(false)
   const [showedit, setShowEdit] = useState(false)
@@ -60,7 +61,7 @@ function OneProject(props) {
         </div>
         <div className="taskboxopts">
           <button onClick={() => slideDetails(el)}>Details</button>
-          <i style={{display: el.taskcreatorid===user.uid?"block":"none"}} className="far fa-edit" onClick={el.taskcreatorid===user.uid?() => editTask(el):null}></i>
+          <i className="far fa-edit" onClick={() => editTask(el)}></i>
         </div>
       </div> 
   }) 
@@ -302,6 +303,7 @@ function OneProject(props) {
     setTaskStatus(el.taskstatus)
     setTaskNotes(el.tasknotes)
     setTaskPrior(el.taskprior)
+    setTaskCreatorId(el.taskcreatorid)
   }
   function deleteTask() {
     proj.tasks && proj.tasks.forEach(el => {
@@ -494,7 +496,7 @@ function OneProject(props) {
           <a className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></a>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>{addedit?"Add":"Edit"} Task</h4></div>
           <div className="content hidescroll">
-            <Inputs title="Task title" placeholder="E.g. Install Plugins" onChange={(e) => setTaskName(e.target.value)} value={taskname} />
+            <Inputs disabled={taskcreatorid===user.uid?"false":"true"} title="Task title" placeholder="E.g. Install Plugins" onChange={(e) => setTaskName(e.target.value)} value={taskname} />
             <label>
               <h6>Task Status</h6>
               <select value={taskstatus} onChange={(e) => setTaskStatus(e.target.value)} >
@@ -502,15 +504,19 @@ function OneProject(props) {
                 <option value="In Progress">In Progress</option>
                 <option value="Completed">Completed</option>
               </select>
-            </label>
+            </label> 
             <div className="switchbox">
               <h6>Task Color</h6>
               <Inputs type="color" onChange={(e) => setTaskColor(e.target.value)} value={taskcolor}/>  
             </div>
-            <Inputs title="Date Due" type="date" onChange={(e) => setTaskDue(e.target.value)} value={taskdue} />
+            <Inputs title="Date Due" disabled={taskcreatorid===user.uid?"false":"true"} type="date" onChange={(e) => setTaskDue(e.target.value)} value={taskdue} />
             <div className="addpriorcont">
-              <button onClick={() => setTaskPrior('low', setPriorPromise(0))} className={taskprior==='low'?"lowprior priorbtn activelowbtn":"lowprior priorbtn"}><i className="fas fa-star"></i>Low Priority</button>
-              <button onClick={() => setTaskPrior('high', setPriorPromise(0))} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
+              {
+                taskcreatorid===user.uid?<>
+                  <button onClick={() => setTaskPrior('low', setPriorPromise(0))} className={taskprior==='low'?"lowprior priorbtn activelowbtn":"lowprior priorbtn"}><i className="fas fa-star"></i>Low Priority</button>
+                  <button onClick={() => setTaskPrior('high', setPriorPromise(0))} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
+                </>:""
+              }
             </div>
             <label> 
               <h6>Notes</h6>
@@ -519,7 +525,7 @@ function OneProject(props) {
           </div>
           <div className="editprojbtngroup">
             <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className={addedit?"fal fa-plus":"fal fa-edit"}></i>{addedit?"Add":"Edit"}</button>
-            <button style={{background:"var(--red)", borderColor:"var(--red)"}} onClick={() => deleteTask()}>Delete</button>
+            <button style={{display:taskcreatorid===user.uid?"block":"none",background:"var(--red)", borderColor:"var(--red)"}} onClick={taskcreatorid===user.uid?() => deleteTask():null}>Delete</button>
           </div>
         </div>
       </div> 
