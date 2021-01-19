@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link, useHistory } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
 import firebase from 'firebase'
 import {db} from './Fire'
@@ -11,23 +11,25 @@ function Navbar(props) {
   const [darkmode, setDarkmode] = useState(false)
   const [notifs, setNotifs] = useState([])
   const [elapsedTime, setElapsedTime] = useState('')
+  const [notifsnum, setNotifsNum] = useState(0)
   const user = firebase.auth().currentUser
+  let history = useHistory()
 
-  const recentnotifs = notifs && notifs.slice(0,5).reverse().map(el => {
-    return <div className="notifrow">
-      <div className="notifimg" style={{backgroundImage: el.notiffrom==="Stackly Platform"?"url(https://i.imgur.com/wazsi0l.png)":""}}></div>
+  const recentnotifs = notifs && notifs.slice(0,8).reverse().map(el => {
+    return <div className="notifrow" onClick={() => history.push(`/${el.notiflink}`)}>
+      <div className="notifimg" style={el.notiftype==="stackly"?{backgroundImage: el.notiftype==="stackly"?"url(https://i.imgur.com/wazsi0l.png)":""}:{background: el.notifcolor, width:"30px",height:"30px"}}>{el.notificon?<i className={"fal "+el.notificon}></i>:""}</div>
       <div className="notifcontent">
-        <h5>{el.notiffrom}</h5>
-        <h6>{el.notiftext}</h6>
+        <h5>{el.notifsubject}</h5>
+        <h6>{el.notiftext} {el.notiftype==='task'?<span>View now.</span>:""}</h6>
         <small><ElapsedTime providedtime={el.notifdate.toDate()}/></small>
       </div>
-    </div>
+    </div>  
   })
-
 
   useEffect(() => {
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {
       setNotifs(snap.data().notifs)
+      setNotifsNum(snap.data().notifsnum)
     })    
   },[])
 
@@ -63,9 +65,14 @@ function Navbar(props) {
         </div>
         <div className="notifbox boxmenu">
         <i className="far fa-bell"></i>
-        <div className="notifcircle">13</div>
-        <div className="slidemenu">
-            {recentnotifs}
+        <div className="notifcircle" style={{display: notifsnum>0?"flex":"none"}}>{notifsnum}</div>
+        <div className="slidemenu" onClick={() => db.collection('notifications').doc(user.uid).update({notifsnum: 0})}>
+            <div className="slidemenuinner hidescroll">
+              {recentnotifs}
+            </div>
+            <div className="viewallnotifs">
+              <h6>View All</h6>
+            </div>
           </div>
         </div>
         <div className="optionsbox boxmenu">

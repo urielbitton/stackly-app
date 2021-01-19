@@ -47,7 +47,9 @@ function OneProject(props) {
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const user = firebase.auth().currentUser
   const [editallow, setEditAllow] = useState(proj.creatorid === user.uid)
+  const [notifsnum, setNotifsNum] = useState(0)
   let history = useHistory()
+  let timers
 
 
   const alltasks = proj.tasks && proj.tasks.map(el => {
@@ -71,7 +73,7 @@ function OneProject(props) {
         </div>
         <div>
           <h5>{el.actaction}: {el.acttext}</h5>
-          <h6><ElapsedTime providedtime={el.actdate.toDate()}/></h6>
+          <h6><ElapsedTime providedtime={el.actdate.toDate()}/></h6> 
         </div>
         </div>
         <i className="fal fa-angle-right activitybtn"></i>
@@ -102,13 +104,14 @@ function OneProject(props) {
     {class: "fa-dollar-sign", title:"Finance"},
     {class: "fa-shield-check", title:"Security"},
     {class: "fa-cloud-upload", title: "Cloud System"},
-    {class: "fa-project-diagram", title: "General"}
+    {class: "fa-project-diagram", title: "General"},
+    {class: "fa-mobile", title: 'Mobile App'}
   ]
   const iconsrow = iconspack && iconspack.map(el => {
     return <i className={activeicon===iconspack.indexOf(el)?`activeicon fal ${el.class}`:`fal ${el.class}`} title={el.title} key={el.title} onClick={() => setProjIcon(el.class, setActiveIcon(iconspack.indexOf(el)))}></i>
   })
 
-  function slideDetails(el) {
+  function slideDetails(el) { 
     setSlide(!slide) 
     setTaskId(el.taskid)
     setTaskName(el.taskname)
@@ -165,6 +168,21 @@ function OneProject(props) {
         props.shownotif(4000) 
         setNotifs([{icon: 'fal fa-check-circle',text: 'The task has been added to your project.'}])
         createActivity('Added task',taskname) 
+        //add notif
+        let notifObj = {
+          notifsubject: 'New Task',
+          notifid: db.collection("notifications").doc().id,
+          notiftext: `${user.displayName} has added task '${taskname}' to your project '${proj.name}'.`,
+          notifdate: firebase.firestore.Timestamp.now(),
+          notiflink: `project/${proj.projectid}`,
+          notiftype: 'task',
+          notifcolor: '#e04f4c',
+          notificon: 'fa-list-ul'
+        }
+        db.collection('notifications').doc(user.uid).update({
+          notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
+          notifsnum: notifsnum+1
+        })
       }
       else { //if editing a task
         let taskobj = {
@@ -199,7 +217,7 @@ function OneProject(props) {
       setTaskStatus('Not Started')
       setTaskDue('')
       setTaskNotes('') 
-      setTimeout(() => { setShowAdd(!showadd)}, 30)
+      timers = setTimeout(() => { setShowAdd(!showadd)}, 30)
       openCloseAct()
     }
     else {
@@ -301,7 +319,7 @@ function OneProject(props) {
         db.collection("projects").doc(proj.projectid).update(proj) 
       } 
     }) 
-    setTimeout(() => { setShowAdd(!showadd)}, 30)
+    timers = setTimeout(() => { setShowAdd(!showadd)}, 30)
   }
   function createActivity(action,text) {
     let actobj = {
@@ -375,12 +393,18 @@ function OneProject(props) {
       })
       setUserList(users)
     })
+    db.collection('notifications').doc(user.uid).onSnapshot(snap => {
+      setNotifsNum(snap.data().notifsnum)
+    })
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {
       if(proj.icon === el.class) 
         setActiveIcon(iconspack.indexOf(el))
     }) 
     openCloseAct()
+    return() => {
+      clearTimeout(timers)
+    }
   },[])
  
   return (

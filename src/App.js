@@ -98,14 +98,17 @@ function App() {
             invites 
           })
           let notifObj = {
-            notiffrom: 'Stackly Platform',
+            notifsubject: 'Stackly Platform', 
             notifid: db.collection("notifications").doc().id,
             notiftext: "Welcome to Stackly App. Go to settings to set up your account information.",
-            notifdate: firebase.firestore.Timestamp.now()
+            notifdate: firebase.firestore.Timestamp.now(),
+            notiflink: 'settings',
+            notiftype: 'stackly'
           }
           db.collection('notifications').doc(user.uid).set({
-            notifs: firebase.firestore.FieldValue.arrayUnion(notifObj) 
-          })
+            notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
+            notifsnum: 1
+          }) 
         }
       }//if (user)
       else {

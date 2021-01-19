@@ -41,6 +41,7 @@ function Projects(props) {
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const [projid, setProjId] = useState('')
   const user = firebase.auth().currentUser
+  let timers 
   
   const projectsrow = projlist && projlist.map(proj => {
     return <ProjectCard proj={proj} key={proj.id} />
@@ -172,7 +173,10 @@ function Projects(props) {
         projects.push(doc.data()) 
       })    
       setProjList(projects)           
-    })*/       
+    })*/ 
+    return() => {
+      clearTimeout(timers)
+    }     
   },[]) 
 
   return ( 
@@ -236,7 +240,7 @@ function Projects(props) {
         <button onClick={() => createProject()}>Create</button>
         </div>
         <div className="clientsection" style={{left: section===1?"400px":section===2?"0":"400px"}}>
-          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd, setTimeout(() => {setSection(1)},300))}></i></Link>
+          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd, timers = setTimeout(() => {setSection(1)},300))}></i></Link>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Client</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
@@ -255,7 +259,7 @@ function Projects(props) {
           <button onClick={() => setSection(1)}>Add</button>
         </div>
         <div className="taskssection" style={{left: section===1?"400px":section===3?"0":"400px"}}>
-          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd, setTimeout(() => {setSection(1)},300))}></i></Link>
+          <Link to="#" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd, timers = setTimeout(() => {setSection(1)},300))}></i></Link>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Tasks</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
