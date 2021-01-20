@@ -19,7 +19,7 @@ function Projects(props) {
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
   const [name, setName] = useState('')
-  const [client, setClient] = useState([])
+  const [client, setClient] = useState({})
   const [tasks, setTasks] = useState([])
   const [activity, setActivity] = useState([])
   const [daysleft, setDaysLeft] = useState('')
@@ -47,7 +47,7 @@ function Projects(props) {
   
   const projectsrow = projlist && projlist.map(proj => {
     return <ProjectCard proj={proj} key={proj.id} />
-  }) 
+  })  
   const tasksrow = tasks && tasks.map(el => {
     return <p>{el.taskname}</p>
   })
@@ -167,7 +167,7 @@ function Projects(props) {
           if(userlist.shareids.includes(doc.data().projectid)) 
             projects.push(doc.data())
         })
-        setProjList(projects)   
+        setProjList(projects)    
       })  
     })    
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {

@@ -2417,7 +2417,9 @@ details[open] summary ~ * {
 .viewallnotifs:hover {
   background: var(--light)
 }
-
+.viewallnotifs a:hover {
+  background: none;
+}
 
 
 

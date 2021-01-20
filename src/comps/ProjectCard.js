@@ -14,7 +14,7 @@ function ProjectCard(props) {
       </div> 
       <div>
         <h4>{name}</h4>
-        <h6>{client}</h6>
+        <h6>{client.clientname}</h6>
       </div>
       <div className="clientcircle" style={{background: color}}>
         <small>ub</small>
