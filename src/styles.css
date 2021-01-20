@@ -435,6 +435,13 @@ nav {
 .notifbox .slidemenu, .msgbox .slidemenu {
   height: 400px;
 }
+.msgbox .slidemenu small {
+  color: #aaa;
+}
+.msgbox .slidemenu .notifimg {
+  width: 40px;
+  height: 40px;
+}
 .slidemenu a {
   display: flex;
   justify-content: space-between;

@@ -13,7 +13,7 @@ import Notifs from './Notifs'
 import firebase from 'firebase'
 import {db} from './Fire'
 import NotifsPage from './NotifsPage'
-import MessagesPage from './MessagesPage'
+import ConvoPage from './ConvoPage'
    
 function Homecont(props) {   
   
@@ -24,6 +24,7 @@ function Homecont(props) {
   const [shareids, setShareIds] = useState([' ']) 
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
+  const [convosnum, setConvosNum] = useState('')
   const user = firebase.auth().currentUser 
 
   const oneproject = projlist && projlist.map(proj => {
@@ -54,7 +55,7 @@ function Homecont(props) {
 
   return ( 
     <div className="homecont">
-      <Navbar darkmode={props.darkmode} handleLogout={props.handleLogout}/>
+      <Navbar darkmode={props.darkmode} handleLogout={props.handleLogout} />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -74,8 +75,8 @@ function Homecont(props) {
           <Route path="/notifications"> 
             <NotifsPage amount={Infinity}/>
           </Route>
-          <Route path="/messages">
-            <MessagesPage amount={Infinity}/>
+          <Route path="/conversations">
+            <ConvoPage convosnum={(val) => setConvosNum(val)}/>
           </Route>
           {oneproject}
           {oneclient}
