@@ -31,9 +31,7 @@ function Notifications(props) {
   },[])
 
   return (
-    <div className="notifspage apppage">
-      {allnotifs}
-    </div>
+      allnotifs
   )
 }
 

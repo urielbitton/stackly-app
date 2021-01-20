@@ -12,7 +12,7 @@ import {StoreContext} from './StoreContext'
 import Notifs from './Notifs'
 import firebase from 'firebase'
 import {db} from './Fire'
-import Notifications from './Notifications'
+import NotifsPage from './NotifsPage'
    
 function Homecont(props) {   
   
@@ -71,7 +71,7 @@ function Homecont(props) {
             <Settings shownotif={(time) => setUpdate(prev => prev+1, setTime(time))}/>
           </Route>
           <Route path="/notifications"> 
-            <Notifications amount={Infinity}/>
+            <NotifsPage amount={Infinity}/>
           </Route>
           {oneproject}
           {oneclient}
