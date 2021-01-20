@@ -145,7 +145,6 @@ function OneProject(props) {
         let updateindex = taskupdates.indexOf(el)
         proj.tasks[taskindex].taskupdates.splice(updateindex,1)
         db.collection("projects").doc(proj.projectid).update(proj) 
-        console.log(updateindex)
       } 
     })
   }
@@ -174,7 +173,8 @@ function OneProject(props) {
          'View now',
          '#e04f4c',
          'fa-list-ul',
-         notifsnum
+         notifsnum,
+         proj.client.clientid
         ) 
       }
       else { //if editing a task
@@ -212,6 +212,7 @@ function OneProject(props) {
       setTaskNotes('') 
       timers = setTimeout(() => { setShowAdd(!showadd)}, 30)
       openCloseAct()
+      updateProgress() 
     }
     else {
       props.shownotif(4000) 
@@ -312,8 +313,16 @@ function OneProject(props) {
         proj.tasks.splice(taskindex,1) 
         db.collection("projects").doc(proj.projectid).update(proj) 
       } 
-    }) 
+    })  
+    updateProgress()
     timers = setTimeout(() => { setShowAdd(!showadd)}, 30)
+  }
+  function updateProgress() {
+    let tasksnum = proj.tasks.length
+    let activetasksnum = proj.tasks.filter((task) => task.taskstatus === 'Completed').length
+    let projprogress = Math.round((activetasksnum/tasksnum)*100)
+    proj.progress = projprogress
+    db.collection("projects").doc(proj.projectid).update(proj) 
   }
   function createActivity(action,text) {
     let actobj = {
@@ -397,7 +406,7 @@ function OneProject(props) {
     }) 
     openCloseAct()
     return() => {
-      clearTimeout(timers)
+      clearTimeout(timers) 
     }
   },[])
  
@@ -429,7 +438,7 @@ function OneProject(props) {
             <div>
               <h4>{proj.name}</h4>
               <h6>Contractor: {proj.creatorname}</h6>
-              <h6>Client: {proj.client}</h6> 
+              <h6>Client: {proj.client.clientname}</h6> 
             </div>
             <div>
               <small>Days left: {proj.daysleft}</small>
@@ -456,7 +465,11 @@ function OneProject(props) {
             </div>
           </div> 
           <div className="actionsection">
-            <button style={{background: proj.color, borderColor:proj.color, display:editallow?"block":"none"}} onClick={editallow?() => setShowInv(!showinv):null}>Invite Client</button>
+            {
+              editallow?
+              <button style={{background: proj.color, borderColor:proj.color, display:editallow?"block":"none"}} onClick={editallow?() => setShowInv(!showinv):null}>Invite Client</button>
+              :""
+            }
           </div>
         </div> 
       </div> 
@@ -465,7 +478,7 @@ function OneProject(props) {
         <i className="fal fa-times" onClick={() => setSlide(!slide)}></i>
         <div className="titlecont">
           <h2>{taskname}</h2>
-          <h6>Client: <span>{proj.client}</span></h6> 
+          <h6>Client: <span>{proj.client.clientname}</span></h6> 
           <h6>Date Due: <span>{taskdue}</span></h6>
           <h6>Status: <span>{taskstatus}</span></h6>
           <h6>Notes</h6>
@@ -496,7 +509,7 @@ function OneProject(props) {
           <a className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></a>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>{addedit?"Add":"Edit"} Task</h4></div>
           <div className="content hidescroll">
-            <Inputs disabled={taskcreatorid===user.uid?"false":"true"} title="Task title" placeholder="E.g. Install Plugins" onChange={(e) => setTaskName(e.target.value)} value={taskname} />
+            <Inputs disabled={!addedit?taskcreatorid===user.uid?null:"disabled":""} title="Task title" placeholder="E.g. Install Plugins" onChange={(e) => setTaskName(e.target.value)} value={taskname} />
             <label>
               <h6>Task Status</h6>
               <select value={taskstatus} onChange={(e) => setTaskStatus(e.target.value)} >
@@ -509,13 +522,13 @@ function OneProject(props) {
               <h6>Task Color</h6>
               <Inputs type="color" onChange={(e) => setTaskColor(e.target.value)} value={taskcolor}/>  
             </div>
-            <Inputs title="Date Due" disabled={taskcreatorid===user.uid?"false":"true"} type="date" onChange={(e) => setTaskDue(e.target.value)} value={taskdue} />
+            <Inputs title="Date Due" disabled={!addedit?taskcreatorid===user.uid?null:"disabled":""} type="date" onChange={(e) => setTaskDue(e.target.value)} value={taskdue} />
             <div className="addpriorcont">
               {
-                taskcreatorid===user.uid?<>
+                !addedit?taskcreatorid===user.uid?<>
                   <button onClick={() => setTaskPrior('low', setPriorPromise(0))} className={taskprior==='low'?"lowprior priorbtn activelowbtn":"lowprior priorbtn"}><i className="fas fa-star"></i>Low Priority</button>
                   <button onClick={() => setTaskPrior('high', setPriorPromise(0))} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
-                </>:""
+                </>:"":""
               }
             </div>
             <label> 
@@ -525,7 +538,7 @@ function OneProject(props) {
           </div>
           <div className="editprojbtngroup">
             <button style={{padding:"10px 20px"}} onClick={() => addTask()}><i className={addedit?"fal fa-plus":"fal fa-edit"}></i>{addedit?"Add":"Edit"}</button>
-            <button style={{display:taskcreatorid===user.uid?"block":"none",background:"var(--red)", borderColor:"var(--red)"}} onClick={taskcreatorid===user.uid?() => deleteTask():null}>Delete</button>
+            <button style={{display:!addedit?taskcreatorid===user.uid?"block":"none":"",background:"var(--red)", borderColor:"var(--red)"}} onClick={taskcreatorid===user.uid?() => deleteTask():null}>Delete</button>
           </div>
         </div>
       </div> 

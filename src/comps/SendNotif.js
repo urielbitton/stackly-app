@@ -1,9 +1,9 @@
 import {db} from './Fire'
 import firebase from 'firebase'
 
-export function SendNotif(notifsubject, notiftext, notiflink, notifaction, notifcolor, notificon, notifsnum) {
+export function SendNotif(notifsubject, notiftext, notiflink, notifaction, notifcolor, notificon, notifsnum, clientid) {
   const user = firebase.auth().currentUser
-  let notifObj = {
+  let notifObj = { 
     notifsubject: notifsubject,
     notifid: db.collection("notifications").doc().id,
     notiftext: notiftext,
@@ -17,4 +17,8 @@ export function SendNotif(notifsubject, notiftext, notiflink, notifaction, notif
     notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
     notifsnum: notifsnum+1 
   })
+  db.collection('notifications').doc(clientid).update({
+    notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
+    notifsnum: notifsnum+1 
+  }) 
 }

@@ -14,8 +14,8 @@ function Navbar(props) {
   const [notifsnum, setNotifsNum] = useState(0)
   const user = firebase.auth().currentUser
   let history = useHistory()
-
-  const recentnotifs = notifs && notifs.slice(0,8).reverse().map(el => {
+ 
+  const recentnotifs = notifs && notifs.map(el => {
     return <div className="notifrow" onClick={() => history.push(`/${el.notiflink}`)}>
       <div className="notifimg" style={el.notiftype==="stackly"?{backgroundImage: el.notiftype==="stackly"?"url(https://i.imgur.com/wazsi0l.png)":""}:{background: el.notifcolor, width:"30px",height:"30px"}}>{el.notificon?<i style={{color:"#fff"}} className={"fal "+el.notificon}></i>:""}</div>
       <div className="notifcontent">
@@ -28,7 +28,7 @@ function Navbar(props) {
 
   useEffect(() => {
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {
-      setNotifs(snap.data().notifs)
+      setNotifs(snap.data().notifs.reverse())
       setNotifsNum(snap.data().notifsnum)
     })    
   },[])
