@@ -9,7 +9,7 @@ import firebase from 'firebase'
 import {SendNotif} from './comps/SendNotif'
  
 function App() {
-
+           
   const [user, setUser] = useState('')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -19,9 +19,9 @@ function App() {
   const [hasAccount, setHasAccount] = useState(false)
   const [sharecode, setShareCode] = useState('')
   const [shareids, setShareIds] = useState([])
+  const [msgids, setMsgIds] = useState([''])
   const [invites, setInvites] = useState([])
   const [entercode, setEnterCode] = useState(false)
-  const [notifsnum, setNotifsNum] = useState(0)
 
   const clearInputs = () => {
     setEmail('')
@@ -97,6 +97,7 @@ function App() {
             settings,
             uid: user.uid,
             shareids,
+            msgids,
             invites 
           })
           SendNotif('Stackly Platform', 

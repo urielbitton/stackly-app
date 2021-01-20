@@ -5,7 +5,8 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import ElapsedTime from './ElapsedTime'
 import Notifications from './Notifications'
-
+import Messages from './Messages'
+ 
 function Navbar(props) {
 
   const [shownew, setShowNew] = useState(false)
@@ -41,7 +42,12 @@ function Navbar(props) {
           <i className="far fa-comments-alt"></i>
           <div className="notifcircle">5</div>
           <div className="slidemenu">
-            messages 
+            <div className="slidemenuinner hidescroll">
+              <Messages amount={8}/>
+            </div>
+            <div className="viewallnotifs">
+              <Link to="/messages"><h6>View All</h6></Link>
+            </div>  
           </div>
         </div>
         <div className="notifbox boxmenu">
@@ -54,7 +60,7 @@ function Navbar(props) {
             <div className="viewallnotifs">
               <Link to="/notifications"><h6>View All</h6></Link>
             </div>
-          </div>
+        </div>
         </div>
         <div className="optionsbox boxmenu">
           <i className="fas fa-th"></i>

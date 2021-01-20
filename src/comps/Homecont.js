@@ -13,6 +13,7 @@ import Notifs from './Notifs'
 import firebase from 'firebase'
 import {db} from './Fire'
 import NotifsPage from './NotifsPage'
+import MessagesPage from './MessagesPage'
    
 function Homecont(props) {   
   
@@ -72,6 +73,9 @@ function Homecont(props) {
           </Route>
           <Route path="/notifications"> 
             <NotifsPage amount={Infinity}/>
+          </Route>
+          <Route path="/messages">
+            <MessagesPage amount={Infinity}/>
           </Route>
           {oneproject}
           {oneclient}
