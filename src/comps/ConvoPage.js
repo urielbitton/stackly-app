@@ -49,10 +49,9 @@ function ConvoPage(props) {
           <Conversations amount={8} /> 
         </div>
         <div className="convoscontent">
-          
-            <div className="convowindow">
-                {onedialogue}
-            </div>
+          <div className="convowindow">
+              {onedialogue}
+          </div>
         </div>
       </div>
     </div>

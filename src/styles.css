@@ -2534,7 +2534,7 @@ details[open] summary ~ * {
 }
 .msgbubblecont {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   grid-gap: 10px;
 }
 .msgbubblecont img {
@@ -2547,6 +2547,9 @@ details[open] summary ~ * {
   border-radius: 15px;
   max-width: 60%;
   top: -8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .msgbubble p {
   font-size: 14px;
@@ -2557,16 +2560,85 @@ details[open] summary ~ * {
   font-size: 9px;
   color: #bbb;
 }
-
-
-
-
-
-
-
-
-
-
+.typercont {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  padding: 10px 15px;
+} 
+.typerdiv {
+  width: 100%;
+  min-height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  background: #f5f5f5;
+  padding: 10px 20px;
+}
+.typeractions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-gap: 10px;
+  width: 100%;
+}
+.textareacont {
+  width: 90%;
+}
+.textareacont textarea {
+  width: 100%;
+  margin-left: 20px;  
+  height: 50px;
+  max-height: 300px;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  padding: 15px 10px;
+  top: 2px;
+}
+.textareacont textarea:focus {
+  box-shadow: none;
+  border-color: #ccc;
+}
+.typeractions > i {
+  color: var(--color);
+}
+.typersendcont {
+  padding: 5px;
+  cursor: pointer;
+}
+.typersendcont i {
+  font-size: 24px;
+  color: var(--color);
+  transition: all 0.2s;
+}
+.typersendcont i:hover {
+  filter: brightness(120%);
+}
+.textareacont .inpemojipicker {
+  position: absolute;
+  top: 19px;
+  right: 0px;
+  z-index: 10;
+  position: absolute;
+  color: #aaa;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.textareacont .inpemojipicker:hover {
+  color: var(--color);
+}
+.emojipickercont {
+  position: absolute;
+  bottom: 75px;
+  right: -10px;
+  user-select: none;
+}
+.tox-statusbar {
+  display: none!important;
+}
 
 
 
