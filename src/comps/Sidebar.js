@@ -45,6 +45,7 @@ function Sidebar(props) {
           <NavLink to="/projects" activeClassName="activelink"><h6><i className="fal fa-project-diagram"></i><span>Projects</span></h6></NavLink>
           <NavLink to="/clients" activeClassName="activelink"><h6><i className="fal fa-users"></i><span>Clients</span></h6></NavLink>
           <NavLink to="/mytasks" activeClassName="activelink"><h6><i className="fal fa-tasks"></i><span>My Tasks</span></h6></NavLink>
+          <NavLink to="/messages" activeClassName="activelink"><h6><i class="fal fa-comments"></i><span>Messages</span></h6></NavLink>
           <NavLink to="/settings" activeClassName="activelink"><h6><i className="fal fa-cog"></i><span>Settings</span></h6></NavLink>
       </div>
       <div className="quickprojects">

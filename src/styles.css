@@ -2427,20 +2427,90 @@ details[open] summary ~ * {
 .viewallnotifs a:hover {
   background: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.msgstatus {
+  position: absolute;
+  right: 20px;
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  padding: 5px;
+}
+.convopage .convorow .msgcontent {
+  width: 295px;
+}
+.convosgrid {
+  display: grid;
+  grid-template-columns: 400px auto;
+  grid-gap: 10px;
+}
+.convopage .convorow {
+  border-radius: 10px;
+  width: 100%;
+  border: none;
+}
+.convopage .convorow .notifimg {
+  width: 40px;
+  height: 40px;
+}
+.convopage .sidebarconvos {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  grid-gap: 10px;
+  height: 100vh;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+}
+.convopage .convoscontent {
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.convopage .pagetitlestxt {
+  margin-bottom: 10px;
+}
+.convopage .pagetitlestxt h4 {
+  margin-left: 20px;
+}
+.convopage .convohead {
+  width: 100%;
+  height: 60px;
+  padding: 10px 20px;
+}
+.sidebarconvoshead {
+  width: 100%;
+}
+.sidebarconvoshead > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+.sidebarconvoshead > div h3 {
+  color: #333;
+}
+.sidebarconvoshead > div i {
+  color: #aaa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sidebarconvoshead > div i:hover {
+  color: #333;
+}
+.sidebarconvoshead label, .sidebarconvoshead input {
+  width: 100%;
+}
+.sidebarconvoshead input {
+  background: #f5f5f5;
+  border: none;
+  padding: 15px;
+}
+.sidebarconvoshead input:focus {
+  box-shadow: none;
+}
 
 
 

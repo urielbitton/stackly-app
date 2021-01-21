@@ -75,7 +75,7 @@ function Homecont(props) {
           <Route path="/notifications"> 
             <NotifsPage amount={Infinity}/>
           </Route>
-          <Route path="/conversations">
+          <Route path="/messages">
             <ConvoPage convosnum={(val) => setConvosNum(val)}/>
           </Route>
           {oneproject}

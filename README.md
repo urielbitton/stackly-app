@@ -6,4 +6,6 @@ For example, if a contractor is creating a website for their client, the pair me
 
 It is not simply a project management platform, but primarily one where clients can track their project's progress and receive live updates about their project and features, responding to updates all while maintaining complete knowledge and control over their project. (Clients also receive notifs about updates by email)
 
-Implement: react + firebase
+Implementation: react + firebase
+
+

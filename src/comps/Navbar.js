@@ -41,7 +41,7 @@ function Navbar(props) {
         </div> 
         <div className="msgbox boxmenu">
           <i className="far fa-comments-alt"></i>
-          <div className="notifcircle">{convinfo.unreadmsgs}</div>
+          <div className="notifcircle" style={{display: convinfo.unreadmsgs>0?"block":"none"}}>{convinfo.unreadmsgs}</div>
           <div className="slidemenu">
             <div className="slidemenuinner hidescroll">
               <Conversations amount={8}/>
