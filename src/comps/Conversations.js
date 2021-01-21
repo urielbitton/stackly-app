@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useRef} from 'react'
-import { BrowserRouter as Router,Switch,Route,Link,useHistory, Redirect } from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link,useHistory } from "react-router-dom"
 import firebase from 'firebase'
 import {db} from './Fire'
 import ElapsedTime from './ElapsedTime'
@@ -16,7 +16,7 @@ function Conversations(props) {
   let shorten = useRef()
 
   const allconvos = convos && convos.slice(0,props.amount).map(el => {
-    return <div className="notifrow convorow">
+    return <Link exact to={`/messages/${el.convoinfo.convoid}`}><div className="notifrow convorow">
       <div className="notifimg" style={{backgroundImage: `url(${el.convoinfo.creatorid===user.uid?el.convoinfo.recipientimg:el.convoinfo.senderimg})`}}></div> 
       <div className="notifcontent msgcontent" onClick={() => openMessage(el)}>
         <h5>{el.convoinfo.creatorid===user.uid?el.convoinfo.recipientname:el.convoinfo.sendername}</h5>
@@ -24,7 +24,7 @@ function Conversations(props) {
         <small><ElapsedTime providedtime={el.messages[0].msgdate.toDate()}/></small>
       </div>
       <div className="msgstatus" style={{background: el.messages[0].senderid!==user.uid?el.messages[0].read===false?"var(--color)":"#eee":"#eee"}}></div>
-    </div>   
+    </div></Link>   
   })  
 
   function openMessage(el) {
@@ -36,8 +36,8 @@ function Conversations(props) {
     }
   }  
   function shortenMsgs(text) {
-    if(text.length > 50) {
-      let shortname = text.substring(0,48) + "..."
+    if(text.length > 46) {
+      let shortname = text.substring(0,46) + "..."
       return shortname
     }
     else {

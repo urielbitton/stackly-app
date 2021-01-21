@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { BrowserRouter as Router,Switch,Route,Link, useLocation} from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
 import Navbar from './Navbar'
 import Home from './Home'
 import Projects from './Projects'

@@ -48,6 +48,7 @@ function App() {
         default:
       } 
     })
+    db.collection('users').doc(user.uid).update({activestatus: true})
   } 
   const handleSignup = () => {
     clearErrors()
@@ -98,7 +99,8 @@ function App() {
             uid: user.uid,
             shareids,
             msgids,
-            invites 
+            invites,
+            activestatus: true
           })
           SendNotif('Stackly Platform', 
             `Welcome to Stackly App. Go to settings to set up your account information.`,
@@ -117,6 +119,7 @@ function App() {
   }
   const handleLogout = () => {
     firebase.auth().signOut()
+    db.collection('users').doc(user.uid).update({activestatus: false})
   }
   const authListener = () => {
     firebase.auth().onAuthStateChanged(user => {
