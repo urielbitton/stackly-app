@@ -8,6 +8,8 @@ import { animateScroll } from "react-scroll";
 function Dialogue(props) {
 
   const [msgstring, setMsgString] = useState('')
+  const [updateelapsed, setUpdateElapsed] = useState(0)
+  const [typing, setTyping] = useState(false)
   const {messages} = props.diag
   const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
@@ -15,16 +17,15 @@ function Dialogue(props) {
 
   const allmsgs = messages && messages.map(msg => {
     return <div className="msgbubblecont" style={{flexDirection: msg.senderid===user.uid?"row-reverse":"row"}}>
-      <img src={msg.senderid===user.uid?senderimg:recipientimg} alt=""/>
+      <img src={msg.senderid===creatorid?senderimg:recipientimg} alt=""/>
       <div className="msgbubble" style={{background: msg.senderid===user.uid?"var(--color)":"#f1f1f1"}}>
         <p style={{color: msg.senderid===user.uid?"#fff":"#111"}}>{msg.message}</p>
-        <small style={msg.senderid===user.uid?{right:"0"}:{left:"0"}}><ElapsedTime providedtime={msg.msgdate.toDate()}/></small>
+        <small style={msg.senderid===user.uid?{right:"0"}:{left:"0"}}><ElapsedTime providedtime={msg.msgdate.toDate()} updateelapsed={updateelapsed} /></small>
       </div> 
     </div>
   })
-  function sendMessage() {
-    msgstring.trim()
-    if(msgstring.length > 0 && msgstring!=='') {
+  function sendMessage() { 
+    if(msgstring.length) {
       let msgobject = {
         message: msgstring,
         msgdate: firebase.firestore.Timestamp.now(),
@@ -62,6 +63,7 @@ function Dialogue(props) {
     else {
       typer.setAttribute('style', 'height: 50px')
     }
+    setTyping(true)
   }
   
   useEffect(() => {
@@ -78,13 +80,25 @@ function Dialogue(props) {
       containerId: "convowindowinner",
       duration: 0,
     })
+    setInterval(() => {
+      setUpdateElapsed(prev => prev+1)
+    },30000)
   },[])
+  useEffect(() => {
+    setInterval(() => {
+      setTyping(false)
+    }, 5000)
+  },[typing])
  
   return (
     <div className="dialoguecont hidescroll">
       <div className="convohead"></div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
+        <div className="msgbubble typingbubble" style={{background: creatorid===user.uid?"var(--color)":"#f1f1f1", display: typing?creatorid===user.uid?"none":"block":"none"}}>
+          <p style={{color: creatorid===user.uid?"#fff":"#111"}}>...</p>
+        </div> 
+        <div className="emptydiv"></div>
       </div>
       
       <div className="typercont">

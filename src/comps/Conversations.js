@@ -14,13 +14,13 @@ function Conversations(props) {
   const user = firebase.auth().currentUser
   let history = useHistory()
   let shorten = useRef()
-
+ 
   const allconvos = convos && convos.slice(0,props.amount).map(el => {
     return <Link exact to={`/messages/${el.convoinfo.convoid}`}><div className="notifrow convorow">
       <div className="notifimg" style={{backgroundImage: `url(${el.convoinfo.creatorid===user.uid?el.convoinfo.recipientimg:el.convoinfo.senderimg})`}}></div> 
       <div className="notifcontent msgcontent" onClick={() => openMessage(el)}>
         <h5>{el.convoinfo.creatorid===user.uid?el.convoinfo.recipientname:el.convoinfo.sendername}</h5>
-        <h6 style={{color: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#111":""}}>{shortenMsgs(el.messages[el.messages.length-1].message)}</h6> 
+        <h6 style={{color: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#111":""}}>{el.messages[el.messages.length-1].senderid===user.uid?"You:":""} {shortenMsgs(el.messages[el.messages.length-1].message)}</h6> 
         <small><ElapsedTime providedtime={el.messages[el.messages.length-1].msgdate.toDate()}/></small>
       </div>
       <div className="msgstatus" style={{background: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#eee":"#eee"}}></div>

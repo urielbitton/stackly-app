@@ -40,7 +40,7 @@ function ElapsedTime(props) {
     var nowDate = new Date()
     var elapsedTime = nowDate.getTime() - storedDate.getTime()
     setElapsedTime(msToTime(elapsedTime))
-  },[])
+  },[props.updateelapsed])
 
   return <>{elapsedTime}</> 
 }
