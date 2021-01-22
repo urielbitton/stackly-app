@@ -20,10 +20,10 @@ function Conversations(props) {
       <div className="notifimg" style={{backgroundImage: `url(${el.convoinfo.creatorid===user.uid?el.convoinfo.recipientimg:el.convoinfo.senderimg})`}}></div> 
       <div className="notifcontent msgcontent" onClick={() => openMessage(el)}>
         <h5>{el.convoinfo.creatorid===user.uid?el.convoinfo.recipientname:el.convoinfo.sendername}</h5>
-        <h6 style={{color: el.messages[0].senderid!==user.uid?el.messages[0].read===false?"var(--color)":"#111":""}}>{shortenMsgs(el.messages[0].message)}</h6> 
-        <small><ElapsedTime providedtime={el.messages[0].msgdate.toDate()}/></small>
+        <h6 style={{color: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#111":""}}>{shortenMsgs(el.messages[el.messages.length-1].message)}</h6> 
+        <small><ElapsedTime providedtime={el.messages[el.messages.length-1].msgdate.toDate()}/></small>
       </div>
-      <div className="msgstatus" style={{background: el.messages[0].senderid!==user.uid?el.messages[0].read===false?"var(--color)":"#eee":"#eee"}}></div>
+      <div className="msgstatus" style={{background: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#eee":"#eee"}}></div>
     </div></Link>   
   })  
 

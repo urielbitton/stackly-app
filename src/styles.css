@@ -2484,9 +2484,15 @@ details[open] summary ~ * {
   width: 100%;
   height: 60px;
   padding: 10px 20px;
-}
+} 
 .convowindow {
   width: 100%;
+}
+.convowindowinner {
+  height: 68vh;
+  width: 100%;
+  padding: 20px 0;
+  overflow-y: scroll;
 }
 .sidebarconvoshead {
   width: 100%;
@@ -2559,6 +2565,7 @@ details[open] summary ~ * {
   bottom: -17px;
   font-size: 9px;
   color: #bbb;
+  white-space: nowrap;
 }
 .typercont {
   position: absolute;
@@ -2595,8 +2602,8 @@ details[open] summary ~ * {
   resize: none;
   border-radius: 10px;
   border: 1px solid #e5e5e5;
-  padding: 15px 10px;
-  top: 2px;
+  padding: 15px;
+  top: 4px;
 }
 .textareacont textarea:focus {
   box-shadow: none;
@@ -2604,18 +2611,29 @@ details[open] summary ~ * {
 }
 .typeractions > i {
   color: var(--color);
+  cursor: pointer;
+  top: 2px;
 }
 .typersendcont {
   padding: 5px;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+  border-radius: 10px;
+}
+.typersendcont:hover {
+  background: var(--light);
 }
 .typersendcont i {
-  font-size: 24px;
+  font-size: 20px;
   color: var(--color);
   transition: all 0.2s;
-}
-.typersendcont i:hover {
-  filter: brightness(120%);
+  margin-left: 0px;
+  padding: 20px;
 }
 .textareacont .inpemojipicker {
   position: absolute;
@@ -2637,8 +2655,42 @@ details[open] summary ~ * {
   user-select: none;
 }
 .tox-statusbar {
-  display: none!important;
+  display: none;
 }
+.typercont .tox-editor-header {
+  position: absolute;
+  width: 100%;
+}
+.typercont .toolbar {
+  width: 100%;
+}
+.typercont .tox-tbtn {
+  position: absolute;
+  top: 8px;
+  font-size: 25px;
+}
+.typercont button[title="Emoticons"] {
+  right: 10px;
+  border-radius: 10px;
+  font-size: 25px;
+}
+.typercont button[title="Emoticons"] svg {
+  transform: scale(1.2);
+  fill: var(--color);
+}
+.typercont .tox-tinymce {
+  border-radius: 10px;
+  border: none;
+}
+.emptymsg {
+
+}
+
+
+
+
+
+
 
 
 

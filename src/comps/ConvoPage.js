@@ -34,7 +34,7 @@ function ConvoPage(props) {
   },[])
 
   return (
-    <div className="convopage apppage">
+    <div className="convopage apppage hidescroll">
       <div className="convosgrid">
         <div className="sidebarconvos">
           <div className="sidebarconvoshead">

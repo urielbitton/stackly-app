@@ -3,11 +3,10 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import ElapsedTime from './ElapsedTime'
 import { Inputs } from './Inputs'
-import tinymce from 'tinymce'
+import { animateScroll } from "react-scroll";
 
 function Dialogue(props) {
 
-  const [showpicker, setShowPicker] = useState(false)
   const [msgstring, setMsgString] = useState('')
   const {messages} = props.diag
   const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername} = props.diag.convoinfo
@@ -23,19 +22,32 @@ function Dialogue(props) {
       </div> 
     </div>
   })
- 
   function sendMessage() {
-    let msgobject = {
-      message: msgstring,
-      msgdate: firebase.firestore.Timestamp.now(),
-      msgid: db.collection("conversations").doc().id,
-      read: false,
-      senderid: user.uid
+    msgstring.trim()
+    if(msgstring.length > 0 && msgstring!=='') {
+      let msgobject = {
+        message: msgstring,
+        msgdate: firebase.firestore.Timestamp.now(),
+        msgid: db.collection("conversations").doc().id,
+        read: false,
+        senderid: user.uid
+      }
+      db.collection("conversations").doc(convoid).update({
+        messages: firebase.firestore.FieldValue.arrayUnion(msgobject)
+      })
+      animateScroll.scrollToBottom({
+        containerId: "convowindowinner",
+        duration: 200,
+        offset: 1000
+      })
+      setMsgString('')
     }
-    db.collection("conversations").doc(convoid).update({
-      messages: firebase.firestore.FieldValue.arrayUnion(msgobject)
-    })
-    typerRef.current.value = ''
+  }
+  function triggerSend(e) {
+    if(e.keyCode === 13) {
+      e.preventDefault()
+      sendMessage()
+    }
   }
   function formatTextarea() {
     const typer = typerRef.current
@@ -51,19 +63,29 @@ function Dialogue(props) {
       typer.setAttribute('style', 'height: 50px')
     }
   }
-  tinymce.init({
-    selector: "#mytextarea",
-    menubar: false,
-    branding: false,
-    height: 100,
-    plugins: 'emoticons image',
-    toolbar: 'emoticons image'
-  });  
+  
+  useEffect(() => {
+    /*tinymce.init({
+      selector: "#mytextarea",
+      menubar: false,
+      branding: false,
+      height: 100,
+      autoresize_bottom_margin: 0,
+      plugins: 'autoresize emoticons',
+      toolbar: 'emoticons'
+    })*/
+    animateScroll.scrollToBottom({
+      containerId: "convowindowinner",
+      duration: 0,
+    })
+  },[])
  
   return (
     <div className="dialoguecont hidescroll">
       <div className="convohead"></div>
-      {allmsgs}
+      <div className="convowindowinner hidescroll" id="convowindowinner">
+        {allmsgs}
+      </div>
       
       <div className="typercont">
         <div className="typerdiv"> 
@@ -71,11 +93,8 @@ function Dialogue(props) {
               <i className="far fa-paperclip"></i>
               <i className="far fa-images"></i>
               <div className="textareacont">
-                <textarea ref={typerRef} className="convotyperinput" value={msgstring} onChange={(e) => {setMsgString(e.target.value);formatTextarea()}}/>
-                <i style={{color: showpicker?"var(--color)":"#aaa"}} className="inpemojipicker far fa-smile-beam" onClick={() => setShowPicker(!showpicker)}></i>
-                <div className="emojipickercont" style={{display: showpicker?"block":"none"}}>
-                  
-                </div>
+                <textarea onKeyUp={(e) => triggerSend(e)} ref={typerRef} className="convotyperinput hidescroll" value={msgstring} onChange={(e) => {setMsgString(e.target.value);formatTextarea()}}/>
+                <i style={{display:"none"}} className="inpemojipicker far fa-smile-beam"></i>
               </div>
             </div>
             <div className="typersendcont" onClick={() => sendMessage()}><i className="fas fa-paper-plane"></i></div>
