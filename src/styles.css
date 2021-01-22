@@ -439,6 +439,9 @@ nav {
 .notifbox .slidemenu, .msgbox .slidemenu {
   height: 400px;
 }
+.msgbox .slidemenu a {
+  padding: 0;
+}
 .msgbox .slidemenu small {
   color: #aaa;
 }

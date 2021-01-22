@@ -56,7 +56,6 @@ function Dialogue(props) {
       typer.setAttribute('style', 'height:' + (typer.scrollHeight) + 'px;')
       typer.addEventListener("input", OnInput, false) 
       function OnInput() { 
-        //this.style.height = 'auto'  
         this.style.height = (this.scrollHeight) + 'px'
       }
     }  
@@ -65,17 +64,14 @@ function Dialogue(props) {
     }
     setTyping(true)
   }
+  function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g
+    return text.replace(urlRegex, function(url) {
+      return '<a href="' + url + '">' + url + '</a>'
+    })
+  }
   
   useEffect(() => {
-    /*tinymce.init({
-      selector: "#mytextarea",
-      menubar: false,
-      branding: false,
-      height: 100,
-      autoresize_bottom_margin: 0,
-      plugins: 'autoresize emoticons',
-      toolbar: 'emoticons'
-    })*/
     animateScroll.scrollToBottom({
       containerId: "convowindowinner",
       duration: 0,
@@ -95,9 +91,9 @@ function Dialogue(props) {
       <div className="convohead"></div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
-        <div className="msgbubble typingbubble" style={{background: creatorid===user.uid?"var(--color)":"#f1f1f1", display: typing?creatorid===user.uid?"none":"block":"none"}}>
+        <div className="msgbubble typingbubble" style={{background: creatorid===user.uid?"var(--color)":"#f1f1f1", display: typing?"block":"none"}}>
           <p style={{color: creatorid===user.uid?"#fff":"#111"}}>...</p>
-        </div> 
+        </div>  
         <div className="emptydiv"></div>
       </div>
       
