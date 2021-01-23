@@ -89,11 +89,9 @@ function Dialogue(props) {
       convoinfo: infoObj
     }).then(() => {
       db.collection("conversations").doc(convoid).onSnapshot(snap => {
-        setRealTyping(snap.data().convoinfo.usertyping)
-      }) 
+        setTyperId(snap.data().convoinfo.typerid) 
+      })  
     })
-     
-    
   }
   
   useEffect(() => {
@@ -121,7 +119,6 @@ function Dialogue(props) {
   const typingstyles = {
     backgroundColor: "#888"
   }
-  console.log(typerid)
 
   return (
     <div className="dialoguecont hidescroll">
