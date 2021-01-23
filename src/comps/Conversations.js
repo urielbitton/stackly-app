@@ -11,7 +11,7 @@ function Conversations(props) {
   const [userlist, setUserList] = useState([])
   const [msgs, setMsgs] = useState([])
   const [convos, setConvos] = useState([])
-  const user = firebase.auth().currentUser
+  const user = firebase.auth().currentUser 
  
   const allconvos = convos && convos.slice(0,props.amount).map(el => {
     return <NavLink exact to={`/messages/${el.convoinfo.convoid}`} activeClassName="activeconvo"><div className="notifrow convorow">

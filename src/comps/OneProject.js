@@ -440,12 +440,12 @@ function OneProject(props) {
               <h4>{proj.name}</h4>
               <h6>Contractor: 
                 <span className={proj.creatorid===user.uid?"":"useropts useroptsopen"}> {proj.creatorname}
-                  <UserOpts left="auto" right="0" name={proj.creatorname}/>
+                  <UserOpts left="auto" right="0" name={proj.creatorname} id={proj.creatorid}/>
                 </span>
               </h6>
               <h6>Client:  
                 <span className={proj.creatorid!==user.uid?"":"useropts useroptsopen"}> {proj.client.clientname}
-                  <UserOpts left="auto" right="0" name={proj.client.clientname}/> 
+                  <UserOpts left="auto" right="0" name={proj.client.clientname} id={proj.client.clientid}/> 
                 </span>
               </h6> 
             </div>
