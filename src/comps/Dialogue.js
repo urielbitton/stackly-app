@@ -128,7 +128,7 @@ function Dialogue(props) {
       <div className="convohead"></div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
-        <div className="msgbubblecont" style={{flexDirection: "row", display: typerid===user.uid?realtyping?"flex":"none":"none"}}>
+        <div className="msgbubblecont" style={{flexDirection: "row", display: typerid!==user.uid?"flex":"none"}}>
           <div className="msgbubble typingbubble">
             <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
           </div>
