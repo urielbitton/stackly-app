@@ -53,7 +53,7 @@ function Conversations(props) {
           if(userlist.msgids.includes(doc.id)) 
             convos.push(doc.data())
         }) 
-        setConvos(convos)
+        setConvos(convos.reverse())
         let unreadnum = []
         convos.forEach(conv => {
           unreadnum.push(conv.messages.filter((msg) => msg.senderid !== user.uid && msg.read === false).length)

@@ -448,6 +448,7 @@ nav {
 .msgbox .slidemenu .notifimg {
   width: 40px;
   height: 40px;
+  background-size: cover;
 }
 .slidemenu a {
   display: flex;
@@ -2458,6 +2459,9 @@ details[open] summary ~ * {
 } 
 .notifrow:hover {
   background: var(--light);
+}
+.msgbox .convorow:hover {
+  background: none;
 }
 .notifrow .notifimg {
   background-position: center;

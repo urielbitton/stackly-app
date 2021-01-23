@@ -10,7 +10,7 @@ export function Inputs(props) {
   )   
 }  
  
-export function Switchs(props) {
+export function Switchs(props) { 
   return (   
     <div className="switchdiv"> 
     <h6>{props.title}</h6>    

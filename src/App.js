@@ -69,7 +69,8 @@ function App() {
         if(!shareids.length) {
           shareids.push(sharecode)
           user.updateProfile({
-            displayName: name
+            displayName: name,
+            photoURL: 'https://i.imgur.com/yxij2KH.jpg'
           }) 
           const clients = []
           const updates = []
@@ -97,6 +98,7 @@ function App() {
             updates,
             settings,
             uid: user.uid,
+            messengerid: db.collection("conversations").doc().id,
             shareids,
             msgids,
             invites,

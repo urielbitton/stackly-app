@@ -84,13 +84,15 @@ function Dialogue(props) {
       sendername, 
       usertyping: typing,
       typerid 
-    }
+    }  
     db.collection("conversations").doc(convoid).update({
       convoinfo: infoObj
+    }).then(() => {
+      db.collection("conversations").doc(convoid).onSnapshot(snap => {
+        setRealTyping(snap.data().convoinfo.usertyping)
+      }) 
     })
-    db.collection("conversations").doc(convoid).onSnapshot(snap => {
-      setRealTyping(snap.data().convoinfo.usertyping)
-    })  
+     
     
   }
   
@@ -119,13 +121,14 @@ function Dialogue(props) {
   const typingstyles = {
     backgroundColor: "#888"
   }
- 
+  console.log(typerid)
+
   return (
     <div className="dialoguecont hidescroll">
       <div className="convohead"></div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
-        <div className="msgbubblecont" style={{flexDirection: "row", display: typerid!==user.uid?realtyping?"flex":"none":"none"}}>
+        <div className="msgbubblecont" style={{flexDirection: "row", display: typerid===user.uid?realtyping?"flex":"none":"none"}}>
           <div className="msgbubble typingbubble">
             <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
           </div>
