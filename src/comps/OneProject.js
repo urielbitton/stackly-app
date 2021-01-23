@@ -8,6 +8,7 @@ import {db} from './Fire'
 import SendInvite from './SendInvite'
 import ElapsedTime from './ElapsedTime'
 import {SendNotif} from './SendNotif'
+import UserOpts from './UserOpts'
 
 function OneProject(props) { 
 
@@ -69,7 +70,7 @@ function OneProject(props) {
     return <div className="activitydiv" style={{paddingBottom:"15px"}}>
       <div className="actcont">
         <div className="clientcicrcle">
-          <small>{el.actperson.split(' ')[0][0]}</small> 
+          <small>{el.actperson.split(' ')[0][0]}{el.actperson.indexOf(' ')> -1?el.actperson.split(' ')[1][0]:""}</small> 
         </div>
         <div>
           <h5>{el.actaction}: {el.acttext}</h5>
@@ -89,7 +90,7 @@ function OneProject(props) {
         <div className="clientcircle"><small>{el.updateperson.split(' ')[0][0]}{el.updateperson.split(' ')[1][0]}</small></div>
         <h5>{el.updateperson}</h5>
         <h6>•&emsp;<span><ElapsedTime providedtime={el.updatedate.toDate()}/></span></h6>
-      </div>
+      </div> 
       <textarea disabled={!el.edit} value={el.updatetext} onChange={(e) => {el.updatetext = e.target.value;setUpdate(prev => prev+1);setTempUpdText(e.target.value)}} style={{border: el.edit?"1px solid #ddd":"none", marginBottom: el.edit?"5px":"0px"}}/>
       <div style={{display: el.updatecreatorid===user.uid?"flex":"none"}}> 
         <small onClick={!el.edit?el.updatecreatorid===user.uid?() => editUpdateText(el):null:() => saveUpdateText(el)}>{!el.edit?"Edit":"Save"}</small>
@@ -437,8 +438,16 @@ function OneProject(props) {
           <div className="titleshead">
             <div>
               <h4>{proj.name}</h4>
-              <h6>Contractor: {proj.creatorname}</h6>
-              <h6>Client: {proj.client.clientname}</h6> 
+              <h6>Contractor: 
+                <span className={proj.creatorid===user.uid?"":"useropts useroptsopen"}> {proj.creatorname}
+                  <UserOpts left="auto" right="0" name={proj.creatorname}/>
+                </span>
+              </h6>
+              <h6>Client:  
+                <span className={proj.creatorid!==user.uid?"":"useropts useroptsopen"}> {proj.client.clientname}
+                  <UserOpts left="auto" right="0" name={proj.client.clientname}/> 
+                </span>
+              </h6> 
             </div>
             <div>
               <small>Days left: {proj.daysleft}</small>

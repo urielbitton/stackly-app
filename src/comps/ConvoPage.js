@@ -12,7 +12,7 @@ function ConvoPage(props) {
   const [userlist, setUserList] = useState([])
   const user = firebase.auth().currentUser
 
-  const onedialogue = convolist && convolist.map(diag => {
+  const onedialogue = convolist && convolist.map(diag => { 
     return <Route exact path={`/messages/${diag.convoinfo.convoid}`}> 
       <Dialogue diag={diag} key={diag.id} />
     </Route>
@@ -40,7 +40,10 @@ function ConvoPage(props) {
           <div className="sidebarconvoshead">
             <div>
               <h3>Messages</h3>
-              <i class="fal fa-cog"></i>
+              <div>
+                <i className="fal fa-plus"></i>
+                <i className="fal fa-cog"></i>
+              </div>
             </div>
             <div>
               <Inputs placeholder="Find a conversation" iconclass="fal fa-search" />

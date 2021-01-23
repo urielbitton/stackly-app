@@ -10,6 +10,8 @@ function Dialogue(props) {
   const [msgstring, setMsgString] = useState('')
   const [updateelapsed, setUpdateElapsed] = useState(0)
   const [typing, setTyping] = useState(false)
+  const [realtyping, setRealTyping] = useState(false)
+  const [typerid, setTyperId] = useState('')
   const {messages} = props.diag
   const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
@@ -63,6 +65,7 @@ function Dialogue(props) {
       typer.setAttribute('style', 'height: 50px')
     }
     setTyping(true)
+    showTypingAnim()
   }
   function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g
@@ -70,29 +73,62 @@ function Dialogue(props) {
       return '<a href="' + url + '">' + url + '</a>'
     })
   }
+  function showTypingAnim() {
+    setTyperId(user.uid)
+    let infoObj = {
+      convoid, 
+      creatorid, 
+      recipientimg, 
+      recipientname, 
+      senderimg, 
+      sendername, 
+      usertyping: typing,
+      typerid 
+    }
+    db.collection("conversations").doc(convoid).update({
+      convoinfo: infoObj
+    })
+    db.collection("conversations").doc(convoid).onSnapshot(snap => {
+      setRealTyping(snap.data().convoinfo.usertyping)
+    })  
+    
+  }
   
   useEffect(() => {
     animateScroll.scrollToBottom({
       containerId: "convowindowinner",
       duration: 0,
     })
-    setInterval(() => {
+    let timer = setInterval(() => {
       setUpdateElapsed(prev => prev+1)
     },30000)
+    return() => {
+      clearInterval(timer) 
+    }
   },[])
   useEffect(() => {
-    setInterval(() => {
+    let timer = setInterval(() => {
       setTyping(false)
-    }, 5000)
+    }, 4000)
+    showTypingAnim()
+    return() => {
+      clearInterval(timer)
+    }
   },[typing])
+
+  const typingstyles = {
+    backgroundColor: "#888"
+  }
  
   return (
     <div className="dialoguecont hidescroll">
       <div className="convohead"></div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
-        <div className="msgbubble typingbubble" style={{background: creatorid===user.uid?"var(--color)":"#f1f1f1", display: typing?"block":"none"}}>
-          <p style={{color: creatorid===user.uid?"#fff":"#111"}}>...</p>
+        <div className="msgbubblecont" style={{flexDirection: "row", display: typerid!==user.uid?realtyping?"flex":"none":"none"}}>
+          <div className="msgbubble typingbubble">
+            <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
+          </div>
         </div>  
         <div className="emptydiv"></div>
       </div>

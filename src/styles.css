@@ -1324,7 +1324,6 @@ nav {
   height: 90vh;
   background: var(--bg);
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  overflow: hidden;
 }
 .oneprojectpage .titleshead {
   display: flex;
@@ -1460,6 +1459,7 @@ nav {
   flex-direction: column;
   opacity: 0;
   transition: all 0.2s;
+  margin-left: 35px;
 }
 .actcont {
   display: flex;
@@ -1482,6 +1482,7 @@ h4.noactivity {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
 }
 .activitydiv .clientcicrcle small {
   font-size: 10px;
@@ -1491,10 +1492,12 @@ h4.noactivity {
 .activitydiv h5 {
   color: #fff;
   font-size: 12px;
+  margin-left: 35px;
 }
 .activitydiv h6 {
   margin: 0;
   margin-top: 3px;
+  margin-left: 35px;
 }
 .activitybtn {
   font-size: 22px;
@@ -1829,6 +1832,67 @@ button.highprior:hover, button.activehighbtn {
   width: 300px;
   border-radius: 10px;
   padding: 10px;
+}
+.useropts:hover {
+  cursor: pointer;
+  color: #eee;
+}
+.useroptscont {
+  position: absolute;
+  top: 0px;
+  width: 200px;
+  min-height: 200px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.1);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  z-index: 990;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s, top 0.5s;
+}
+.useroptsopen {
+  padding-bottom: 5px;
+} 
+.useroptscont .pimg {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color);
+  font-size: 13px;
+  margin: auto;
+  margin-bottom: 10px;
+}
+.useroptsopen:hover .useroptscont {
+  visibility: visible;
+  opacity: 1;
+  top: 20px;
+  z-index: 991;
+}
+.oneprojectpage .titleshead .useroptscont h5 {
+  color: #333;
+  margin-bottom: 13px;
+  font-size: 15px;
+}
+.oneprojectpage .titleshead .useroptscont small {
+  color: #555;
+  font-size: 11px;
+  transition: all 0.2s;
+  display: block;
+  margin-bottom: 7px;
+}
+.oneprojectpage .titleshead .useroptscont small:hover {
+  color: var(--color);
+}
+.oneprojectpage .titleshead .useroptscont small i {
+  width: 23px;
 }
 
 .notifscont {
@@ -2517,9 +2581,11 @@ details[open] summary ~ * {
   color: #aaa;
   cursor: pointer;
   transition: all 0.2s;
+  margin-left: 15px;
+  font-size: 17px;
 }
 .sidebarconvoshead > div i:hover {
-  color: #333;
+  color: var(--color);
 }
 .sidebarconvoshead label, .sidebarconvoshead input {
   width: 100%;
@@ -2556,7 +2622,7 @@ details[open] summary ~ * {
   border-radius: 100%;
 }
 .msgbubble {
-  padding: 15px;
+  padding: 10px 15px;
   border-radius: 15px;
   max-width: 60%;
   top: -8px;
@@ -2692,11 +2758,25 @@ details[open] summary ~ * {
 .emptydiv {
   height: 60px;
 }
+.typingbubble {
+  width: 40px;
+  background: #f1f1f1;
+}
+/* Message typing anim */
+.typing-indicator {display: flex; justify-content: center;align-items: center;padding:5px;}
+.typing-indicator span{height:5px;width:5px;float:left;margin:0 2px;display:block;border-radius:50%;opacity:.4}
+.typing-indicator span:nth-of-type(1){-webkit-animation:1s blink infinite .3333s;animation:1s blink infinite .3333s}
+.typing-indicator span:nth-of-type(2){-webkit-animation:1s blink infinite .6666s;animation:1s blink infinite .6666s}
+.typing-indicator span:nth-of-type(3){-webkit-animation:1s blink infinite .9999s;animation:1s blink infinite .9999s}@-webkit-keyframes blink{50%{opacity:1}}@keyframes blink{50%{opacity:1}}@-webkit-keyframes bulge{50%{transform:scale(1.05)}}@keyframes bulge{50%{transform:scale(1.05)}}
 
-
-
-
-
+.activeconvo {
+  background: var(--light);
+  border-radius: 10px;
+} 
+.msgbox .activeconvo {
+  background: none;
+  border-radius: 0;
+}
 
 
 
