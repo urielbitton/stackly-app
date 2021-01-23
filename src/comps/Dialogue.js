@@ -90,8 +90,9 @@ function Dialogue(props) {
     }).then(() => {
       db.collection("conversations").doc(convoid).onSnapshot(snap => {
         setTyperId(snap.data().convoinfo.typerid) 
+        setRealTyping(snap.data().convoinfo.usertyping)
       })  
-    })
+    }) 
   }
   
   useEffect(() => {
@@ -125,7 +126,7 @@ function Dialogue(props) {
       <div className="convohead"></div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
-        <div className="msgbubblecont" style={{flexDirection: "row", display: typerid!==user.uid?"flex":"none"}}>
+        <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
           <div className="msgbubble typingbubble">
             <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
           </div>
