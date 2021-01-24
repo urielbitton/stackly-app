@@ -7,6 +7,7 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import SendInvite from './SendInvite'
 import {SendNotif} from './SendNotif'
+import Title from './Title'
 
 function Projects(props) {
 
@@ -310,6 +311,8 @@ function Projects(props) {
           <button onClick={() => addTask()}>Add</button>
         </div>
       </div>  
+
+      <Title title="Projects | Stackly App"/>
     </div>
   )
 }

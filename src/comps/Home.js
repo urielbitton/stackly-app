@@ -5,6 +5,7 @@ import Charts from "./Chart"
 import {StoreContext} from './StoreContext'
 import {db} from './Fire'
 import firebase from 'firebase'
+import Title from './Title'
 
 function Home() {
 
@@ -23,23 +24,34 @@ function Home() {
     return <div className="invitesrow">
       <small><span>{el.projectname}</span></small>
       <small>{el.inviter}</small>
-      <button onClick={() => acceptInvitation(el)}>Accept</button>
+      <div>
+        <button onClick={() => acceptInvitation(el)}>Accept</button>
+        <button onClick={() => rejectInvitation(el)}>Reject</button>
+      </div>
     </div>
   }) 
 
   function acceptInvitation(el) {
     db.collection("users").doc(user.uid).update({
       shareids: firebase.firestore.FieldValue.arrayUnion(el.projectid)
-    }).then(doc => {
-      invites && invites.map(el => {
-        if(userlist.shareids.includes(el.projectid)) {
-          let invindex = invites.indexOf(el)
-          invites.splice(invindex,1)
-        }
-      })
-      db.collection("users").doc(user.uid).update({
-        invites
-      })
+    })
+    invites && invites.map(el => {
+      if(userlist.shareids.includes(el.projectid)) {
+        let invindex = invites.indexOf(el)
+        invites.splice(invindex,1)
+      }
+    })
+    db.collection("users").doc(user.uid).update({
+      invites
+    }) 
+  }
+  function rejectInvitation(el) {
+    invites && invites.map(el => {
+      let invindex = invites.indexOf(el)
+      invites.splice(invindex,1)
+    })
+    db.collection("users").doc(user.uid).update({
+      invites
     })
   }
 
@@ -170,6 +182,7 @@ function Home() {
         </div>
       </div>
 
+       <Title title="Home | Stackly App - Realtime client & contractor collaboration platform"/>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {Switchs} from './Inputs'
+import Title from './Title'
 
 function SettingsGeneral() {
   return (
@@ -9,6 +10,8 @@ function SettingsGeneral() {
         <h5>General</h5>
         <div><h6>Enable dark mode</h6><Switchs /></div>
       </div>
+
+      <Title title="Preferences | Stackly App"/>
     </div>
   )
 }

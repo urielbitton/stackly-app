@@ -46,9 +46,8 @@ function App() {
           setPasswordError(err.message)
         break
         default:
-      } 
+      }  
     })
-    db.collection('users').doc(user.uid).update({activestatus: true})
   } 
   const handleSignup = () => {
     clearErrors()
@@ -120,14 +119,17 @@ function App() {
     }) 
   }
   const handleLogout = () => {
+    if(user) {
+      db.collection('users').doc(user.uid).update({activestatus: false})
+    }
     firebase.auth().signOut()
-    db.collection('users').doc(user.uid).update({activestatus: false})
   }
   const authListener = () => {
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
         clearInputs()
         setUser(user)
+        db.collection('users').doc(user.uid).update({activestatus: true})
       }
       else {
         setUser('')

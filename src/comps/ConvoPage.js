@@ -5,6 +5,7 @@ import Dialogue from './Dialogue'
 import {Inputs} from './Inputs'
 import firebase from 'firebase'
 import {db} from './Fire'
+import Title from './Title'
 
 function ConvoPage(props) {
 
@@ -57,6 +58,7 @@ function ConvoPage(props) {
           </div>
         </div>
       </div>
+      <Title title="Messages | Stackly App"/>
     </div>
   )
 }

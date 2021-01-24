@@ -14,6 +14,7 @@ function Conversations(props) {
   const user = firebase.auth().currentUser 
  
   const allconvos = convos && convos.slice(0,props.amount).map(el => {
+    if(user) {
     return <NavLink exact to={`/messages/${el.convoinfo.convoid}`} activeClassName="activeconvo"><div className="notifrow convorow">
       <div className="notifimg" style={{backgroundImage: `url(${el.convoinfo.creatorid===user.uid?el.convoinfo.recipientimg:el.convoinfo.senderimg})`}}></div> 
       <div className="notifcontent msgcontent" onClick={() => openMessage(el)}>
@@ -23,6 +24,7 @@ function Conversations(props) {
       </div>
       <div className="msgstatus" style={{background: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#eee":"#eee"}}></div>
     </div></NavLink>   
+    }
   })  
 
   function openMessage(el) {

@@ -3,6 +3,7 @@ import {Inputs} from './Inputs'
 import { StoreContext } from './StoreContext'
 import firebase from 'firebase'
 import {db} from './Fire'
+import Title from './Title'
 
 function SettingsAccount(props) {
 
@@ -142,6 +143,8 @@ function SettingsAccount(props) {
         </div> 
         <div className="spacer"></div>
       </div>
+
+      <Title title="My Account | Stackly App"/> 
     </div>
   )
 }

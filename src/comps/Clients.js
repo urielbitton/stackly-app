@@ -3,6 +3,7 @@ import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import { StoreContext } from './StoreContext'
 import ClientCard from './ClientCard'
 import {Inputs} from './Inputs'
+import Title from './Title'
 
 function Clients(props) {
 
@@ -50,6 +51,7 @@ function Clients(props) {
         </div>
       </div>
 
+      <Title title="Clients | Stackly App"/>
     </div>
   )
 }

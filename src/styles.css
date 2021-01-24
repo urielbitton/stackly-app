@@ -587,8 +587,18 @@ nav {
   font-weight: 600;
 }
 .invitesrow button {
-  width: 60px;
-  padding: 5px 0;
+  padding: 2px 0;
+  font-size: 11px;
+  background: none;
+  border: none;
+  color: var(--color);
+  margin: auto 5px;
+}
+.invitesrow button:hover {
+  text-decoration: underline;
+}
+.invitesrow button:last-of-type {
+  color: var(--red);
 }
 
 .homegrid {

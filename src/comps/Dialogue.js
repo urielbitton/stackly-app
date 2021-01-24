@@ -3,7 +3,7 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import ElapsedTime from './ElapsedTime'
 import { Inputs } from './Inputs'
-import { animateScroll } from "react-scroll";
+import { animateScroll } from "react-scroll"
 
 function Dialogue(props) {
 
