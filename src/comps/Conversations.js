@@ -11,6 +11,7 @@ function Conversations(props) {
   const {convinfo, setConvInfo} = useContext(StoreContext) 
   const [userlist, setUserList] = useState([])
   const [convos, setConvos] = useState([])
+  const [recipimg, setRecipImg] = useState('')
   const user = firebase.auth().currentUser 
  
   const allconvos = convos && convos.slice(0,props.amount).map(el => {

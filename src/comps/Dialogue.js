@@ -17,18 +17,19 @@ function Dialogue(props) {
   const [recipimg, setRecipImg] = useState('')
   const [recipcity, setRecipCity] = useState('')
   const [recipcountry, setRecipCountry] = useState('')
+  const [userimg, setUserImg] = useState('')
   const {messages} = props.diag
-  const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername, recipientid, userref} = props.diag.convoinfo
+  const {convoid, creatorid, recipientid, userref} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
   const typerRef = useRef()
-
+  
   const allmsgs = messages && messages.map(msg => {
     return <div className="msgbubblecont" style={{flexDirection: msg.senderid===user.uid?"row-reverse":"row"}}>
-      <img src={msg.senderid===creatorid?senderimg:recipientimg} alt=""/>
+      <div className="msgimg" style={{backgroundImage: msg.senderid===creatorid?`url(${userimg})`:`url(${recipimg})`}}></div>
       <div className="msgbubble" style={{background: msg.senderid===user.uid?"var(--color)":"#f1f1f1"}}>
         <p style={{color: msg.senderid===user.uid?"#fff":"#111"}}>{msg.message}</p>
         <small style={msg.senderid===user.uid?{right:"0"}:{left:"0"}}><ElapsedTime providedtime={msg.msgdate.toDate()} updateelapsed={updateelapsed} /></small>
-      </div> 
+      </div>  
     </div>
   })
   function sendMessage() { 
@@ -78,14 +79,10 @@ function Dialogue(props) {
     let infoObj = {
       convoid, 
       creatorid, 
-      recipientimg, 
-      recipientname, 
-      recipientid,
-      senderimg, 
-      sendername, 
+      recipientid, 
       usertyping: typing,
       userref: db.collection('users').doc(recipientid),
-      typerid 
+      typerid  
     }  
     db.collection("conversations").doc(convoid).update({
       convoinfo: infoObj 
@@ -115,19 +112,21 @@ function Dialogue(props) {
     }, 4000)
     showTypingAnim()
     return() => {
-      clearInterval(timer)
+      clearInterval(timer)  
     }
-  },[typing])
+  },[typing])  
   useEffect(() => {
     userref.onSnapshot(snap => {
-      setActiveStatus(snap.data().activestatus) 
-    })
-    userref.onSnapshot(snap => {
-      const user = snap.data()
+      const user = snap.data() 
       setRecipName(user.userinfo.fullname)
       setRecipImg(user.userinfo.profimg) 
       setRecipCity(user.userinfo.city)
       setRecipCountry(user.userinfo.country)
+      setActiveStatus(user.activestatus)  
+    }) 
+    db.collection('users').doc(user.uid).onSnapshot(snap => {
+      const user = snap.data()
+      setUserImg(user.userinfo.profimg)
     })
   },[])
 
@@ -138,7 +137,7 @@ function Dialogue(props) {
   return (
     <div className="dialoguecont hidescroll"> 
       <div className="convohead">
-        <h5><div style={{display: activeStatus?"inline-block":"none"}} className="activestatuscircle"></div>{recipientname}</h5>
+        <h5><div style={{display: activeStatus?"inline-block":"none"}} className="activestatuscircle"></div>{recipname}</h5>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         <div className="chatprofilecont">

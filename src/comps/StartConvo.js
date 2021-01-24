@@ -8,14 +8,10 @@ export function StartConvo(recipientid, recipientname, message, convoid) {
   let convoinfo = {
     convoid,
     creatorid: user.uid,
-    recipientimg:"",
-    recipientname,
     recipientid,
-    senderimg: user.photoURL,
-    sendername: user.displayName,
     typerid: user.uid,
     userref: db.collection('users').doc(recipientid),
-    usertyping: false 
+    usertyping: false  
   }
   let messages = {
     message,

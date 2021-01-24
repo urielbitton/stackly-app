@@ -2679,10 +2679,12 @@ details[open] summary ~ * {
   margin-bottom: 30px;
   grid-gap: 10px;
 }
-.msgbubblecont img {
+.msgbubblecont .msgimg {
   width: 30px;
   height: 30px;
   border-radius: 100%;
+  background-position: center;
+  background-size: cover;
 }
 .msgbubble {
   padding: 10px 15px;
