@@ -13,7 +13,7 @@ function Dialogue(props) {
   const [realtyping, setRealTyping] = useState(false)
   const [typerid, setTyperId] = useState('')
   const {messages} = props.diag
-  const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername} = props.diag.convoinfo
+  const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername, recipientid} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
   const typerRef = useRef()
 
@@ -27,7 +27,7 @@ function Dialogue(props) {
     </div>
   })
   function sendMessage() { 
-    if(msgstring.length) {
+    if(msgstring.replace(/\s/g, '').length) {
       let msgobject = {
         message: msgstring,
         msgdate: firebase.firestore.Timestamp.now(),
@@ -44,26 +44,21 @@ function Dialogue(props) {
         offset: 1000
       })
       setMsgString('')
+      typerRef.current.setAttribute('style', 'height: 50px')
     }
   }
   function triggerSend(e) {
-    if(e.keyCode === 13) {
+    if(e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault()
       sendMessage()
     }
   }
   function formatTextarea() {
-    const typer = typerRef.current
-    if(typer.value.length) {
+    let typer = typerRef.current
+    if(msgstring.replace(/\s/g, '').length) {
       typer.setAttribute('style', 'height:' + (typer.scrollHeight) + 'px;')
-      typer.addEventListener("input", OnInput, false) 
-      function OnInput() { 
-        this.style.height = (this.scrollHeight) + 'px'
-      }
+      typer.style.height = (this.scrollHeight) + 'px' 
     }  
-    else {
-      typer.setAttribute('style', 'height: 50px')
-    }
     setTyping(true)
     showTypingAnim()
   }
@@ -80,13 +75,15 @@ function Dialogue(props) {
       creatorid, 
       recipientimg, 
       recipientname, 
+      recipientid,
       senderimg, 
       sendername, 
       usertyping: typing,
+      useractive: db.collection('users').doc(recipientid),
       typerid 
     }  
     db.collection("conversations").doc(convoid).update({
-      convoinfo: infoObj
+      convoinfo: infoObj 
     }).then(() => {
       db.collection("conversations").doc(convoid).onSnapshot(snap => {
         setTyperId(snap.data().convoinfo.typerid) 

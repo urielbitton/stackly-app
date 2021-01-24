@@ -10,6 +10,7 @@ export function StartConvo(recipientid, recipientname, message, convoid) {
     creatorid: user.uid,
     recipientimg:"",
     recipientname,
+    recipientid,
     senderimg: user.photoURL,
     sendername: user.displayName,
     typerid: user.uid,

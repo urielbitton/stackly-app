@@ -44,6 +44,7 @@ function OneProject(props) {
   const [showinv, setShowInv] = useState(false)
   const [notify, setNotify] = useState('')
   const [selectuserid, setSelectUserId] = useState('')
+  const [clientActiveStatus, setClientActiveStatus] = useState()
   const [keyword, setKeyword] = useState('') 
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const user = firebase.auth().currentUser
@@ -400,6 +401,9 @@ function OneProject(props) {
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {
       setNotifsNum(snap.data().notifsnum)
     })
+    db.collection('users').doc(proj.client.clientid).onSnapshot(snap => {
+      setClientActiveStatus(snap.data().activestatus)
+    })
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {
       if(proj.icon === el.class) 
@@ -445,7 +449,7 @@ function OneProject(props) {
               </h6>
               <h6>Client:  
                 <span className={proj.creatorid!==user.uid?"":"useropts useroptsopen"}> {proj.client.clientname}
-                  <UserOpts left="auto" right="0" name={proj.client.clientname} id={proj.client.clientid}/> 
+                  <UserOpts left="auto" right="0" name={proj.client.clientname} id={proj.client.clientid} activestatus={clientActiveStatus}/> 
                 </span>
               </h6> 
             </div>

@@ -16,7 +16,7 @@ function UserOpts(props) {
     <div className="useroptscont" style={{right: props.right, left: props.left}}>
       <div>
         <div className="pimg">{props.name?props.name.split(' ')[0][0]:""}{props.name?props.name.split(' ')[1][0]:""}</div>
-        <h5>{props.name}</h5> 
+        <h5><div style={{display: props.activestatus?"block":"none"}} className="activestatuscircle"></div>{props.name}</h5> 
       </div>
       <div>
         <small style={{color: showinput?"var(--color)":""}} onClick={() => setShowInput(!showinput)}><i className="fal fa-paper-plane"></i>{showinput?"Cancel":"Send Message"}</small>
