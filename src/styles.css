@@ -2608,6 +2608,9 @@ details[open] summary ~ * {
   height: 60px;
   padding: 10px 20px;
 } 
+.convopage .convohead h5 div {
+  margin-right: 10px;
+}
 .convowindow {
   width: 100%;
 }

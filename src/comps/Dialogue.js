@@ -12,6 +12,7 @@ function Dialogue(props) {
   const [typing, setTyping] = useState(false)
   const [realtyping, setRealTyping] = useState(false)
   const [typerid, setTyperId] = useState('')
+  const [activeStatus, setActiveStatus] = useState(false)
   const {messages} = props.diag
   const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername, recipientid} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
@@ -113,14 +114,21 @@ function Dialogue(props) {
       clearInterval(timer)
     }
   },[typing])
+  useEffect(() => {
+    db.collection('users').doc(recipientid).onSnapshot(snap => {
+      setActiveStatus(snap.data().activestatus)
+    })
+  },[])
 
   const typingstyles = {
     backgroundColor: "#888"
   }
 
   return (
-    <div className="dialoguecont hidescroll">
-      <div className="convohead"></div>
+    <div className="dialoguecont hidescroll"> 
+      <div className="convohead">
+        <h5><div style={{display: activeStatus?"inline-block":"none"}} className="activestatuscircle"></div>{recipientname}</h5>
+      </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
         <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
