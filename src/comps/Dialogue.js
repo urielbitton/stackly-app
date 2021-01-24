@@ -122,7 +122,7 @@ function Dialogue(props) {
       setRecipImg(user.userinfo.profimg) 
       setRecipCity(user.userinfo.city)
       setRecipCountry(user.userinfo.country)
-      setActiveStatus(user.activestatus)  
+      setActiveStatus(user.activestatus) 
     }) 
     db.collection('users').doc(user.uid).onSnapshot(snap => {
       const user = snap.data()
@@ -138,6 +138,10 @@ function Dialogue(props) {
     <div className="dialoguecont hidescroll"> 
       <div className="convohead">
         <h5><div style={{display: activeStatus?"inline-block":"none"}} className="activestatuscircle"></div>{recipname}</h5>
+        <div>
+          <i className="fas fa-user-alt"></i>
+          <i className="fas fa-info-circle"></i>
+        </div>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         <div className="chatprofilecont">

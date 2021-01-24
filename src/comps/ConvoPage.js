@@ -50,7 +50,7 @@ function ConvoPage(props) {
               <Inputs placeholder="Find a conversation" iconclass="fal fa-search" />
             </div>
           </div>
-          <Conversations amount={8} /> 
+          <Conversations amount={8}/> 
         </div>
         <div className="convoscontent">
           <div className="convowindow">

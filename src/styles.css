@@ -2617,8 +2617,21 @@ details[open] summary ~ * {
   border-bottom: 1px solid #eee;
   box-shadow: 0 1px 10px rgba(0,0,0,0.1);
 } 
+.convopage .convohead h5 {
+  font-size: 15px;
+}
 .convopage .convohead h5 div {
   margin-right: 10px;
+}
+.convopage .convohead > div i {
+  margin-left: 10px;
+  color: var(--color);
+  padding: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.convopage .convohead > div i:hover {
+  filter: brightness(120%);
 }
 .convowindow {
   width: 100%;
