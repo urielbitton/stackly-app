@@ -14,7 +14,8 @@ export function StartConvo(recipientid, recipientname, message, convoid) {
     senderimg: user.photoURL,
     sendername: user.displayName,
     typerid: user.uid,
-    usertyping: false
+    userref: db.collection('users').doc(recipientid),
+    usertyping: false 
   }
   let messages = {
     message,

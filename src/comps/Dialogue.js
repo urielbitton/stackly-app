@@ -13,8 +13,12 @@ function Dialogue(props) {
   const [realtyping, setRealTyping] = useState(false)
   const [typerid, setTyperId] = useState('')
   const [activeStatus, setActiveStatus] = useState(false)
+  const [recipname, setRecipName] = useState('')
+  const [recipimg, setRecipImg] = useState('')
+  const [recipcity, setRecipCity] = useState('')
+  const [recipcountry, setRecipCountry] = useState('')
   const {messages} = props.diag
-  const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername, recipientid} = props.diag.convoinfo
+  const {convoid, creatorid, recipientimg, recipientname, senderimg, sendername, recipientid, userref} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
   const typerRef = useRef()
 
@@ -80,7 +84,7 @@ function Dialogue(props) {
       senderimg, 
       sendername, 
       usertyping: typing,
-      useractive: db.collection('users').doc(recipientid),
+      userref: db.collection('users').doc(recipientid),
       typerid 
     }  
     db.collection("conversations").doc(convoid).update({
@@ -115,8 +119,15 @@ function Dialogue(props) {
     }
   },[typing])
   useEffect(() => {
-    db.collection('users').doc(recipientid).onSnapshot(snap => {
-      setActiveStatus(snap.data().activestatus)
+    userref.onSnapshot(snap => {
+      setActiveStatus(snap.data().activestatus) 
+    })
+    userref.onSnapshot(snap => {
+      const user = snap.data()
+      setRecipName(user.userinfo.fullname)
+      setRecipImg(user.userinfo.profimg) 
+      setRecipCity(user.userinfo.city)
+      setRecipCountry(user.userinfo.country)
     })
   },[])
 
@@ -130,13 +141,18 @@ function Dialogue(props) {
         <h5><div style={{display: activeStatus?"inline-block":"none"}} className="activestatuscircle"></div>{recipientname}</h5>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
+        <div className="chatprofilecont">
+          <div className="chatprofileimg" style={{backgroundImage: `url(${recipimg})`}}></div>
+          <h5>{recipname}</h5>
+          <h6>{recipcity}, {recipcountry}</h6>
+        </div> 
         {allmsgs}
         <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
           <div className="msgbubble typingbubble">
             <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
           </div>
         </div>  
-        <div className="emptydiv"></div>
+        <div className="spacer"></div>
       </div>
       
       <div className="typercont">

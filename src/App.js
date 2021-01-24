@@ -77,12 +77,12 @@ function App() {
             fullname: name,
             email: user.email,
             phone: "",
-            city: "",
+            city: "Montreal",
             company: "", 
             jobtitle: "",
             companylogo: "",
-            country: "",
-            profimg: "",
+            country: "Canada",
+            profimg: "https://i.imgur.com/yxij2KH.jpg",
           }
           const settings = { 
             general: {
@@ -133,12 +133,22 @@ function App() {
       }
       else {
         setUser('')
+        db.collection('users').doc(user.uid).update({activestatus: false})
       }
     })
   }
 
   useEffect(() => { 
     authListener()
+    window.addEventListener('onbeforeunload', removeActiveStatus) 
+    function removeActiveStatus() {
+      if(user) {
+        db.collection('users').doc(user.uid).update({activestatus: false})
+      }
+    }
+    if(user) {
+      db.collection('users').doc(user.uid).update({activestatus: true})
+    }
   },[])  
 
   return (

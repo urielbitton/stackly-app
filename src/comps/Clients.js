@@ -1,9 +1,11 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import { StoreContext } from './StoreContext'
 import ClientCard from './ClientCard'
 import {Inputs} from './Inputs'
 import Title from './Title'
+import firebase from 'firebase'
+import {db} from './Fire'
 
 function Clients(props) {
 
@@ -12,6 +14,7 @@ function Clients(props) {
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
   const [cardColor, setCardColor] = useState('#056dff')
+  const user = firebase.auth().currentUser
 
   const clientsrow = clients && clients.map(cli => {
     return <ClientCard cli={cli} key={cli.id} sendclientid={props.sendclientid}/>

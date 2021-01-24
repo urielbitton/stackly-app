@@ -10,9 +10,7 @@ function Conversations(props) {
 
   const {convinfo, setConvInfo} = useContext(StoreContext) 
   const [userlist, setUserList] = useState([])
-  const [msgs, setMsgs] = useState([]) 
   const [convos, setConvos] = useState([])
-  const [recipActiveStatus, setRecipActiveStatus] = useState()
   const user = firebase.auth().currentUser 
  
   const allconvos = convos && convos.slice(0,props.amount).map(el => {
@@ -38,8 +36,8 @@ function Conversations(props) {
     }
   }  
   function shortenMsgs(text) {
-    if(text.length > 46) {
-      let shortname = text.substring(0,46) + "..."
+    if(text.length > 40) {
+      let shortname = text.substring(0,40) + "..."
       return shortname
     }
     else {

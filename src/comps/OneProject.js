@@ -401,8 +401,8 @@ function OneProject(props) {
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {
       setNotifsNum(snap.data().notifsnum)
     })
-    db.collection('users').doc(proj.client.clientid).onSnapshot(snap => {
-      setClientActiveStatus(snap.data().activestatus)
+    db.collection('users').doc(proj.client.clientid===user.uid?proj.creatorid:proj.client.clientid).onSnapshot(snap => {
+      setClientActiveStatus(snap.data().activestatus) 
     })
     //set activeicon in edit project container
     iconspack && iconspack.map(el => {
@@ -436,7 +436,7 @@ function OneProject(props) {
             </div>
             {proj.tasks.length?alltasks:<h4 className="notasksmsg">There are no tasks yet.</h4>}
           </div>
-        </div>
+        </div> 
         <div className="pageside">
           <div className="pagesidebg"></div>
           <div className="titleshead">
@@ -444,7 +444,7 @@ function OneProject(props) {
               <h4>{proj.name}</h4>
               <h6>Contractor: 
                 <span className={proj.creatorid===user.uid?"":"useropts useroptsopen"}> {proj.creatorname}
-                  <UserOpts left="auto" right="0" name={proj.creatorname} id={proj.creatorid}/>
+                  <UserOpts left="auto" right="0" name={proj.creatorname} id={proj.creatorid} activestatus={clientActiveStatus}/>
                 </span>
               </h6>
               <h6>Client:  
