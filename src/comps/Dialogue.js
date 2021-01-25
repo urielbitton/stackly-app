@@ -2,8 +2,6 @@ import React, {useEffect, useState, useRef} from 'react'
 import firebase from 'firebase'
 import {db} from './Fire'
 import ElapsedTime from './ElapsedTime'
-import { Inputs } from './Inputs'
-import { animateScroll } from "react-scroll"
 
 function Dialogue(props) {
 
@@ -23,7 +21,7 @@ function Dialogue(props) {
   const user = firebase.auth().currentUser  
   const typerRef = useRef()
   
-  const allmsgs = messages && messages.map(msg => {
+  const allmsgs = messages && messages.slice(0).reverse().map(msg => {
     return <div className="msgbubblecont" style={{flexDirection: msg.senderid===user.uid?"row-reverse":"row"}}>
       <div className="msgimg" style={{backgroundImage: msg.senderid===creatorid?`url(${userimg})`:`url(${recipimg})`}}></div>
       <div className="msgbubble" style={{background: msg.senderid===user.uid?"var(--color)":"#f1f1f1"}}>
@@ -43,11 +41,6 @@ function Dialogue(props) {
       }
       db.collection("conversations").doc(convoid).update({
         messages: firebase.firestore.FieldValue.arrayUnion(msgobject)
-      })
-      animateScroll.scrollToBottom({
-        containerId: "convowindowinner",
-        duration: 200,
-        offset: 1000
       })
       setMsgString('')
       typerRef.current.setAttribute('style', 'height: 50px')
@@ -95,10 +88,6 @@ function Dialogue(props) {
   }
   
   useEffect(() => {
-    animateScroll.scrollToBottom({
-      containerId: "convowindowinner",
-      duration: 0,
-    })
     let timer = setInterval(() => {
       setUpdateElapsed(prev => prev+1)
     },30000)
@@ -150,12 +139,12 @@ function Dialogue(props) {
         </div>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
+        {allmsgs}
         <div className="chatprofilecont">
           <div className="chatprofileimg" style={{backgroundImage: `url(${recipimg})`}}></div>
           <h5>{recipname}</h5>
           <h6>{recipcity}, {recipcountry}</h6>
         </div> 
-        {allmsgs}
         <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
           <div className="msgbubble typingbubble">
             <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>

@@ -4,7 +4,6 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import ElapsedTime from './ElapsedTime'
 import {StoreContext} from './StoreContext'
-import { setActiveLink } from 'react-scroll/modules/mixins/scroller'
 import ConvoCard from './ConvoCard'
 
 function Conversations(props) {

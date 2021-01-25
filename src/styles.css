@@ -2660,6 +2660,8 @@ details[open] summary ~ * {
   width: 100%;
   padding: 20px 0;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
 }
 .sidebarconvoshead {
   width: 100%;
