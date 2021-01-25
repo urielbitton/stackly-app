@@ -40,7 +40,9 @@ function ConvoPage(props) {
       let convoid = db.collection('conversations').doc().id
       StartConvo(recipientid, message, convoid)
       history.replace(`/messages/${convoid}`) 
-    } 
+    }  
+    setRecipientId('')
+    setMessage('')
   }
 
   useEffect(() => {

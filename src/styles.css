@@ -2883,6 +2883,7 @@ details[open] summary ~ * {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  padding-top: 25px;
 }
 .chatprofileimg {
   width: 100px;
