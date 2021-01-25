@@ -1,7 +1,7 @@
 import {db} from './Fire'
 import firebase from 'firebase'
 
-export function StartConvo(recipientid, recipientname, message, convoid) {
+export function StartConvo(recipientid, message, convoid) {
 
   const user = firebase.auth().currentUser
   

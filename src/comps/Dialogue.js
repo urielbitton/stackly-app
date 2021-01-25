@@ -137,7 +137,13 @@ function Dialogue(props) {
   return (
     <div className="dialoguecont hidescroll"> 
       <div className="convohead">
-        <h5><div style={{display: activeStatus?"inline-block":"none"}} className="activestatuscircle"></div>{recipname}</h5>
+        <div>
+          <div className="dialogheadimg" style={{backgroundImage: `url(${recipimg})`}}></div>
+          <h5>
+            {recipname}
+            <small style={{display: activeStatus?"block":"none"}}>Active Now</small>
+          </h5>
+        </div>
         <div>
           <i className="fas fa-user-alt"></i>
           <i className="fas fa-info-circle"></i>

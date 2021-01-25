@@ -22,7 +22,7 @@ function UserOpts(props) {
         <small style={{color: showinput?"var(--color)":""}} onClick={() => setShowInput(!showinput)}><i className="fal fa-paper-plane"></i>{showinput?"Cancel":"Send Message"}</small>
         <div className="form" style={{display: showinput?"flex":"none"}}>
           <Inputs onChange={(e) => setMessage(e.target.value)} value={message} placeholder="Write a message..."/>
-          <span onClick={message.length?() => {StartConvo(id, name, message, convoid);history.replace('/messages')}:null}>Send</span>
+          <span onClick={message.length?() => {StartConvo(id, message, convoid);history.replace(`/messages/${convoid}`)}:null}>Send</span>
         </div>
         <small><i className="fal fa-user-plus"></i>Add Contact</small>
         <small><i className="fal fa-project-diagram"></i>Invite to Project</small>

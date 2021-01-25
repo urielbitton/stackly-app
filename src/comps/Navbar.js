@@ -7,11 +7,11 @@ import ElapsedTime from './ElapsedTime'
 import Notifications from './Notifications'
 import Conversations from './Conversations'
 import {StoreContext} from './StoreContext'
+import Title from './Title'
  
 function Navbar(props) {
 
   const {convinfo} = useContext(StoreContext) 
-  const [shownew, setShowNew] = useState(false)
   const [darkmode, setDarkmode] = useState(false)
   const [notifsnum, setNotifsNum] = useState(0)
   const user = firebase.auth().currentUser
@@ -72,7 +72,6 @@ function Navbar(props) {
           </div>
         </div>
       </div>
-
     </nav>
   )
 }

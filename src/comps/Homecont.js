@@ -14,7 +14,7 @@ import firebase from 'firebase'
 import {db} from './Fire'
 import NotifsPage from './NotifsPage'
 import ConvoPage from './ConvoPage'
-   
+    
 function Homecont(props) {   
   
   const {projects, clients} = useContext(StoreContext)
