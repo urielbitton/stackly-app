@@ -24,15 +24,6 @@ function Conversations(props) {
       db.collection('conversations').doc(el.convoinfo.convoid).update({messages:el.messages})
     }
   }  
-  function shortenMsgs(text) {
-    if(text.length > 40) {
-      let shortname = text.substring(0,40) + "..."
-      return shortname
-    }
-    else {
-      return text
-    }
-  }
 
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {

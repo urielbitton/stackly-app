@@ -55,8 +55,11 @@ function OneProject(props) {
 
 
   const alltasks = proj.tasks && proj.tasks.map(el => {
-    return <div className="taskrow" style={{background: el.taskcolor+"20", opacity: el.taskstatus==='Completed'?"0.4":"1"}}>
-        <h4>{el.taskname}</h4>
+    return <div className="taskrowcont">
+      <hr/>
+      <div className="timecircle" style={{background: el.taskcolor}}></div>
+      <div className="taskrow" style={{background: el.taskcolor+"20", opacity: el.taskstatus==='Completed'?"0.4":"1"}}>
+        <h4>{shortenMsgs(el.taskname)}</h4>
         <div className="taskbox">
           <h6>Date Due: <span>{el.taskdue}</span></h6>
           <h6>Status <span style={{color: "var(--color)"}}>{el.taskstatus}</span></h6>
@@ -66,6 +69,7 @@ function OneProject(props) {
           <i className="far fa-edit" onClick={() => editTask(el)}></i>
         </div>
       </div> 
+    </div>
   }) 
   const recentactivity = proj.activity && proj.activity.slice(0).reverse().map(el => {
     return <div className="activitydiv" style={{paddingBottom:"15px"}}>
@@ -263,20 +267,6 @@ function OneProject(props) {
     } 
     setUpdText('')
   }
-  function formatDate(date) {
-    var hours = date.getHours()
-    var minutes = date.getMinutes()
-    var ampm = hours >= 12 ? 'pm' : 'am'
-    hours = hours % 12
-    hours = hours ? hours : 12
-    minutes = minutes < 10 ? '0'+minutes : minutes
-    var strTime = hours + ':' + minutes + ' ' + ampm
-    return strTime
-  }
-  function markComplete() {
-    proj.progress = 100
-    db.collection("projects").doc(proj.projectid).update(proj) 
-  }
   function saveProject() {
     proj.name = projname
     proj.active = projactive
@@ -389,6 +379,15 @@ function OneProject(props) {
       <button onClick={selectuserid===el.uid?() => setSelectUserId(''):() => setSelectUserId(el.uid)} style={{width: selectuserid===el.uid?"40px":""}}>{selectuserid===el.uid?<i className="fal fa-check"></i>:"Select"}</button>
     </div>   
   }) 
+  function shortenMsgs(text) {
+    if(text.length > 50) {
+      let shortname = text.substring(0,50) + "..."
+      return shortname
+    }
+    else {
+      return text
+    }
+  }
   
   useEffect(() => { 
     db.collection('users').orderBy('userinfo.fullname','asc').onSnapshot(snap => {
@@ -427,12 +426,9 @@ function OneProject(props) {
               <button onClick={() => showAddFunc()}>Add Task</button>
             </div>
           </div>
-          <div className="projectcontent">
+          <div className="projectcontent hidescroll">
             <div className="timelinecont">
               <hr/>
-                {proj.tasks && proj.tasks.map(el => {
-                  return <div className="timecircle" style={{background: el.taskcolor}}></div>
-                })}
             </div>
             {proj.tasks.length?alltasks:<h4 className="notasksmsg">There are no tasks yet.</h4>}
           </div>
