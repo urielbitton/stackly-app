@@ -11,7 +11,6 @@ import {StartConvo} from './StartConvo'
 function ConvoPage(props) {
 
   const [convolist, setConvoList] = useState([])
-  const [userlist, setUserList] = useState([])
   const [allusers, setAllUsers] = useState([])
   const [showsend, setShowSend] = useState(false)
   const [showuserslimit, setShowUsersLimit] = useState(10)
@@ -28,11 +27,11 @@ function ConvoPage(props) {
     </Route>
   }) 
   const allusersrow = allusers && allusers.map(el => {
-    if(pattern.test(el.userinfo.fullname.toLowerCase()) && el.uid !== user.uid)
-    return <div className="allusersrow">
-      <h5><img src={el.userinfo.profimg} alt=""/>{el.userinfo.fullname}</h5>
-      <small onClick={() => setRecipientId(el.uid)} className={recipientid===el.uid?"usersrowselected":""}>{recipientid===el.uid?<i className="fal fa-check"></i>:"Select"}</small>
-    </div>
+      if(pattern.test(el.userinfo.fullname.toLowerCase()) && el.uid !== user.uid)
+      return <div className="allusersrow">
+        <h5><img src={el.userinfo.profimg} alt=""/>{el.userinfo.fullname}</h5>
+        <small onClick={() => setRecipientId(el.uid)} className={recipientid===el.uid?"usersrowselected":""}>{recipientid===el.uid?<i className="fal fa-check"></i>:"Select"}</small>
+      </div> 
   })
   function sendMessage() {
     if(message.length) {
@@ -47,8 +46,7 @@ function ConvoPage(props) {
 
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
-      const userlist = use.data()
-      setUserList(userlist)  
+      const userlist = use.data() 
       db.collection('conversations').onSnapshot(snap => { 
         let convos = [] 
         snap.forEach(doc => {       

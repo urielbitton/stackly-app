@@ -14,10 +14,7 @@ function Conversations(props) {
   const user = firebase.auth().currentUser    
  
   const allconvos = convos && convos.slice(0,props.amount).map(el => {
-    if(user) { 
     return <ConvoCard el={el}/>   
-    }
-    else return null
   })  
 
   function openMessage(el) {

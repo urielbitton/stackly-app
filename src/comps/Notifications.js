@@ -7,7 +7,6 @@ import {db} from './Fire'
 function Notifications(props) {
 
   const [notifs, setNotifs] = useState([])
-  const [elapsedTime, setElapsedTime] = useState('')
   const [notifsnum, setNotifsNum] = useState(0)
   const user = firebase.auth().currentUser
   let history = useHistory()
@@ -27,7 +26,7 @@ function Notifications(props) {
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {
       setNotifs(snap.data().notifs.reverse())
       setNotifsNum(snap.data().notifsnum)
-    })    
+    })       
   },[])
 
   return (

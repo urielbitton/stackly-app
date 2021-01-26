@@ -17,11 +17,10 @@ import ConvoPage from './ConvoPage'
     
 function Homecont(props) {   
   
-  const {projects, clients} = useContext(StoreContext)
+  const {clients} = useContext(StoreContext)
 
   const [userlist, setUserList] = useState([]) 
   const [projlist, setProjList] = useState([])  
-  const [shareids, setShareIds] = useState([' ']) 
   const [update, setUpdate] = useState(0)
   const [time, setTime] = useState(3000)
   const [convosnum, setConvosNum] = useState('')
@@ -68,7 +67,7 @@ function Homecont(props) {
           </Route>
           <Route path="/mytasks"> 
             <MyTasks />
-          </Route>
+          </Route> 
           <Route path="/settings"> 
             <Settings shownotif={(time) => setUpdate(prev => prev+1, setTime(time))}/>
           </Route>

@@ -41,7 +41,7 @@ function ConvoCard(props) {
       setRecipImg(user.userinfo.profimg)
       setActiveStatus(user.activestatus)
     })
-    db.collection('users').doc(user.uid).onSnapshot(snap => {
+    db.collection('users').doc(el.convoinfo.creatorid).onSnapshot(snap => {
       const user = snap.data()
       setSenderName(user.userinfo.fullname)
       setSenderImg(user.userinfo.profimg)

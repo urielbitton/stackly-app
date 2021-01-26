@@ -11,11 +11,15 @@ function Dialogue(props) {
   const [realtyping, setRealTyping] = useState(false)
   const [typerid, setTyperId] = useState('')
   const [activeStatus, setActiveStatus] = useState(false)
+  const [myActiveStatus, setMyActiveStatus] = useState(false)
   const [recipname, setRecipName] = useState('')
   const [recipimg, setRecipImg] = useState('')
   const [recipcity, setRecipCity] = useState('')
   const [recipcountry, setRecipCountry] = useState('')
   const [userimg, setUserImg] = useState('')
+  const [username, setUserName] = useState('')
+  const [usercity, setUserCity] = useState('')
+  const [usercountry, setUserCountry] = useState('')
   const {messages} = props.diag
   const {convoid, creatorid, recipientid, userref} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
@@ -23,7 +27,7 @@ function Dialogue(props) {
   
   const allmsgs = messages && messages.slice(0).reverse().map(msg => {
     return <div className="msgbubblecont" style={{flexDirection: msg.senderid===user.uid?"row-reverse":"row"}}>
-      <div className="msgimg" style={{backgroundImage: msg.senderid===creatorid?`url(${userimg})`:`url(${recipimg})`}}></div>
+      <div className="msgimg" style={{backgroundImage: `url(${msg.senderid===creatorid?recipimg:userimg})`}}></div>
       <div className="msgbubble" style={{background: msg.senderid===user.uid?"var(--color)":"#f1f1f1"}}>
         <p style={{color: msg.senderid===user.uid?"#fff":"#111"}}>{msg.message}</p>
         <small style={msg.senderid===user.uid?{right:"0"}:{left:"0"}}><ElapsedTime providedtime={msg.msgdate.toDate()} updateelapsed={updateelapsed} /></small>
@@ -59,7 +63,7 @@ function Dialogue(props) {
       typer.style.height = (this.scrollHeight) + 'px' 
     }  
     setTyping(true)
-    showTypingAnim()
+    //showTypingAnim()
   }
   function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g
@@ -74,7 +78,7 @@ function Dialogue(props) {
       creatorid, 
       recipientid, 
       usertyping: typing,
-      userref: db.collection('users').doc(recipientid),
+      userref: db.collection('users').doc(creatorid),
       typerid  
     }  
     db.collection("conversations").doc(convoid).update({
@@ -99,13 +103,13 @@ function Dialogue(props) {
     let timer = setInterval(() => {
       setTyping(false)
     }, 4000)
-    showTypingAnim()
+    //showTypingAnim()
     return() => {
       clearInterval(timer)  
     }
   },[typing])  
   useEffect(() => {
-    userref.onSnapshot(snap => {
+    db.collection('users').doc(creatorid).onSnapshot(snap => {
       const user = snap.data() 
       setRecipName(user.userinfo.fullname)
       setRecipImg(user.userinfo.profimg) 
@@ -113,9 +117,13 @@ function Dialogue(props) {
       setRecipCountry(user.userinfo.country)
       setActiveStatus(user.activestatus) 
     }) 
-    db.collection('users').doc(user.uid).onSnapshot(snap => {
+    db.collection('users').doc(recipientid).onSnapshot(snap => {
       const user = snap.data()
       setUserImg(user.userinfo.profimg)
+      setUserName(user.userinfo.fullname)
+      setMyActiveStatus(user.activestatus) 
+      setUserCity(user.userinfo.city)
+      setUserCountry(user.userinfo.country)
     })
   },[])
 
@@ -127,23 +135,23 @@ function Dialogue(props) {
     <div className="dialoguecont hidescroll"> 
       <div className="convohead">
         <div>
-          <div className="dialogheadimg" style={{backgroundImage: `url(${recipimg})`}}></div>
+          <div className="dialogheadimg" style={{backgroundImage: `url(${creatorid===user.uid?userimg:recipimg})`}}></div>
           <h5>
-            {recipname}
-            <small style={{display: activeStatus?"block":"none"}}>Active Now</small>
+            {creatorid===user.uid?username:recipname}
+            <small style={{display: creatorid===user.uid?myActiveStatus?"block":"none":activeStatus?"block":"none"}}>Active Now</small>
           </h5>
         </div>
         <div>
-          <i className="fas fa-user-alt"></i>
-          <i className="fas fa-info-circle"></i>
+          <div className="icondiv"><i className="fas fa-user-alt"></i></div>
+          <div className="icondiv"><i className="fas fa-info-circle"></i></div>
         </div>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         {allmsgs}
         <div className="chatprofilecont">
-          <div className="chatprofileimg" style={{backgroundImage: `url(${recipimg})`}}></div>
-          <h5>{recipname}</h5>
-          <h6>{recipcity}, {recipcountry}</h6>
+          <div className="chatprofileimg" style={{backgroundImage: `url(${creatorid===user.uid?userimg:recipimg})`}}></div>
+          <h5>{creatorid===user.uid?username:recipname}</h5>
+          <h6>{creatorid===user.uid?usercity:recipcity}, {creatorid===user.uid?usercountry:recipcountry}</h6>
         </div> 
         <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
           <div className="msgbubble typingbubble">

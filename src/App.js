@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
-import { BrowserRouter as Router,Switch,Route,Link,useHistory, Redirect } from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import "./styles.css"
 import AppContainer from "./comps/AppContainer"
 import Login from "./comps/Login"
@@ -103,6 +103,10 @@ function App() {
             invites,
             activestatus: true
           })
+          db.collection('notifications').doc(user.uid).set({
+            notifs: [],
+            notifsnum: 0
+          })
           SendNotif('Stackly Platform', 
             `Welcome to Stackly App. Go to settings to set up your account information.`,
             `settings`, 
@@ -133,7 +137,6 @@ function App() {
       }
       else {
         setUser('')
-        db.collection('users').doc(user.uid).update({activestatus: false})
       }
     })
   }

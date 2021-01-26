@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useRef} from 'react'
 import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
 import firebase from 'firebase'
@@ -6,6 +6,16 @@ import firebase from 'firebase'
 function Login(props) {
 
   const {name, setName, email, setEmail, entercode, setEnterCode, sharecode, setShareCode, password, setPassword, handleLogin, handleSignup, hasAccount, setHasAccount, emailError, passwordError } = props
+  const passRef = useRef()
+  const logRef = useRef()
+  const regRef = useRef()
+
+  function pressEnter(e) {
+    if(e.keyCode === 13) { 
+      e.preventDefault()
+      hasAccount?handleLogin():handleSignup()
+    } 
+  }
 
   return (  
     <div className="loginpage">  
@@ -31,7 +41,7 @@ function Login(props) {
           }
           <label><Inputs title="Email" placeholder="jhopley@stackly.com" required="true" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
           <p className="errormsg">{emailError}</p>
-          <label><Inputs title="Password" placeholder="Password" type="password" required="true" value={password} onChange={(e) => setPassword(e.target.value)}/></label>
+          <label><Inputs onKeyUp={(e) => pressEnter(e)} title="Password" placeholder="Password" type="password" required="true" value={password} onChange={(e) => setPassword(e.target.value)}/></label>
           <p className="errormsg">{passwordError}</p>
           <small style={{marginBottom: entercode?"10px":""}} className="entercode" onClick={() => setEnterCode(!entercode)}>Enter an invitation code<i class="fal fa-angle-down" style={{transform: entercode?"rotate(0)":"rotate(-90deg)"}}></i></small>
           <div className="invitecodecont" style={{height: entercode?"60px":"0"}}>
@@ -39,11 +49,11 @@ function Login(props) {
             entercode?
             <Inputs title="Invitation Code" value={sharecode} onChange={(e) => setShareCode(e.target.value)}/>:""
           }
-          </div>
+          </div> 
         </form>  
         {hasAccount?
-        <><button onClick={handleLogin}>Log in</button><small>Don't have an account? <span onClick={() => setHasAccount(!hasAccount)}>Create Account</span></small></>
-        :<><button onClick={handleSignup}>Register</button><small>Already have an account? <span onClick={() => setHasAccount(!hasAccount)}>Sign In</span></small></>}
+        <><button ref={logRef} onClick={handleLogin}>Log in</button><small>Don't have an account? <span onClick={() => setHasAccount(!hasAccount)}>Create Account</span></small></>
+        :<><button ref={regRef} onClick={handleSignup}>Register</button><small>Already have an account? <span onClick={() => setHasAccount(!hasAccount)}>Sign In</span></small></>}
       </div>
     </div>  
   )

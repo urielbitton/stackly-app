@@ -14,8 +14,9 @@ function Navbar(props) {
   const {convinfo} = useContext(StoreContext) 
   const [darkmode, setDarkmode] = useState(false)
   const [notifsnum, setNotifsNum] = useState(0)
-  const user = firebase.auth().currentUser
- 
+  const user = firebase.auth().currentUser 
+  const history = useHistory()
+
   return (
     <nav>
       <div className="logocont">
@@ -68,8 +69,8 @@ function Navbar(props) {
           <div className="slidemenu"> 
             <a href="#"><h6><i className="fas fa-moon"></i>Dark Mode</h6><Switchs onChange={(val) => {props.darkmode(val);setDarkmode(!darkmode)}} checked={darkmode}/></a>
             <Link to="/support"><h6><i className="fas fa-question-circle"></i>Support</h6></Link>
-            <a href="#" onClick={() => props.handleLogout()}><h6><i className="fas fa-sign-out-alt"></i>Logout</h6></a>
-          </div>
+            <Link to="/" onClick={() => props.handleLogout()}><h6><i className="fas fa-sign-out-alt"></i>Logout</h6></Link>
+          </div> 
         </div>
       </div>
     </nav>

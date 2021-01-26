@@ -11,7 +11,7 @@ export function SendNotif(notifsubject, notiftext, notiflink, notifaction, notif
     notiflink: notiflink,
     notifaction: notifaction,
     notifcolor: notifcolor,
-    notificon: notificon
+    notificon: notificon 
   }
   db.collection('notifications').doc(user.uid).update({
     notifs: firebase.firestore.FieldValue.arrayUnion(notifObj),
