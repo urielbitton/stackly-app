@@ -20,6 +20,7 @@ function Dialogue(props) {
   const [username, setUserName] = useState('')
   const [usercity, setUserCity] = useState('')
   const [usercountry, setUserCountry] = useState('')
+  const [showinfo, setShowInfo] = useState(false)
   const {messages} = props.diag
   const {convoid, creatorid, recipientid, userref} = props.diag.convoinfo
   const user = firebase.auth().currentUser  
@@ -143,7 +144,7 @@ function Dialogue(props) {
         </div>
         <div>
           <div className="icondiv"><i className="fas fa-user-alt"></i></div>
-          <div className="icondiv"><i className="fas fa-info-circle"></i></div>
+          <div onClick={() => setShowInfo(!showinfo)} className="icondiv"><i className="fas fa-info-circle"></i></div>
         </div>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
@@ -174,8 +175,8 @@ function Dialogue(props) {
             <div className="typersendcont" onClick={() => sendMessage()}><i className="fas fa-paper-plane"></i></div>
         </div>
       </div>
-      <div className="profileinfocont">
-
+      <div className="profileinfocont" style={{top: showinfo?"0":"-100%"}}>
+        User info
       </div>
     </div>
   )
