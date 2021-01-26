@@ -3023,6 +3023,7 @@ details[open] summary ~ * {
   height: 100%;
   background: #fff;
   z-index: 900;
+  padding-top: 100px; 
   display: none;
 }
 

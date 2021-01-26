@@ -7,6 +7,7 @@ import StoreContextProvider from "./comps/StoreContext"
 import {db, Fire} from './comps/Fire'
 import firebase from 'firebase'
 import {SendNotif} from './comps/SendNotif'
+import { useBeforeunload } from 'react-beforeunload'
  
 function App() {
            
@@ -141,15 +142,14 @@ function App() {
       }
     })
   }
+  useBeforeunload(() => {
+    if(user) {
+      db.collection('users').doc(user.uid).update({activestatus: false})
+    }
+  }) 
 
   useEffect(() => { 
     authListener()
-    window.addEventListener('onbeforeunload', removeActiveStatus) 
-    function removeActiveStatus() {
-      if(user) {
-        db.collection('users').doc(user.uid).update({activestatus: false})
-      }
-    }
     if(user) {
       db.collection('users').doc(user.uid).update({activestatus: true})
     }

@@ -63,7 +63,7 @@ function Dialogue(props) {
       typer.style.height = (this.scrollHeight) + 'px' 
     }  
     setTyping(true)
-    showTypingAnim()
+    //showTypingAnim()
   }
   function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g
@@ -99,7 +99,7 @@ function Dialogue(props) {
       clearInterval(timer) 
     } 
   },[])
-  useEffect(() => {
+  /*useEffect(() => {
     let timer = setInterval(() => {
       setTyping(false)
     }, 4000)
@@ -107,7 +107,7 @@ function Dialogue(props) {
     return() => {
       clearInterval(timer)  
     }
-  },[typing])
+  },[typing])*/
   useEffect(() => {
     db.collection('users').doc(creatorid).onSnapshot(snap => {
       const user = snap.data() 
@@ -147,16 +147,16 @@ function Dialogue(props) {
         </div>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
+        <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
+          <div className="msgbubble typingbubble">
+            <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
+          </div>
+        </div> 
         {allmsgs}
         <div className="chatprofilecont">
           <div className="chatprofileimg" style={{backgroundImage: `url(${creatorid===user.uid?userimg:recipimg})`}}></div>
           <h5>{creatorid===user.uid?username:recipname}</h5>
           <h6>{creatorid===user.uid?usercity:recipcity}, {creatorid===user.uid?usercountry:recipcountry}</h6>
-        </div> 
-        <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
-          <div className="msgbubble typingbubble">
-            <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
-          </div>
         </div>  
         <div className="spacer"></div>
       </div>
