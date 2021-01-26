@@ -9,6 +9,7 @@ import SendInvite from './SendInvite'
 import ElapsedTime from './ElapsedTime'
 import {SendNotif} from './SendNotif'
 import UserOpts from './UserOpts'
+import DropFiles from './DropFiles'
 
 function OneProject(props) { 
 
