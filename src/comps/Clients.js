@@ -14,11 +14,7 @@ function Clients(props) {
   const [showadd, setShowAdd] = useState(false)
   const [section, setSection] = useState(1)
   const [cardColor, setCardColor] = useState('#056dff')
-  const user = firebase.auth().currentUser
 
-  const clientsrow = clients && clients.map(cli => {
-    return <ClientCard cli={cli} key={cli.id} sendclientid={props.sendclientid}/>
-  })
 
   return (
     <div className="clientspage apppage">
@@ -27,14 +23,14 @@ function Clients(props) {
           <div className="pagetitles">
             <div className="pagetitlestxt">
               <h4>Clients</h4>
-              <h6>2 total</h6> 
+              <h6>2 total</h6>  
             </div>
             <div className="actions">
               <div><i className="far fa-sliders-h"></i></div>
               <Link to="/clients/addclient"><button onClick={() => setShowAdd(!showadd)}><i className="far fa-plus"></i>Create Client</button></Link>
             </div>
           </div>
-          {clientsrow} 
+          
         </div>
       </div>
 
@@ -42,7 +38,7 @@ function Clients(props) {
       <div className="addsection" style={{left: section===1?"0":"-200%"}}>
         <Link to="/clients" className="closeadd"><i className="fal fa-times" onClick={() => setShowAdd(!showadd)}></i></Link>
         <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Create Client</h4></div>
-        <div className="content">
+        <div className="content hidescroll">
           <Inputs title="Full Name" placeholder="Jake Johnson"/>
           <Inputs title="Company Name" placeholder="Intellisense Inc."/>
           <Inputs title="Email" type="email" placeholder="jjohnson@gmail.com"/>

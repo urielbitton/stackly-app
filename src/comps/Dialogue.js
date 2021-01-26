@@ -63,7 +63,7 @@ function Dialogue(props) {
       typer.style.height = (this.scrollHeight) + 'px' 
     }  
     setTyping(true)
-    //showTypingAnim()
+    showTypingAnim()
   }
   function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g
@@ -97,17 +97,17 @@ function Dialogue(props) {
     },30000)
     return() => {
       clearInterval(timer) 
-    }
+    } 
   },[])
   useEffect(() => {
     let timer = setInterval(() => {
       setTyping(false)
     }, 4000)
-    //showTypingAnim()
+    showTypingAnim()
     return() => {
       clearInterval(timer)  
     }
-  },[typing])  
+  },[typing])
   useEffect(() => {
     db.collection('users').doc(creatorid).onSnapshot(snap => {
       const user = snap.data() 
@@ -173,6 +173,9 @@ function Dialogue(props) {
             </div>
             <div className="typersendcont" onClick={() => sendMessage()}><i className="fas fa-paper-plane"></i></div>
         </div>
+      </div>
+      <div className="profileinfocont">
+
       </div>
     </div>
   )

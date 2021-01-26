@@ -83,6 +83,7 @@ function App() {
             companylogo: "",
             country: "Canada",
             profimg: "https://i.imgur.com/yxij2KH.jpg",
+            newuser: false
           }
           const settings = { 
             general: {

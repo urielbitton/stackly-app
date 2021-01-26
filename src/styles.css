@@ -2616,6 +2616,7 @@ details[open] summary ~ * {
   align-items: center;
   border-bottom: 1px solid #eee;
   box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+  z-index: 910;
 } 
 .convopage .convohead h5 {
   font-size: 15px;
@@ -3014,7 +3015,16 @@ details[open] summary ~ * {
   margin: 0;
 }
 
-
+.profileinfocont {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 900;
+  display: none;
+}
 
 
 

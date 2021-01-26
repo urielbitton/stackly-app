@@ -48,8 +48,8 @@ function ConvoCard(props) {
     })
   })
 
-  return (
-    <NavLink exact to={`/messages/${el.convoinfo.convoid}`} activeClassName="activeconvo"><div className="notifrow convorow">
+  return ( 
+    user?<NavLink exact to={`/messages/${el.convoinfo.convoid}`} activeClassName="activeconvo"><div className="notifrow convorow">
       <div className="notifimg" style={{backgroundImage: `url(${el.convoinfo.creatorid===user.uid?recipimg:senderimg})`}}></div>  
       <div className="notifcontent msgcontent" onClick={() => openMessage(el)}>
         <h5>{el.convoinfo.creatorid===user.uid?recipname:sendername}<div style={{display: activestatus?"block":"none"}} className="activestatuscircle"></div></h5>
@@ -57,7 +57,7 @@ function ConvoCard(props) {
         <small><ElapsedTime providedtime={el.messages[el.messages.length-1].msgdate.toDate()}/></small>
       </div>  
       <div className="msgstatus" style={{background: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#eee":"#eee"}}></div>
-    </div></NavLink>
+    </div></NavLink>:""
   )
 }
 

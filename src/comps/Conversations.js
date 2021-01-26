@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState, useRef} from 'react'
 import { BrowserRouter as Router,Switch,Route,NavLink,useHistory } from "react-router-dom"
 import firebase from 'firebase'
 import {db} from './Fire'
-import ElapsedTime from './ElapsedTime'
 import {StoreContext} from './StoreContext'
 import ConvoCard from './ConvoCard'
 

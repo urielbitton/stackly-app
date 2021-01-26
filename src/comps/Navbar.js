@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { BrowserRouter as Router,Switch,Route,Link, useHistory } from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
 import firebase from 'firebase'
 import {db} from './Fire'
@@ -15,7 +15,6 @@ function Navbar(props) {
   const [darkmode, setDarkmode] = useState(false)
   const [notifsnum, setNotifsNum] = useState(0)
   const user = firebase.auth().currentUser 
-  const history = useHistory()
 
   return (
     <nav>
@@ -45,7 +44,9 @@ function Navbar(props) {
           <div className="notifcircle" style={{display: convinfo.unreadmsgs>0?"block":"none"}}><span>{convinfo.unreadmsgs}</span></div>
           <div className="slidemenu">
             <div className="slidemenuinner hidescroll">
-              <Conversations amount={8}/>
+              {
+                user?<Conversations amount={8}/>:""
+              }
             </div>
             <div className="viewallnotifs">
               <Link to="/messages"><h6>View All</h6></Link>
