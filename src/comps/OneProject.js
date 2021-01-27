@@ -130,7 +130,8 @@ function OneProject(props) {
   }
   function editUpdateText(el) {
     el.edit = !el.edit
-    setUpdate(prev =>prev+1) 
+    setTempUpdText(el.updatetext)
+    setUpdate(prev => prev+1) 
   }
   function saveUpdateText(el) {
     el.edit = !el.edit
@@ -284,9 +285,9 @@ function OneProject(props) {
   }
   function deleteProject() {
     const projRef = db.collection("projects").doc(proj.projectid)
-    projRef.delete()
-    history.push('/projects')
-  }
+    projRef.delete() 
+    history.push('/projects') 
+  } 
   function editTask(el) {
     setAddEdit(false)
     setShowAdd(!showadd)
@@ -540,7 +541,7 @@ function OneProject(props) {
                   <button onClick={() => setTaskPrior('high', setPriorPromise(0))} className={taskprior==='high'?"highprior priorbtn activehighbtn":"highprior priorbtn"}><i className="fas fa-star"></i>High Priority</button>
                 </>:"":""
               }
-            </div>
+            </div> 
             <label> 
               <h6>Notes</h6>
               <textarea placeholder="add notes to this task..." onChange={(e) => setTaskNotes(e.target.value)} value={tasknotes} />

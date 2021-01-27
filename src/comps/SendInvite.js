@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import firebase from 'firebase'
 import {db} from './Fire'
 import {Inputs} from './Inputs'
@@ -12,6 +12,7 @@ function SendInvite(props) {
   const [error, setError] = useState(false)
   const [shareid, setShareId] = useState(db.collection("users").doc().id)
   const user = firebase.auth().currentUser
+  const inviteRef = useRef()
 
   function handleSend() { 
     const templateid = 'template_x8smust'
@@ -43,18 +44,26 @@ function SendInvite(props) {
   }
   function sendInvitation() {
     if(valid) {
-      handleSend()
-    }
+      if(props.inviteaccess) {
+        handleSend()
+        console.log('Sent invitation')
+      }
+    } 
     else { 
       setError(true)
-      setNotify('The email address you provided is invalid. Please try again.')
+      if(error)
+        setNotify('The email address you provided is invalid. Please try again.')
     }
   }
+
+  useEffect(() => {
+    inviteRef.current.click()
+  },[props.inviteaccess])
 
   return ( 
     <div className="sendinvitecont">
       <Inputs title={props.title} iconclass="fal fa-search" value={emailto} onChange={(e) => validateInput(e.target.value)}/>
-      <button onClick={() => sendInvitation()}>Send Invitation</button> 
+      <button ref={inviteRef} onClick={() => sendInvitation()}>Send Invitation</button> 
       <small style={{color: error?"var(--red)":"var(--color)"}}>{notify}</small>
     </div>
   )

@@ -20,34 +20,35 @@ function Notifs(props) {
   })    
 
   function hideNotif() {
-    let timers
     notifRef.current.style.opacity = '0'
-    timers = setTimeout(() => {
+    let timer1 = setTimeout(() => {
       notifRef.current.style.top = '30px'
     },50)
-    timers = setTimeout(() => {
+    let timer2 = setTimeout(() => {
       notifContRef.current.style.zIndex = '-1'
     }, 300) 
   }
 
   useEffect(() => {
-    let timers
+    let timer1, timer2, timer3
     if(notifs[0].text !== undefined) {
       notifContRef.current.style.zIndex = '1000'
       notifRef.current.style.top = '0'
       notifRef.current.style.opacity = '1'
-      timers = setTimeout(() => { 
+      timer1 = setTimeout(() => { 
         notifRef.current.style.top = '30px'
-        timers = setTimeout(() => {
+        timer2 = setTimeout(() => {
           notifRef.current.style.opacity = '0'
         },50)
-        timers = setTimeout(() => {
+        timer3 = setTimeout(() => {
           notifContRef.current.style.zIndex = '-1'
         }, 300);
       }, props.time) 
     }
     return() => {
-      clearTimeout(timers)
+      clearTimeout(timer1) 
+      clearTimeout(timer2)
+      clearTimeout(timer3)
     }
   },[props.update,props.time])  
 

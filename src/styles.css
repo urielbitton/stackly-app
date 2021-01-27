@@ -1283,8 +1283,9 @@ nav {
   z-index: 10;
 }
 .addprojectcont .clientsection .content .fa-search {
-  top: 18px;
+  top: 35px;
 }
+
 .addprojectcont .content label h6, .addprojectcont .content .label h6 {
   margin-bottom: 5px;
   font-size: 12px;

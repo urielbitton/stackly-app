@@ -43,6 +43,7 @@ function Projects(props) {
   const [keyword, setKeyword] = useState('') 
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const [projid, setProjId] = useState('')
+  const [inviteaccess, setInviteAccess] = useState(false)
   const user = firebase.auth().currentUser
   let timers 
   
@@ -96,6 +97,7 @@ function Projects(props) {
       db.collection('users').doc(user.uid).update({
         shareids: firebase.firestore.FieldValue.arrayUnion(projid)
       }) 
+      setInviteAccess(true)
       SendNotif('New Project', 
         `${user.displayName} has created a new project '${name}'.`,
          `project/${projid}`, 
@@ -191,6 +193,7 @@ function Projects(props) {
     })*/ 
     return() => {
       clearTimeout(timers)
+      setInviteAccess(false)
     }     
   },[]) 
 
@@ -259,7 +262,7 @@ function Projects(props) {
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Add Client</h4></div>
           <i className="fal fa-angle-left" onClick={() => setSection(1)}></i>
           <div className="content">
-            <SendInvite projname={name} projid={projid} />
+            <SendInvite projname={name} projid={projid} inviteaccess={inviteaccess} title="Invite client by email" />
             <div className="sendinvitecont">
               <Inputs title="Invite client by user name" iconclass="fal fa-search" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
               <div className="usersrowhead"><h6>User name - Email</h6><h6>Invite</h6></div>
