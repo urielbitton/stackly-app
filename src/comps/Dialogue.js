@@ -16,10 +16,18 @@ function Dialogue(props) {
   const [recipimg, setRecipImg] = useState('')
   const [recipcity, setRecipCity] = useState('')
   const [recipcountry, setRecipCountry] = useState('')
+  const [recipemail, setRecipEmail] = useState('')
+  const [recipphone, setRecipPhone] = useState('')
+  const [recipprojnum, setRecipProjNum] = useState('')
+  const [recipclientsnum, setRecipClientsNum] = useState('')
   const [userimg, setUserImg] = useState('')
   const [username, setUserName] = useState('')
   const [usercity, setUserCity] = useState('')
   const [usercountry, setUserCountry] = useState('')
+  const [userphone, setUserPhone] = useState('')
+  const [useremail, setUserEmail] = useState('')
+  const [userprojum, setUserProjNum] = useState('')
+  const [userclientsnum, setUserClientsNum] = useState('')
   const [showinfo, setShowInfo] = useState(false)
   const {messages} = props.diag
   const {convoid, creatorid, recipientid, userref} = props.diag.convoinfo
@@ -117,14 +125,22 @@ function Dialogue(props) {
       setRecipCity(user.userinfo.city)
       setRecipCountry(user.userinfo.country)
       setActiveStatus(user.activestatus) 
+      setRecipEmail(user.userinfo.email)
+      setRecipPhone(user.userinfo.phone)
+      setRecipProjNum(user.shareids.length)
+      setRecipClientsNum(user.clients.length)
     }) 
     db.collection('users').doc(recipientid).onSnapshot(snap => {
       const user = snap.data()
       setUserImg(user.userinfo.profimg)
-      setUserName(user.userinfo.fullname)
+      setUserName(user.userinfo.fullname) 
       setMyActiveStatus(user.activestatus) 
       setUserCity(user.userinfo.city)
       setUserCountry(user.userinfo.country)
+      setUserEmail(user.userinfo.email)
+      setUserPhone(user.userinfo.phone)
+      setUserProjNum(user.shareids.length)
+      setUserClientsNum(user.clients.length)
     })
   },[])
 
@@ -143,14 +159,13 @@ function Dialogue(props) {
           </h5>
         </div>
         <div>
-          <div className="icondiv"><i className="fas fa-user-alt"></i></div>
-          <div onClick={() => setShowInfo(!showinfo)} className="icondiv"><i className="fas fa-info-circle"></i></div>
+          <div onClick={() => setShowInfo(!showinfo)} className="icondiv"><i style={{fontSize: showinfo?"23px":""}} className={showinfo?"fal fa-times":"fas fa-info-circle"}></i></div>
         </div>
       </div>
       <div className="convowindowinner hidescroll" id="convowindowinner">
         <div className="msgbubblecont" style={{flexDirection: "row", display: realtyping?typerid!==user.uid?"flex":"none":"none"}}>
           <div className="msgbubble typingbubble">
-            <p class="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
+            <p className="typing-indicator"><span style={typingstyles}></span><span style={typingstyles}></span><span style={typingstyles}></span></p>
           </div>
         </div> 
         {allmsgs}
@@ -176,7 +191,28 @@ function Dialogue(props) {
         </div>
       </div>
       <div className="profileinfocont" style={{top: showinfo?"0":"-100%"}}>
-        User info
+        <div className="chatprofilecont">
+          <div className="chatprofileimg" style={{backgroundImage: `url(${creatorid===user.uid?userimg:recipimg})`}}></div>
+          <h5>{creatorid===user.uid?username:recipname}</h5>
+          <span><i className="fal fa-envelope"></i>{creatorid===user.uid?useremail:recipemail}</span>
+          <span><i className="fal fa-mobile"></i>{creatorid===user.uid?userphone.length?userphone:"Not Set":recipphone.length?recipphone:"Not Set"}</span>
+          <div className="actionsdiv">
+            <button><i className="fal fa-archive"></i>Archive</button>
+            <button><i className="fal fa-trash-alt"></i>Delete</button>
+          </div>
+          <div className="statsinfodiv">
+            <div>
+              <i className="fal fa-project-diagram"></i>
+              <div><h4>{userprojum}</h4>
+              <h6>Projects</h6></div>
+            </div>
+            <div>
+              <i className="far fa-user-tie"></i>
+              <div><h4>{userclientsnum}</h4>
+              <h6>Clients</h6></div>
+            </div>
+          </div>
+        </div> 
       </div>
     </div>
   )
