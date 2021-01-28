@@ -17,6 +17,7 @@ function ConvoPage(props) {
   const [keyword, setKeyword] = useState('') 
   const [message, setMessage] = useState('')
   const [recipientid, setRecipientId] = useState('')
+  const [msgPersonIds, setMsgPersonIds] = useState([])
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const user = firebase.auth().currentUser
   let history = useHistory()
@@ -28,9 +29,9 @@ function ConvoPage(props) {
   }) 
   const allusersrow = allusers && allusers.map(el => {
       if(pattern.test(el.userinfo.fullname.toLowerCase()) && el.uid !== user.uid)
-      return <div className="allusersrow">
+      return <div className="allusersrow" style={{opacity:  msgPersonIds && msgPersonIds.includes(el.uid)?"0.3":"1"}}>
         <h5><img src={el.userinfo.profimg} alt=""/>{el.userinfo.fullname}</h5>
-        <small onClick={() => setRecipientId(el.uid)} className={recipientid===el.uid?"usersrowselected":""}>{recipientid===el.uid?<i className="fal fa-check"></i>:"Select"}</small>
+        <small onClick={msgPersonIds && msgPersonIds.includes(el.uid)?() => setShowSend(!showsend):() => setRecipientId(el.uid)} className={recipientid===el.uid?"usersrowselected":""}>{recipientid===el.uid?<i className="fal fa-check"></i>:"Select"}</small>
       </div> 
   })
   function sendMessage() {
@@ -47,6 +48,7 @@ function ConvoPage(props) {
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
       const userlist = use.data() 
+      setMsgPersonIds(use.data().msgpersonids)
       db.collection('conversations').onSnapshot(snap => { 
         let convos = [] 
         snap.forEach(doc => {       
@@ -55,7 +57,7 @@ function ConvoPage(props) {
         }) 
         setConvoList(convos)
       }) 
-    })
+    }) 
     db.collection('users').orderBy('userinfo.fullname','asc').limit(showuserslimit).onSnapshot(snap => {
       const users = []
       snap.forEach(el => {
