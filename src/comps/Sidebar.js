@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router,Switch,Route,Link, NavLink } from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link, NavLink, useHistory } from "react-router-dom"
 import firebase from 'firebase'
 import {db} from './Fire'
 
@@ -10,11 +10,14 @@ function Sidebar(props) {
   const [userinfo, setUserInfo] = useState([])
   const [profimg, setProfImg] = useState('')
   const [pinnedprojlist, setPinnedProjList] = useState([])
+  const [pinshow, setPinShow] = useState(false)
   const user = firebase.auth().currentUser
+  const history = useHistory()
 
   const pinnedprojects = pinnedprojlist && pinnedprojlist.map(el => {
-    return <div className="pinnedprojectdiv">
+    return <div className="pinnedprojectdiv" onClick={() => history.replace(`/project/${el.projectid}`)}>
       <h6><i className={`fal ${el.icon}`}></i>{el.name}</h6>
+      <small>{el.tasks && el.tasks.length} {el.tasks.length>1?"tasks":"task"}</small>
     </div>
   })
 
@@ -65,11 +68,10 @@ function Sidebar(props) {
       </div>
       <div className="quickprojects">
         <div>
-          <span>Recent Projects</span>
-        </div>
-        <div>
-          <span>Pinned Projects</span>
-          {pinnedprojects}
+          <span onClick={() => setPinShow(!pinshow)}>Pinned Projects<i className="far fa-angle-down" style={{transform: pinshow?"":"rotate(-90deg)"}}></i></span>
+          <div className="pinprojectscont" style={{maxHeight: pinshow?"300px":"0"}}>
+            {pinnedprojects}
+          </div>
         </div>
       </div>
       <div className="spacer"></div>

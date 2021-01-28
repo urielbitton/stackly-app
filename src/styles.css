@@ -301,15 +301,59 @@ hr {
 .quickprojects span {
   color: #aaa;
   font-size: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
 }
-
+.quickprojects span:hover {
+  color: #fff;
+}
 .quickprojects > div {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-bottom: 1px solid rgba(255,255,255,0.05)
 }
+.quickprojects > div span i {
+  margin-left: 10px;
+  transition: all 0.2s;
+}
+.pinprojectscont {
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s;
+  padding: 10px 0;
+}
+.pinnedprojectdiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+  cursor: pointer;
+  padding: 7px 15px;
+  width: 100%;
+  transition: all 0.2s;
+}
+.pinnedprojectdiv:hover {
+  background: rgba(255,255,255,0.1);
+}
+.pinnedprojectdiv h6 {
+  color: #fff;
+  font-weight: 500;
+}
+.pinnedprojectdiv h6 i {
+  margin-right: 10px;
+  color: #fff;
+}
+.pinnedprojectdiv small {
+  color: #ddd;
+  font-size: 11px;
+  font-weight: 500;
+}
+
 .blobcont {
   width: 170px;
   text-align: center;
@@ -3090,28 +3134,6 @@ details[open] summary ~ * {
 }
 .profileinfocont .statsinfodiv > div h6 {
   color: #333;
-}
-
-.pinnedprojectdiv {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 5px 0;
-  cursor: pointer;
-  padding: 7px 10px;
-  width: 100%;
-  transition: all 0.2s;
-}
-.pinnedprojectdiv:hover {
-  background: rgba(255,255,255,0.1);
-}
-.pinnedprojectdiv h6 {
-  color: #fff;
-  font-weight: 500;
-}
-.pinnedprojectdiv h6 i {
-  margin-right: 10px;
-  color: #fff;
 }
 
 
