@@ -1,14 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
+import {db} from './Fire'
+import firebase from 'firebase'
 
 function ProjectCard(props) {
 
   const {projectid, name, client, tasks, daysleft, progress, color, shadow, icon} = props.proj
+  const [pinned, setPinned] = useState(false)
+
+  function pinUnpinProject(e) {
+    e.preventDefault()
+    db.collection('projects').doc(projectid).update({
+      pinned: !pinned
+    }) 
+  }
+
+  useEffect(() => {
+    db.collection('projects').doc(projectid).onSnapshot(snap => {
+      setPinned(snap.data().pinned)
+    })
+  },[])
 
   return (  
     <Link to={`/project/${projectid}`}>
     <div className="projbox">
-      <i className="far fa-ellipsis-v" onClick={(e) => e.preventDefault()}></i>
+      <i style={{color: pinned?"var(--color)":"#ccc"}} className="fal fa-map-pin" onClick={(e) => pinUnpinProject(e)}></i>
       <div className="iconcont" style={{boxShadow: `0 5px 10px ${shadow}`, background: color}}>
         <i className={`far ${icon}`}></i>
       </div> 

@@ -302,6 +302,14 @@ hr {
   color: #aaa;
   font-size: 12px;
 }
+
+.quickprojects > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .blobcont {
   width: 170px;
   text-align: center;
@@ -1028,18 +1036,18 @@ nav {
   font-size: 10px;
   text-transform: uppercase;
 }
-.projbox .fa-ellipsis-v {
+.projbox .fa-map-pin {
   position: absolute;
   color: #ccc;
   right: 10px;
   top: 10px;
   padding: 5px;
-  font-size: 20px;
+  font-size: 17px;
   cursor: pointer;
   transition: all 0.2s;
 }
-.projbox .fa-ellipsis-v:hover {
-  color: #333;
+.projbox .fa-map-pin:hover {
+  color: var(--color);
 }
 .projbox .progresscont {
   width: 100%;
@@ -3084,9 +3092,27 @@ details[open] summary ~ * {
   color: #333;
 }
 
-
-
-
+.pinnedprojectdiv {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 5px 0;
+  cursor: pointer;
+  padding: 7px 10px;
+  width: 100%;
+  transition: all 0.2s;
+}
+.pinnedprojectdiv:hover {
+  background: rgba(255,255,255,0.1);
+}
+.pinnedprojectdiv h6 {
+  color: #fff;
+  font-weight: 500;
+}
+.pinnedprojectdiv h6 i {
+  margin-right: 10px;
+  color: #fff;
+}
 
 
 

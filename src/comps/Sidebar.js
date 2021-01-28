@@ -9,7 +9,14 @@ function Sidebar(props) {
   const [userlist, setUserList] = useState([])
   const [userinfo, setUserInfo] = useState([])
   const [profimg, setProfImg] = useState('')
+  const [pinnedprojlist, setPinnedProjList] = useState([])
   const user = firebase.auth().currentUser
+
+  const pinnedprojects = pinnedprojlist && pinnedprojlist.map(el => {
+    return <div className="pinnedprojectdiv">
+      <h6><i className={`fal ${el.icon}`}></i>{el.name}</h6>
+    </div>
+  })
 
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(doc => {
@@ -17,6 +24,14 @@ function Sidebar(props) {
       setUserList(userlist)
       setUserInfo(userlist.userinfo) 
       setProfImg(userlist.userinfo.profimg)
+      db.collection('projects').onSnapshot(snap => {
+        let projects = [] 
+        snap.forEach(doc => {       
+          if(userlist.shareids.includes(doc.data().projectid) && doc.data().pinned) 
+            projects.push(doc.data())
+        })
+        setPinnedProjList(projects)    
+      })
     })  
   },[]) 
 
@@ -54,6 +69,7 @@ function Sidebar(props) {
         </div>
         <div>
           <span>Pinned Projects</span>
+          {pinnedprojects}
         </div>
       </div>
       <div className="spacer"></div>
