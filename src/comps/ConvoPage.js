@@ -48,7 +48,7 @@ function ConvoPage(props) {
   useEffect(() => {
     db.collection('users').doc(user.uid).onSnapshot(use => {
       const userlist = use.data() 
-      setMsgPersonIds(use.data().msgpersonids)
+      setMsgPersonIds(userlist.msgpersonids)
       db.collection('conversations').onSnapshot(snap => { 
         let convos = [] 
         snap.forEach(doc => {       

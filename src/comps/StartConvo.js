@@ -22,10 +22,12 @@ export function StartConvo(recipientid, message, convoid) {
     sendername: user.displayName
   }
   db.collection('users').doc(user.uid).update({
-    msgids: firebase.firestore.FieldValue.arrayUnion(convoid)
+    msgids: firebase.firestore.FieldValue.arrayUnion(convoid),
+    msgpersonids: firebase.firestore.FieldValue.arrayUnion(recipientid)
   }) 
   db.collection('users').doc(recipientid).update({
-    msgids: firebase.firestore.FieldValue.arrayUnion(convoid)
+    msgids: firebase.firestore.FieldValue.arrayUnion(convoid),
+    msgpersonids: firebase.firestore.FieldValue.arrayUnion(user.uid)
   })  
   db.collection('conversations').doc(convoid).set({
     convoinfo,
