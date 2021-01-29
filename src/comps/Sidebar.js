@@ -68,7 +68,7 @@ function Sidebar(props) {
       </div>
       <div className="quickprojects">
         <div>
-          <span onClick={() => setPinShow(!pinshow)}>Pinned Projects<i className="far fa-angle-down" style={{transform: pinshow?"":"rotate(-90deg)"}}></i></span>
+          <span onClick={() => setPinShow(!pinshow)}>Pinned Projects ({pinnedprojlist.length})<i className="far fa-angle-down" style={{transform: pinshow?"":"rotate(-90deg)"}}></i></span>
           <div className="pinprojectscont" style={{maxHeight: pinshow?"300px":"0"}}>
             {pinnedprojects}
           </div>

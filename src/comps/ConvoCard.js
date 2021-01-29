@@ -11,6 +11,7 @@ function ConvoCard(props) {
   const [recipname, setRecipName] = useState('')
   const [recipimg, setRecipImg] = useState('')
   const [activestatus, setActiveStatus] = useState(false)
+  const [myActiveStatus, setMyActiveStatus] = useState(false)
   const [sendername, setSenderName] = useState('')
   const [senderimg, setSenderImg] = useState('')
   const {el} = props
@@ -45,6 +46,7 @@ function ConvoCard(props) {
       const user = snap.data()
       setSenderName(user.userinfo.fullname)
       setSenderImg(user.userinfo.profimg)
+      setMyActiveStatus(user.activestatus)
     })
   })
 
@@ -52,7 +54,7 @@ function ConvoCard(props) {
     user?<NavLink exact to={`/messages/${el.convoinfo.convoid}`} activeClassName="activeconvo"><div className="notifrow convorow">
       <div className="notifimg" style={{backgroundImage: `url(${el.convoinfo.creatorid===user.uid?recipimg:senderimg})`}}></div>  
       <div className="notifcontent msgcontent" onClick={() => openMessage(el)}>
-        <h5>{el.convoinfo.creatorid===user.uid?recipname:sendername}<div style={{display: activestatus?"block":"none"}} className="activestatuscircle"></div></h5>
+        <h5>{el.convoinfo.creatorid===user.uid?recipname:sendername}<div style={{display: el.convoinfo.creatorid===user.uid?myActiveStatus?"block":"none":activestatus?"block":"none"}} className="activestatuscircle"></div></h5>
         <h6 style={{color: el.messages[el.messages.length-1].senderid!==user.uid?el.messages[el.messages.length-1].read===false?"var(--color)":"#111":""}}>{el.messages[el.messages.length-1].senderid===user.uid?"You:":""} {shortenMsgs(el.messages[el.messages.length-1].message)}</h6> 
         <small><ElapsedTime providedtime={el.messages[el.messages.length-1].msgdate.toDate()}/></small>
       </div>  

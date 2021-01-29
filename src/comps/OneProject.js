@@ -53,6 +53,8 @@ function OneProject(props) {
   const [notifsnum, setNotifsNum] = useState(0)
   let history = useHistory()
   let timers
+  let gendate = new Date().toDateString().slice(4)
+   
 
 
   const alltasks = proj.tasks && proj.tasks.map(el => {
@@ -421,8 +423,8 @@ function OneProject(props) {
       <div className="pagegrid">
         <div className="pagemaingrid oneprojectcont">
           <div className="projecttoolbar">
-            <h4><i className="far fa-calendar-alt"></i> Jan 15 2020</h4>
-            <h3>Tasks</h3>
+            <h4><i className="far fa-calendar-alt"></i> {gendate}</h4>
+            <h3>Tasks ({proj.tasks.length})</h3>
             <div>
               <button style={{display: editallow?"inline":"none"}} className="editprojbtn" onClick={editallow?() => showEditFunc():null}>Edit Project</button>
               <button onClick={() => showAddFunc()}>Add Task</button>

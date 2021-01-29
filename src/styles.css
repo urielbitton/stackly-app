@@ -295,7 +295,6 @@ hr {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  grid-gap: 20px;
   width: 100%;
 }
 .quickprojects span {
@@ -325,7 +324,7 @@ hr {
   width: 100%;
   overflow: hidden;
   transition: all 0.3s;
-  padding: 10px 0;
+  padding: 4px 0;
 }
 .pinnedprojectdiv {
   display: flex;
@@ -1632,6 +1631,7 @@ h4.noactivity {
   height: 80px;
   background: var(--color);
   z-index: 0;
+  opacity: 0.2;
 }
 .taskrowcont:nth-last-of-type(1) hr {
   height: 50px;
