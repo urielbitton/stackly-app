@@ -16,9 +16,9 @@ function Home() {
   const [clientlist, setClientList] = useState([])
   const [fullname, setFullName] = useState('')
   const [invites, setInvites] = useState([])
-  const [activetasksarr, setActiveTasksArr] = useState([])
+  const [activetasksnum, setActiveTasksNum] = useState([])
   const [newtasks, setNewTasks] = useState([])
-  const [activeprojs, setActiveProjs] = useState([])
+  const [activeprojnum, setActiveProjNum] = useState([])
   const [daytime, setDaytime] = useState('')
   const user = firebase.auth().currentUser
   const history = useHistory()
@@ -81,17 +81,20 @@ function Home() {
       projRef.onSnapshot(snap => {
         let projects = [] 
         let newtasksarr = []
+        let activetasksarr = []
+        let activeprojs = []
         snap.forEach(doc => {       
           if(userlist.shareids.includes(doc.data().projectid)) 
             projects.push(doc.data())
         })
         projects.forEach(el => {
           if(el.active) {
-            el.tasks.forEach(el2 => {
+            el.tasks.forEach(el2 => { 
               activetasksarr.push(el2.taskid)
             }) 
           }
         })  
+        setActiveTasksNum(activetasksarr) 
         projects.forEach(el => {
           el.tasks.forEach(el2 => {
             if(el2.taskstatus !== 'Completed')
@@ -103,6 +106,7 @@ function Home() {
           if(el.active)
             activeprojs.push(el.projectid)
         }) 
+        setActiveProjNum(activeprojs)
       }) 
       //limited to 3 projects - use cautiously!
       recentProjRef.onSnapshot(snap => {
@@ -120,7 +124,7 @@ function Home() {
     else if(time >= 12 && time <=17)
       setDaytime('Afternoon')
     else  
-      setDaytime('Evening')
+      setDaytime('Evening') 
   },[]) 
     
   return ( 
@@ -177,14 +181,14 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-rocket-launch"></i>
-              <h4>Active Projects<span>{activeprojs?activeprojs.length:0}</span></h4>
+              <h4>Active Projects<span>{activeprojnum?activeprojnum.length:0}</span></h4>
             </div>
             <div className="view"><Link to="/projects"><i className="far fa-angle-right"></i></Link></div>
           </div>
-          <div className="statusbox dashbox">
+          <div className="statusbox dashbox"> 
             <div className="iconcont">
               <i className="fal fa-tasks"></i>
-              <h4>Active Tasks<span>{activetasksarr?activetasksarr.length:0}</span></h4>
+              <h4>Active Tasks<span>{activetasksnum && activetasksnum.length}</span></h4>
             </div>
             <div className="view"><Link to="/mytasks"><i className="far fa-angle-right"></i></Link></div>
           </div>
