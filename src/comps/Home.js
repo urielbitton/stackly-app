@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react'
-import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link, useHistory} from "react-router-dom"
 import Calendars from './Calendars'
 import Charts from "./Chart"
 import {StoreContext} from './StoreContext'
 import {db} from './Fire'
 import firebase from 'firebase'
 import Title from './Title'
+import ElapsedTime from './ElapsedTime'
 
 function Home() {
 
@@ -15,10 +16,12 @@ function Home() {
   const [clientlist, setClientList] = useState([])
   const [fullname, setFullName] = useState('')
   const [invites, setInvites] = useState([])
-  const [tasksarr, setTasksArr] = useState([])
+  const [activetasksarr, setActiveTasksArr] = useState([])
+  const [newtasks, setNewTasks] = useState([])
   const [activeprojs, setActiveProjs] = useState([])
   const [daytime, setDaytime] = useState('')
   const user = firebase.auth().currentUser
+  const history = useHistory()
  
   const invitesrow = invites && invites.map(el => {
     return <div className="invitesrow">
@@ -30,6 +33,17 @@ function Home() {
       </div>
     </div>
   }) 
+  const recentprojects = projlist && projlist.map(el => {
+    return <div className="hometaskrow">
+      <h6>{el.name}</h6>
+      <h6>{el.client.clientname}</h6>
+      <h6>{el.tasks.length}</h6>
+      <h6><ElapsedTime providedtime={el.datecreated.toDate()}/></h6>
+      <h6 style={{color: el.active?"var(--color)":"#bbb"}}>{el.active?"Active":"Not Active"}</h6>
+      <h6 style={{color: el.active?"var(--color)":"#bbb"}}>{el.progress}%</h6>
+      <div className="view"><Link to={`/project/${el.projectid}`}><i className="far fa-angle-right"></i></Link></div>
+    </div>
+  })
 
   function acceptInvitation(el) {
     db.collection("users").doc(user.uid).update({
@@ -54,32 +68,51 @@ function Home() {
       invites
     })
   }
-
+ 
   useEffect(() => { 
     db.collection('users').doc(user.uid).onSnapshot(use => {
       const userlist = use.data()
       setUserList(userlist)  
-      setUserInfo(userlist.userinfo)
+      setUserInfo(userlist.userinfo) 
       setFullName(userlist.userinfo.fullname)
       setInvites(userlist.invites)
-      db.collection('projects').onSnapshot(snap => {
+      let projRef = db.collection('projects')
+      let recentProjRef = db.collection('projects').orderBy('datecreated','desc').limit(3)
+      projRef.onSnapshot(snap => {
         let projects = [] 
+        let newtasksarr = []
         snap.forEach(doc => {       
           if(userlist.shareids.includes(doc.data().projectid)) 
             projects.push(doc.data())
         })
         projects.forEach(el => {
-          if(el.active)
-          el.tasks.forEach(el2 => {
-            tasksarr.push(el2.taskid)
-          }) 
+          if(el.active) {
+            el.tasks.forEach(el2 => {
+              activetasksarr.push(el2.taskid)
+            }) 
+          }
         })  
+        projects.forEach(el => {
+          el.tasks.forEach(el2 => {
+            if(el2.taskstatus !== 'Completed')
+              newtasksarr.push(el2.taskid)
+          })
+        })
+        setNewTasks(newtasksarr)
         projects.forEach(el => {
           if(el.active)
             activeprojs.push(el.projectid)
+        }) 
+      }) 
+      //limited to 3 projects - use cautiously!
+      recentProjRef.onSnapshot(snap => {
+        let projects = [] 
+        snap.forEach(doc => {       
+          if(userlist.shareids.includes(doc.data().projectid)) 
+            projects.push(doc.data())
         })
         setProjList(projects)  
-      }) 
+      })
     }) 
     let time = new Date().getHours()
     if(time >= 0 && time < 12) 
@@ -89,7 +122,7 @@ function Home() {
     else  
       setDaytime('Evening')
   },[]) 
-
+    
   return ( 
     <div className="home apppage">
       <div className="apptitles">
@@ -116,7 +149,7 @@ function Home() {
               <h6>Check your recent notifications and tasks</h6>
               <div className="quicknotifs">
                 <small><i className="fal fa-sync-alt"></i>0 New Updates</small>
-                <small><i className="fal fa-tasks"></i>0 New Tasks</small>
+                <small onClick={() => history.push('/tasks')}><i className="fal fa-tasks"></i>{newtasks?newtasks.length:0} New Tasks</small>
               </div>
             </div>
             <img src="https://i.imgur.com/ij6HKa7.png" alt=""/>
@@ -125,23 +158,18 @@ function Home() {
             <Charts type="bar-chart" /> 
           </div>
           <div className="dashbox hometasksbox">
-            <h5>Latest Tasks</h5>
+            <h5>Recent Projects</h5>
+            <small onClick={() => history.push('/projects')}>more<i className="fal fa-long-arrow-right"></i></small>
             <div className="hometaskhead">
-              <h6>Task</h6>
-              <h6>Client</h6>
-              <h6>Stage</h6>
-              <h6>Date</h6>
+              <h6>Name</h6>
+              <h6>Client</h6> 
+              <h6>Tasks</h6>
+              <h6>Date Created</h6>
               <h6>Status</h6>
-              <h6>Details</h6>
+              <h6>Progress</h6>
+              <h6></h6>
             </div>
-            <div className="hometaskrow">
-              <h6>Redesign Website</h6>
-              <h6>Cindy Bitton</h6>
-              <h6>Development</h6>
-              <h6>Jan 09 2021</h6>
-              <h6>Not Done</h6>
-              <h6><i className="far fa-ellipsis-h"></i></h6>
-            </div>
+            {recentprojects}
           </div>
         </div>
         <div className="homeside"> 
@@ -156,7 +184,7 @@ function Home() {
           <div className="statusbox dashbox">
             <div className="iconcont">
               <i className="fal fa-tasks"></i>
-              <h4>Active Tasks<span>{tasksarr?tasksarr.length:0}</span></h4>
+              <h4>Active Tasks<span>{activetasksarr?activetasksarr.length:0}</span></h4>
             </div>
             <div className="view"><Link to="/mytasks"><i className="far fa-angle-right"></i></Link></div>
           </div>
@@ -165,19 +193,11 @@ function Home() {
               <i className="fal fa-user-friends"></i>
               <h4>Active Clients<span>{clientlist.length}</span></h4>
             </div>
-            <div className="view"><i className="far fa-angle-right"></i></div>
+            <div className="view"><Link to="/clients"><i className="far fa-angle-right"></i></Link></div>
           </div> 
           <div className="updatesbox dashbox">
             <h5>Updates</h5>
-            <hr className="updatebar"/>
-            <div className="updateitem">
-              <h4><i className="fas fa-circle-notch"></i>Project Web Design is marked complete</h4>
-              <div className="view"><i className="far fa-angle-right"></i></div>
-            </div>
-            <div className="updateitem">
-              <h4><i className="fas fa-circle-notch"></i>Marc has sent you a new task</h4>
-              <div className="view"><i className="far fa-angle-right"></i></div>
-            </div>
+            
           </div>
         </div>
       </div>

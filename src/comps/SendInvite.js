@@ -44,6 +44,8 @@ function SendInvite(props) {
   }
   function sendInvitation() {
     if(valid) {
+      setError(false)
+      setNotify('Project invitation will be sent')
       if(props.inviteaccess) {
         handleSend()
         console.log('Sent invitation')
