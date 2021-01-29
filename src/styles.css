@@ -3116,7 +3116,7 @@ details[open] summary ~ * {
   border-radius: 10px;
   background: var(--light2);
   min-width: 100px;
-  padding: 12px 20px;
+  padding: 10px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
