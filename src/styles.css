@@ -175,18 +175,15 @@ hr {
   border-radius: 20px 0 0 20px;
 }
 .sidebar .profcont {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  align-items: center;
   grid-gap: 15px;
   margin-top: 40px;
   text-align: center;
   width: 100%;
-  min-height: 150px;
+  min-height: 140px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: all 0.2s;
+  overflow: hidden;
 }
 .sidebar .profcont img {
   height: 70px;
@@ -229,6 +226,7 @@ hr {
   flex-direction: column;
   width: 100%;
   overflow: hidden;
+  margin-top: 10px;
 }
 .accountlinks a i {
   font-size: 13px;

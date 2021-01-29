@@ -44,7 +44,7 @@ function Sidebar(props) {
       <div className="sidetogglecont" onClick={() => props.foldsidebar()}>
         <hr/><hr/><hr/>
       </div>
-      <div className="profcont" style={{minHeight: slideprof?"270px":"150px"}}>
+      <div className="profcont" style={{minHeight: slideprof?"235px":""}}>
       <img src={profimg.length?profimg:"https://i.imgur.com/yxij2KH.jpg"} alt=""/>
         <div onClick={() => setSlideProf(!slideprof)} className="mainprof">
           <h4>{userinfo.fullname?userinfo.fullname:""}</h4>
