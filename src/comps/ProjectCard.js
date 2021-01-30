@@ -7,6 +7,8 @@ function ProjectCard(props) {
 
   const {projectid, name, client, tasks, daysleft, progress, color, shadow, icon} = props.proj
   const [pinned, setPinned] = useState(false)
+  const [showTasksLeft, setShowTasksLeft] = useState(false)
+  const tasksleft = tasks.filter(x => x.taskstatus!=='Completed').length
 
   function pinUnpinProject(e) {
     e.preventDefault()
@@ -45,7 +47,11 @@ function ProjectCard(props) {
         </div>
       </div>
       <div className="projinforow">
-        <div><small><i className="far fa-tasks"></i>{tasks.length} tasks</small></div>
+        <div>
+          <small style={{color: showTasksLeft?"#fff":"", background: showTasksLeft?"var(--color)":""}} onMouseEnter={() => setShowTasksLeft(!showTasksLeft)} onMouseLeave={() => setShowTasksLeft(!showTasksLeft)}> 
+            <i className={showTasksLeft?"far fa-check":"far fa-tasks"}></i>
+            {!showTasksLeft?<>{tasks.length} {tasks.length>1?"Tasks":"Task"}</>:<>{tasksleft} {tasksleft>1?"Tasks Left":"Task Left"}</>}
+          </small></div>
         <small><i className="far fa-clock"></i>{daysleft} days left</small>
       </div>
     </div>

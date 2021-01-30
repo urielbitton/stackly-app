@@ -10,7 +10,7 @@ import {SendNotif} from './comps/SendNotif'
 import { useBeforeunload } from 'react-beforeunload'
  
 function App() {
-           
+  
   const [user, setUser] = useState('')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')

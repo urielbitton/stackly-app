@@ -11,7 +11,7 @@ import Title from './Title'
 
 function Projects(props) {
 
-  const {setNotifs} = useContext(StoreContext)
+  const {setNotifs, setPageStatus, pagestatus} = useContext(StoreContext)
 
   const [userlist, setUserList] = useState([])
   const [invusers, setInvUsers] = useState([])
@@ -185,7 +185,7 @@ function Projects(props) {
       })
       setInvUsers(users)
     })          
-    //Alternative method
+    //Alternative method - limited to 10
     /*db.collection('projects').where('projectid','in',shareids).onSnapshot(query => {
       let projects = []
       query.forEach(doc => {
@@ -194,7 +194,7 @@ function Projects(props) {
       setProjList(projects)           
     })*/ 
     return() => {
-      clearTimeout(timers)
+      clearTimeout(timers) 
       setInviteAccess(false)
     }     
   },[]) 

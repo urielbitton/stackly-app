@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { BrowserRouter as Router,Switch,Route,Link } from "react-router-dom"
+import { BrowserRouter as Router,Switch,Route,Link, useHistory } from "react-router-dom"
 import {Inputs, Switchs} from './Inputs'
 import firebase from 'firebase'
 import {db} from './Fire'
@@ -15,6 +15,7 @@ function Navbar(props) {
   const [darkmode, setDarkmode] = useState(false)
   const [notifsnum, setNotifsNum] = useState(0)
   const user = firebase.auth().currentUser 
+  const history = useHistory()
 
   return (
     <nav>
@@ -22,7 +23,6 @@ function Navbar(props) {
         <img src="https://i.imgur.com/wazsi0l.png" alt=""/>
         <h5>Stackly</h5>
       </div>
-
       <div className="toolbar">
         <div className="newbox boxmenu">
           <i className="far fa-plus"></i>
@@ -48,8 +48,8 @@ function Navbar(props) {
                 user?<Conversations amount={8}/>:""
               }
             </div>
-            <div className="viewallnotifs">
-              <Link to="/messages"><h6>View All</h6></Link>
+            <div className="viewallnotifs" onClick={() => history.replace('/messages')}>
+              <h6>View All</h6>
             </div>  
           </div>
         </div>
@@ -60,8 +60,8 @@ function Navbar(props) {
             <div className="slidemenuinner hidescroll">
               <Notifications amount={8}/>
             </div>
-            <div className="viewallnotifs">
-              <Link to="/notifications"><h6>View All</h6></Link>
+            <div className="viewallnotifs" onClick={() => history.replace('/notifications')}>
+              <h6>View All</h6>
             </div>
         </div>
         </div>
