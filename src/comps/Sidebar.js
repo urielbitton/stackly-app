@@ -48,7 +48,7 @@ function Sidebar(props) {
       <img src={profimg.length?profimg:"https://i.imgur.com/yxij2KH.jpg"} alt=""/>
         <div onClick={() => setSlideProf(!slideprof)} className="mainprof">
           <h4>{userinfo.fullname?userinfo.fullname:""}</h4>
-          <h6>{userinfo.jobtitle?userinfo.jobtitle:""}</h6>
+          <h6 style={{display: userinfo.jobtitle && userinfo.jobtitle.length?"block":"none"}}>{userinfo.jobtitle}</h6>
           <i className="far fa-angle-right" style={{transform: slideprof?"rotate(90deg)":"rotate(0deg)"}}></i> 
         </div>
         <div className="accountlinks">

@@ -51,6 +51,7 @@ function OneProject(props) {
   const user = firebase.auth().currentUser
   const [editallow, setEditAllow] = useState(proj.creatorid === user.uid)
   const [notifsnum, setNotifsNum] = useState(0)
+  const [inviteaccess, setInviteAccess] = useState(false)
   let history = useHistory()
   let timers
   let gendate = new Date().toDateString().slice(4)
@@ -408,15 +409,16 @@ function OneProject(props) {
       setClientActiveStatus(snap.data().activestatus) 
     })
     //set activeicon in edit project container
-    iconspack && iconspack.map(el => {
+    iconspack && iconspack.map(el => { 
       if(proj.icon === el.class) 
         setActiveIcon(iconspack.indexOf(el))
-    }) 
+    })  
     openCloseAct()
     return() => {
       clearTimeout(timers) 
+      setInviteAccess(false)
     }
-  },[])
+  },[inviteaccess])
  
   return (
     <div className="oneprojectpage apppage">
@@ -606,7 +608,7 @@ function OneProject(props) {
           <a className="closeadd"><i className="fal fa-times" onClick={() => {setShowInv(!showinv);setSelectUserId('');setNotify('')}}></i></a>
           <div className="titles"><img src="https://i.imgur.com/wazsi0l.png" alt=""/><h4>Invite Client</h4></div>
           <div className="content hidescroll">
-            <SendInvite title="Invite client by email"/>
+            <SendInvite title="Invite client by email" inviteaccess={inviteaccess}/>
             <div className="sendinvitecont">
               <Inputs title="Invite client by user name" iconclass="fal fa-search" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
               <div className="usersrowhead"><h6>User name - Email</h6><h6>Invite</h6></div>

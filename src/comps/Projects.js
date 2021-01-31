@@ -44,7 +44,6 @@ function Projects(props) {
   const pattern = new RegExp('\\b' + keyword.replace(/[\W_]+/g,""), 'i')
   const [projid, setProjId] = useState('')
   const [inviteaccess, setInviteAccess] = useState(false)
-  const [standbyMsg, setStandbyMsg] = useState('')
   const user = firebase.auth().currentUser
   let timers 
   

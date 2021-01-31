@@ -207,9 +207,9 @@ hr {
 .mainprof i {
   font-size: 17px;
   position: absolute;
-  top: 14px;
+  top: 35%;
   right: 10px;
-  padding: 5px;
+  padding: 0 5px;
   cursor: pointer;
   color: #fff;
   transition: all 0.2s;
@@ -226,7 +226,7 @@ hr {
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 .accountlinks a i {
   font-size: 13px;
