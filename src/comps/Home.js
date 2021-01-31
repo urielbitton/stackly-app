@@ -162,7 +162,7 @@ function Home() {
             <Charts type="bar-chart" /> 
           </div>
           <div className="dashbox hometasksbox">
-            <h5>Recent Projects</h5>
+            <h5>Recent Active Projects</h5>
             <small onClick={() => history.push('/projects')}>more<i className="fal fa-long-arrow-right"></i></small>
             <div className="hometaskhead">
               <h6>Name</h6>

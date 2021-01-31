@@ -88,6 +88,7 @@ function Projects(props) {
         progress,
         color,
         icon,
+        pinned: false,
         creatorid: user.uid,
         creatorname: user.displayName,
         datecreated: firebase.firestore.Timestamp.now()

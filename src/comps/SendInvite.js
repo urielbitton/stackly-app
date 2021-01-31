@@ -17,7 +17,6 @@ function SendInvite(props) {
   function handleSend() { 
     const templateid = 'template_x8smust'
     sendFeedback(templateid, {from_name:user.displayName, email_to:emailto, projname:props.projname, shareid:props.projid})
-    createClient()
   }
   function sendFeedback (templateid, variables) { 
     window.emailjs.send(
@@ -57,21 +56,6 @@ function SendInvite(props) {
       if(error)
         setNotify('The email address you provided is invalid. Please try again.')
     }
-  }
-  function createClient() {
-    db.collection('users').doc(user.uid).onSnapshot(snap => {
-      const clientsarr = snap.data().clients
-      let clientObj = {
-        name: '',
-        email: emailto,
-        id: db.collection('users').doc().id,
-        phone: '',
-        company: '',
-        profession: ''
-      }
-      clientsarr.push(clientObj)
-      db.collection('users').doc(user.uid).update(clientsarr)
-    })
   }
 
   useEffect(() => {

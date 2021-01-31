@@ -8,4 +8,9 @@ It is not simply a project management platform, but primarily one where clients 
 
 Implementation: react + firebase
 
+Bugs: 
+- too many firebase writes for some functions (on loop?)
+- Add client to oneproject sidebar when inviting client
+- paginate messenger chats
+
 
