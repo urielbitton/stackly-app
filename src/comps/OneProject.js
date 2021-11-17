@@ -361,7 +361,7 @@ function OneProject(props) {
     db.collection('users').doc(selectuserid).onSnapshot(doc => {
       const useData = doc.data()
       let inviteobj = {projectid: proj.projectid, projectname: proj.name, inviter:user.displayName}
-      if(selectuserid.length && !useData.invites.includes(proj.projectid)) {
+      if(selectuserid.length && !useData?.invites?.includes(proj.projectid)) {
         db.collection('users').doc(selectuserid).update({
           invites: firebase.firestore.FieldValue.arrayUnion(inviteobj) 
         }).then(doc => {
@@ -369,7 +369,7 @@ function OneProject(props) {
           setSelectUserId('') 
         })
       }
-      else if(useData.invites.includes(proj.projectid)) {
+      else if(useData?.invites?.includes(proj.projectid)) {
         setNotify('This user has already been invited to your project. You can ask them to accept your invitation on their account.')
       }
       else {
@@ -403,10 +403,10 @@ function OneProject(props) {
       setUserList(users)
     })
     db.collection('notifications').doc(user.uid).onSnapshot(snap => {
-      setNotifsNum(snap.data().notifsnum)
+      setNotifsNum(snap.data()?.notifsnum)
     })
     db.collection('users').doc(proj.client.clientid===user.uid?proj.creatorid:proj.client.clientid).onSnapshot(snap => {
-      setClientActiveStatus(snap.data().activestatus) 
+      setClientActiveStatus(snap.data()?.activestatus) 
     })
     //set activeicon in edit project container
     iconspack && iconspack.map(el => { 

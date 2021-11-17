@@ -70,7 +70,7 @@ function App() {
           shareids.push(sharecode)
           user.updateProfile({
             displayName: name,
-            photoURL: 'https://i.imgur.com/yxij2KH.jpg'
+            photoURL: 'https://i.imgur.com/1OKoctC.jpg'
           }) 
           const clients = []
           const updates = []
@@ -83,7 +83,7 @@ function App() {
             jobtitle: "",
             companylogo: "",
             country: "Canada",
-            profimg: "https://i.imgur.com/yxij2KH.jpg",
+            profimg: "https://i.imgur.com/1OKoctC.jpg",
             newuser: false
           }
           const settings = { 
